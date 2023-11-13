@@ -1,5 +1,6 @@
 package HealthMe.HealthMe.model;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,7 +34,4 @@ public class ExerciseList {
     private Double calorie; // 칼로리
     private String category; // 카테고리
 
-    @ManyToOne
-    @JoinColumn(name="exercise")
-    private ExerciseProgressList exerciseProgressList;
 }
