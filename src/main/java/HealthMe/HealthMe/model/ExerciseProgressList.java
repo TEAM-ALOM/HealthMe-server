@@ -37,4 +37,8 @@ public class ExerciseProgressList {
     @JoinColumn(name="USER_ID")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name="EXERCISE_LIST_ID")
+    private ExerciseList exerciseList;
+
 }

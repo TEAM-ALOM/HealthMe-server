@@ -37,5 +37,7 @@ public class IngestionList {
     @JoinColumn(name="USER_ID")
     private User user;
 
-
+    @ManyToOne
+    @JoinColumn(name = "FOOD_LIST_ID")
+    private FoodList foodList;
 }
