@@ -1,7 +1,11 @@
-package HealthMe.HealthMe.model;
+package HealthMe.HealthMe.domain.ingestionlist.domain;
 
+import HealthMe.HealthMe.domain.user.domain.User;
+import HealthMe.HealthMe.domain.foodlist.domain.FoodList;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
@@ -24,21 +28,28 @@ import java.util.Date;
  */
 @Getter
 @Setter
-@Entity(name ="EXERCISE_PROGRESS_LIST")
-public class ExerciseProgressList {
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity(name = "INGESTION_LIST")
+public class IngestionList {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "EXERCISE_PROGRESS_LIST_ID")
-    private Long id;    // auto increment를 위한 id pk를 위해 작성
-    private Date date;  // 운동을 진행한 날짜
-    private String email;   // user 구분을 위한 email
-    private String exercise;    // 운동 명
+    @Column(name = "INGETSTION_LIST_ID")
+    private Long id;    // pk를 위한 id
+
+    @Column(nullable = false)
+    private Date date;  // 섭취 날짜
+
+    @Column(nullable = false)
+    private String email; // user 구분을 위한 email
+
+    @Column(nullable = false)
+    private String food;    // 음식 명
 
     @ManyToOne
     @JoinColumn(name="USER_ID")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name="EXERCISE_LIST_ID")
-    private ExerciseList exerciseList;
-
+    @JoinColumn(name = "FOOD_LIST_ID")
+    private FoodList foodList;
 }

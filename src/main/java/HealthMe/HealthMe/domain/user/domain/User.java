@@ -1,9 +1,15 @@
-package HealthMe.HealthMe.model;
+package HealthMe.HealthMe.domain.user.domain;
 
-import jakarta.annotation.Nullable;
+import HealthMe.HealthMe.domain.exerciseprogresslist.domain.ExerciseProgressList;
+import HealthMe.HealthMe.domain.ingestionlist.domain.IngestionList;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Getter : 객체의 속성(property) 값을 반환하는 메서드를 어노테이션으로 지원 (lombok)
@@ -23,15 +29,27 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Entity(name="EXERCISE_LIST")
-public class ExerciseList {
+@NoArgsConstructor
+@AllArgsConstructor
+
+@Entity(name = "USER")
+public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "EXERCISE_LIST_ID")
-    private Long id;    // auto increment하는 id pk를 위해 작성
+    @Column(name = "USER_ID")
+    private Long id;    // pk를 위한 id
 
     @Column(unique = true)
-    private String name;    // 운동 명
-    private Double calorie; // 칼로리
-    private String category; // 카테고리
+    private String email;   // email
 
+    private String password;    // 비밀번호
+    private String nickname;    // 별명
+    private String name;        // 본명
+
+    @OneToMany(mappedBy = "user")
+    private List<IngestionList> ingestionLists = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<ExerciseProgressList> exerciseProgressLists = new ArrayList<>();
 }
+
+
