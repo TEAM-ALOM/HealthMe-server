@@ -1,8 +1,13 @@
-package HealthMe.HealthMe.model;
+package HealthMe.HealthMe.domain.emailsession.domain;
 
+import HealthMe.HealthMe.domain.user.domain.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * @Getter : 객체의 속성(property) 값을 반환하는 메서드를 어노테이션으로 지원 (lombok)
@@ -22,19 +27,28 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Entity(name = "FOOD_LIST")
-public class FoodList {
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity(name = "EMAIL_SESSION")
+public class EmailSession {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "FOOD_LIST_ID")
-    private Long id;    // pk를 위한 id
+    @Column(name="SESSION_ID")
+    private Long id;
 
-    @Column(unique = true)
-    private String name;    // 음식 명
-    private Double carbohydrate;    // 탄수화물
-    private Double protein; // 단백질
-    private Double fat; // 지방
-    private Double calorie; // 칼로리
+    @Column(nullable = false, name="SESSION")
+    private UUID session; // 생성한 코드의 유효성을 검증하는 컬럼
 
+    @Column(nullable = false)
+    private String email;   // 인증코드를 보낼 이메일
 
+    @Column(nullable = false)
+    private UUID verityCode; // 검증 코드
+
+    @CreationTimestamp
+    @Column(name="createdTime")
+    private LocalDateTime createdTime;  // 타임스테프
+
+    @OneToOne
+    @JoinColumn(name="USER_ID")
+    private User user;
 }

@@ -1,10 +1,12 @@
-package HealthMe.HealthMe.model;
+package HealthMe.HealthMe.domain.preset.domain;
 
+
+import HealthMe.HealthMe.domain.user.domain.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Date;
 
 /**
  * @Getter : 객체의 속성(property) 값을 반환하는 메서드를 어노테이션으로 지원 (lombok)
@@ -24,20 +26,25 @@ import java.util.Date;
  */
 @Getter
 @Setter
-@Entity(name = "INGESTION_LIST")
-public class IngestionList {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "INGETSTION_LIST_ID")
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity(name = "PRESET")
+public class Preset {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "PRESET_ID")
     private Long id;    // pk를 위한 id
-    private Date date;  // 섭취 날짜
-    private String email; // user구분을 위한 email
-    private String food;    // 음식 명
+
+    @Column(nullable = false)
+    private String email;   // user 구분을 위한 email
+    private Long presetNumber;  // 프리셋 번호
+    private String exerciseName;    // 운동 명
+    private Double weight;  // 무게
+    private Integer setCount;   // 세트 수
+    private Integer repetitionCount;    // 반복 횟수
+    private Integer restTime;   // 쉬는 시간 (나중에 시간 자료형으로 변경 계획 있음)
 
     @ManyToOne
-    @JoinColumn(name="USER_ID")
+    @JoinColumn(name = "USER_ID")
     private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "FOOD_LIST_ID")
-    private FoodList foodList;
 }

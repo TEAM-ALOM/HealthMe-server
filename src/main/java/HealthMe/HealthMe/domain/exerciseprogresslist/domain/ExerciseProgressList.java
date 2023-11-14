@@ -1,8 +1,14 @@
-package HealthMe.HealthMe.model;
+package HealthMe.HealthMe.domain.exerciseprogresslist.domain;
 
+import HealthMe.HealthMe.domain.user.domain.User;
+import HealthMe.HealthMe.domain.exerciselist.domain.ExerciseList;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Date;
 
 /**
  * @Getter : 객체의 속성(property) 값을 반환하는 메서드를 어노테이션으로 지원 (lombok)
@@ -22,20 +28,30 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Entity(name = "USER_BODY_INFORMATION")
-public class UserBodyInformation {
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity(name ="EXERCISE_PROGRESS_LIST")
+public class ExerciseProgressList {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="USER_BODY_INFORMATION_ID")
-    private Long id;        // pk를 위한 id
+    @Column(name = "EXERCISE_PROGRESS_LIST_ID")
+    private Long id;    // auto increment를 위한 id pk를 위해 작성
 
-    @Column(unique = true)
-    private String email;   // user 구분을 위한 이메일
-    private String height;  // 키
-    private String weight;  // 몸무게
-    private String gender;  // 성별
-    private Integer age;    // 나이
+    @Column(nullable = false)
+    private Date date;  // 운동을 진행한 날짜
 
-    @OneToOne
+    @Column(nullable = false)
+    private String email;   // user 구분을 위한 email
+
+    @Column(nullable = false)
+    private String exercise;    // 운동 명
+
+    @ManyToOne
     @JoinColumn(name="USER_ID")
     private User user;
+
+    @ManyToOne
+    @JoinColumn(name="EXERCISE_LIST_ID")
+    private ExerciseList exerciseList;
+
 }
