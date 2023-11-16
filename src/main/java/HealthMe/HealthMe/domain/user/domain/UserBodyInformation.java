@@ -1,18 +1,13 @@
-package HealthMe.HealthMe.domain.ingestionlist.domain;
+package HealthMe.HealthMe.domain.user.domain;
 
 import HealthMe.HealthMe.domain.user.domain.User;
-import HealthMe.HealthMe.domain.foodlist.domain.FoodList;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.util.Date;
+import lombok.*;
 
 /**
  * @Getter : 객체의 속성(property) 값을 반환하는 메서드를 어노테이션으로 지원 (lombok)
  * @Setter : 객체의 속성 값을 설정, 변경하는 메서드를 어노테이션으로 지원 (lombok)
+ * @Builder : 객체의 생성자를 자동으로 만들어주는 어노테이션 (lombok)
  * @Entity : JPA에서 지원하는 어노테이션으로, DB에서 Table을 생성
  * @Entity(name = value) : name = 속성 사용시 해당 Table의 이름을 클래스 명이 아닌 value로 지정가능
  * @ID : 해당 필드를 Primary key로 설정하는 어노테이션
@@ -27,29 +22,23 @@ import java.util.Date;
  * @JoinColumn(name = value) : 해당 value와 mapping을 도와주는 어노테이션
  */
 @Getter
-@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "INGESTION_LIST")
-public class IngestionList {
+@Entity(name = "USER_BODY_INFORMATION")
+public class UserBodyInformation {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "INGETSTION_LIST_ID")
-    private Long id;    // pk를 위한 id
+    @Column(name="USER_BODY_INFORMATION_ID")
+    private Long id;        // pk를 위한 id
 
-    @Column(nullable = false)
-    private Date date;  // 섭취 날짜
+    @Column(unique = true)
+    private String email;   // user 구분을 위한 이메일
+    private String height;  // 키
+    private String weight;  // 몸무게
+    private String gender;  // 성별
+    private Integer age;    // 나이
 
-    @Column(nullable = false)
-    private String email; // user 구분을 위한 email
-
-    @Column(nullable = false)
-    private String food;    // 음식 명
-
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name="USER_ID")
     private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "FOOD_LIST_ID")
-    private FoodList foodList;
 }
