@@ -1,14 +1,15 @@
-package HealthMe.HealthMe.domain.exerciselist.domain;
+package HealthMe.HealthMe.domain.exercise.domain;
 
+import HealthMe.HealthMe.domain.user.domain.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.Date;
 
 /**
  * @Getter : 객체의 속성(property) 값을 반환하는 메서드를 어노테이션으로 지원 (lombok)
  * @Setter : 객체의 속성 값을 설정, 변경하는 메서드를 어노테이션으로 지원 (lombok)
+ * @Builder : 객체의 생성자를 자동으로 만들어주는 어노테이션 (lombok)
  * @Entity : JPA에서 지원하는 어노테이션으로, DB에서 Table을 생성
  * @Entity(name = value) : name = 속성 사용시 해당 Table의 이름을 클래스 명이 아닌 value로 지정가능
  * @ID : 해당 필드를 Primary key로 설정하는 어노테이션
@@ -23,20 +24,31 @@ import lombok.Setter;
  * @JoinColumn(name = value) : 해당 value와 mapping을 도와주는 어노테이션
  */
 @Getter
-@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name="EXERCISE_LIST")
-public class ExerciseList {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "EXERCISE_LIST_ID")
-    private Long id;    // auto increment하는 id pk를 위해 작성
+@Entity(name ="EXERCISE_PROGRESS_LIST")
+public class ExerciseProgressList {
 
-    @Column(unique = true)
-    private String name;    // 운동 명
-    private Double calorie; // 칼로리
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "EXERCISE_PROGRESS_LIST_ID")
+    private Long id;    // auto increment를 위한 id pk를 위해 작성
 
     @Column(nullable = false)
-    private String category; // 카테고리
+    private Date date;  // 운동을 진행한 날짜
+
+    @Column(nullable = false)
+    private String email;   // user 구분을 위한 email
+
+    @Column(nullable = false)
+    private String exercise;    // 운동 명
+
+    @ManyToOne
+    @JoinColumn(name="USER_ID")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name="EXERCISE_LIST_ID")
+    private ExerciseList exerciseList;
 
 }
