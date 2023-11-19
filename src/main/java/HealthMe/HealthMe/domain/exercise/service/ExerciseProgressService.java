@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ExerciseProgressService {
     private final ExerciseProgressRepository exerciseProgressRepository;
 
+    //삽입
     public ExerciseProgressList insert(ExerciseProgressDto exerciseProgressDto){
         if(exerciseProgressDto.getDate() ==null || exerciseProgressDto.getExercise() == null || exerciseProgressDto.getEmail() == null){
             return new ExerciseProgressList();

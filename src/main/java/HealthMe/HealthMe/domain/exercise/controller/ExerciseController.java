@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -34,5 +36,10 @@ public class ExerciseController {
     public ExerciseList findByName(@RequestBody ExerciseDto exerciseDto){
         ExerciseList exerciseList = exerciseService.findByName(exerciseDto);
         return exerciseList;
+    }
+
+    @GetMapping("/findAll")
+    public List<ExerciseList> findAll(){
+        return exerciseService.findAll();
     }
 }
