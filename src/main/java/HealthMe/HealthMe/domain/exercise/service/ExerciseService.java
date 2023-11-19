@@ -8,8 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
+// exerciseList와 관련된 service 완
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -23,6 +25,7 @@ public class ExerciseService {
         }
         Optional<ExerciseList> exerciseList = exerciseRepository.findById(exerciseDto.getId());
 
+        // optional 처리 공부
         return exerciseList.orElseGet(ExerciseList::new);
     }
 
@@ -43,5 +46,9 @@ public class ExerciseService {
         }
         exerciseRepository.save(exerciseList);
         return exerciseList;
+    }
+
+    public List<ExerciseList> findAll(){
+        return exerciseRepository.findAll();
     }
 }
