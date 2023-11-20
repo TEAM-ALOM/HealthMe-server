@@ -2,8 +2,11 @@ package HealthMe.HealthMe.domain.exercise.controller;
 
 
 import HealthMe.HealthMe.domain.exercise.domain.ExerciseList;
+import HealthMe.HealthMe.domain.exercise.domain.ExerciseProgressList;
 import HealthMe.HealthMe.domain.exercise.dto.ExerciseDto;
+import HealthMe.HealthMe.domain.exercise.service.ExerciseProgressService;
 import HealthMe.HealthMe.domain.exercise.service.ExerciseService;
+import HealthMe.HealthMe.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +22,7 @@ import java.util.List;
 @RequestMapping("api/v1")
 public class ExerciseController {
     private final ExerciseService exerciseService;
-
+    private final ExerciseProgressService exerciseProgressService;
     @GetMapping("/save")
     public ExerciseList save(@RequestBody ExerciseDto exerciseDto){
         ExerciseList exerciseList = exerciseService.save(exerciseDto);
@@ -41,5 +44,10 @@ public class ExerciseController {
     @GetMapping("/findAll")
     public List<ExerciseList> findAll(){
         return exerciseService.findAll();
+    }
+
+    @GetMapping("/findP")
+    public List<ExerciseProgressList> findByEmail(@RequestBody User user){
+        return exerciseProgressService.findProgressedExerciseByEmail(user);
     }
 }

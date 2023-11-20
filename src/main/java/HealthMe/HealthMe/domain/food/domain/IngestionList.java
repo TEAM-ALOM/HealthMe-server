@@ -39,9 +39,6 @@ public class IngestionList {
     @Column(nullable = false)
     private String email; // user 구분을 위한 email
 
-    @Column(nullable = false)
-    private String food;    // 음식 명
-
     @ManyToOne
     @JoinColumn(name="USER_ID")
     private User user;

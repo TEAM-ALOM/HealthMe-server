@@ -38,10 +38,11 @@ public class ExerciseProgressList {
     private Date date;  // 운동을 진행한 날짜
 
     @Column(nullable = false)
-    private String email;   // user 구분을 위한 email
-
-    @Column(nullable = false)
     private String exercise;    // 운동 명
+
+    private Double weight;  // 무게
+    private Integer setCount;   // 세트 수
+    private Integer repetitionCount;    // 반복 횟수
 
     @ManyToOne
     @JoinColumn(name="USER_ID")
