@@ -33,8 +33,6 @@ public class Preset {
     @Column(name = "PRESET_ID")
     private Long id;    // pk를 위한 id
 
-    @Column(nullable = false)
-    private String email;   // user 구분을 위한 email
     private Long presetNumber;  // 프리셋 번호
     private String exerciseName;    // 운동 명
     private Double weight;  // 무게
