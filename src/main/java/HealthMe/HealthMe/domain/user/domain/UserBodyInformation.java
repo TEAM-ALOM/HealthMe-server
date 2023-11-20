@@ -31,8 +31,6 @@ public class UserBodyInformation {
     @Column(name="USER_BODY_INFORMATION_ID")
     private Long id;        // pk를 위한 id
 
-    @Column(unique = true)
-    private String email;   // user 구분을 위한 이메일
     private String height;  // 키
     private String weight;  // 몸무게
     private String gender;  // 성별

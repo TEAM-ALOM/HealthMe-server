@@ -40,9 +40,6 @@ public class EmailSession {
     private UUID session; // 생성한 코드의 유효성을 검증하는 컬럼
 
     @Column(nullable = false)
-    private String email;   // 인증코드를 보낼 이메일
-
-    @Column(nullable = false)
     private UUID verityCode; // 검증 코드
 
     @CreationTimestamp
