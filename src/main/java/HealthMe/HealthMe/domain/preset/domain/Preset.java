@@ -34,7 +34,6 @@ public class Preset {
     private Long id;    // pk를 위한 id
 
     private Long presetNumber;  // 프리셋 번호
-    private String exerciseName;    // 운동 명
     private Double weight;  // 무게
     private Integer setCount;   // 세트 수
     private Integer repetitionCount;    // 반복 횟수
