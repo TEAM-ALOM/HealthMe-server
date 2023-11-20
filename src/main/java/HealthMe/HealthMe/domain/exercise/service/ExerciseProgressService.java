@@ -21,7 +21,7 @@ public class ExerciseProgressService {
 
     //삽입
     public ExerciseProgressList insert(ExerciseProgressDto exerciseProgressDto, User user){
-        if(exerciseProgressDto.getDate() ==null || exerciseProgressDto.getExercise() == null || user.getEmail() == null){
+        if(exerciseProgressDto.getDate() ==null || user.getEmail() == null){
             return new ExerciseProgressList();
         }
         ExerciseProgressList exerciseProgressList = exerciseProgressRepository.save(exerciseProgressDto.toEntity());

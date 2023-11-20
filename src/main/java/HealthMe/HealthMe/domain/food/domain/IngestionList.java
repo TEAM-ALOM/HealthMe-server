@@ -36,9 +36,6 @@ public class IngestionList {
     @Column(nullable = false)
     private Date date;  // 섭취 날짜
 
-    @Column(nullable = false)
-    private String email; // user 구분을 위한 email
-
     @ManyToOne
     @JoinColumn(name="USER_ID")
     private User user;
