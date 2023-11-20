@@ -38,5 +38,4 @@ public class FoodList {
     private Double fat; // 지방
     private Double calorie; // 칼로리
 
-
 }

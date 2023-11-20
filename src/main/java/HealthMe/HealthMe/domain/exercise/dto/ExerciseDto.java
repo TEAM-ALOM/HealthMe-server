@@ -24,6 +24,7 @@ public class ExerciseDto {
         this.category = category;
     }
 
+
     public ExerciseList toEntity(){
         return ExerciseList.builder()
                 .id(id)
