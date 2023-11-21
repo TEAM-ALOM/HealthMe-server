@@ -1,6 +1,7 @@
 package HealthMe.HealthMe.domain.food.domain;
 
 import HealthMe.HealthMe.domain.user.domain.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,5 +43,6 @@ public class IngestionList {
 
     @ManyToOne
     @JoinColumn(name = "FOOD_LIST_ID")
+    @JsonBackReference
     private FoodList foodList;
 }
