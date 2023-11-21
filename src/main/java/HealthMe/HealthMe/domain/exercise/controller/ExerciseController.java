@@ -22,7 +22,7 @@ import java.util.List;
 @RequestMapping("api/v1")
 public class ExerciseController {
     private final ExerciseService exerciseService;
-    private final ExerciseProgressService exerciseProgressService;
+
     @GetMapping("/save")
     public ExerciseList save(@RequestBody ExerciseDto exerciseDto){
         ExerciseList exerciseList = exerciseService.save(exerciseDto);
@@ -46,8 +46,5 @@ public class ExerciseController {
         return exerciseService.findAll();
     }
 
-    @GetMapping("/findP")
-    public List<ExerciseProgressList> findByEmail(@RequestBody User user){
-        return exerciseProgressService.findProgressedExerciseByEmail(user);
-    }
+
 }

@@ -1,6 +1,7 @@
 package HealthMe.HealthMe.domain.exercise.domain;
 
 import HealthMe.HealthMe.domain.user.domain.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,12 +42,14 @@ public class ExerciseProgressList {
     private Integer setCount;   // 세트 수
     private Integer repetitionCount;    // 반복 횟수
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="USER_ID")
+    @JsonBackReference
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="EXERCISE_LIST_ID")
+    @JsonBackReference
     private ExerciseList exerciseList;
 
 }

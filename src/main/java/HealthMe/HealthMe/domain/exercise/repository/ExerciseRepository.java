@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface ExerciseRepository extends JpaRepository<ExerciseList, Long> {
-    @Query("SELECT m FROM EXERCISE_LIST m WHERE m.name = :exerciseName")
-    Optional<ExerciseList> findByName(@Param("exerciseName") String name);
+
+    Optional<ExerciseList> findByName(@Param("exerciseName") String exerciseName);
 
 }

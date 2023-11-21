@@ -2,6 +2,7 @@ package HealthMe.HealthMe.domain.user.domain;
 
 import HealthMe.HealthMe.domain.exercise.domain.ExerciseProgressList;
 import HealthMe.HealthMe.domain.food.domain.IngestionList;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -44,9 +45,11 @@ public class User {
     private String name;        // 본명
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<IngestionList> ingestionLists = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<ExerciseProgressList> exerciseProgressLists = new ArrayList<>();
 }
 
