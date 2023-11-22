@@ -1,6 +1,5 @@
 package HealthMe.HealthMe.domain.exercise.controller;
 
-import HealthMe.HealthMe.domain.exercise.domain.ExerciseList;
 import HealthMe.HealthMe.domain.exercise.domain.ExerciseProgressList;
 import HealthMe.HealthMe.domain.exercise.dto.ExerciseProgressDto;
 import HealthMe.HealthMe.domain.exercise.service.ExerciseProgressService;

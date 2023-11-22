@@ -1,7 +1,11 @@
 package HealthMe.HealthMe.domain.exercise.domain;
 
+import HealthMe.HealthMe.domain.preset.domain.Preset;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Getter : 객체의 속성(property) 값을 반환하는 메서드를 어노테이션으로 지원 (lombok)
@@ -37,5 +41,7 @@ public class ExerciseList {
     @Column(nullable = false)
     private String category; // 카테고리
 
+    @OneToMany(mappedBy = "exerciseList")
+    private List<ExerciseProgressList> exerciseProgressLists = new ArrayList<>();
 
 }

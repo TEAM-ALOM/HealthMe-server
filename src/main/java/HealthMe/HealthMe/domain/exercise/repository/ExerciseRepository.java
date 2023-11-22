@@ -12,4 +12,5 @@ public interface ExerciseRepository extends JpaRepository<ExerciseList, Long> {
 
     Optional<ExerciseList> findByName(@Param("exerciseName") String exerciseName);
 
+
 }

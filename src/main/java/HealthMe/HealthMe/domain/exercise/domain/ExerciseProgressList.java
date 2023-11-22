@@ -44,12 +44,10 @@ public class ExerciseProgressList {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="USER_ID")
-    @JsonBackReference
     private User user;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="EXERCISE_LIST_ID")
-    @JsonBackReference
     private ExerciseList exerciseList;
 
 }
