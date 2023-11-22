@@ -1,6 +1,7 @@
 package HealthMe.HealthMe.domain.preset.domain;
 
 
+import HealthMe.HealthMe.domain.exercise.domain.ExerciseList;
 import HealthMe.HealthMe.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -38,8 +39,11 @@ public class Preset {
     private Integer setCount;   // 세트 수
     private Integer repetitionCount;    // 반복 횟수
     private Integer restTime;   // 쉬는 시간 (나중에 시간 자료형으로 변경 계획 있음)
+    private String exerciseName;
+    private String category;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
+
 }

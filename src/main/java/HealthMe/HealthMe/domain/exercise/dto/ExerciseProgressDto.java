@@ -4,6 +4,7 @@ import HealthMe.HealthMe.domain.exercise.domain.ExerciseList;
 import HealthMe.HealthMe.domain.exercise.domain.ExerciseProgressList;
 import HealthMe.HealthMe.domain.user.domain.User;
 
+import HealthMe.HealthMe.domain.user.dto.UserDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,9 @@ public class ExerciseProgressDto {
     private Integer setCount;   // 세트 수
     private Integer repetitionCount;    // 반복 횟수
 
+    private UserDto userDto;
+    private ExerciseDto exerciseDto;
+
     @Builder
     public ExerciseProgressDto(Long id, Date date, Double weight, Integer setCount, Integer repetitionCount){
         this.id = id;
@@ -31,9 +35,10 @@ public class ExerciseProgressDto {
 
     }
 
-
-    public ExerciseProgressList toEntity(User user, ExerciseList exerciseList){
+    public ExerciseProgressList toEntity(UserDto userDto, ExerciseDto exerciseDto){
         return ExerciseProgressList.builder()
+                .user(userDto.toEntity())
+                .exerciseList(exerciseDto.toEntity())
                 .id(id)
                 .date(date)
                 .weight(weight)

@@ -45,11 +45,9 @@ public class User {
     private String name;        // 본명
 
     @OneToMany(mappedBy = "user")
-    @JsonManagedReference
     private List<IngestionList> ingestionLists = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    @JsonManagedReference
     private List<ExerciseProgressList> exerciseProgressLists = new ArrayList<>();
 }
 
