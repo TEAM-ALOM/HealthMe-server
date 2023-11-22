@@ -16,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,21 +61,79 @@ public class ExerciseProgressService {
     }
 
 
-    public List<ExerciseProgressList> findProgressedExerciseByEmail(User user){
-        if (user.getEmail() == null){
+    public List<ExerciseProgressDto> findProgressedExerciseByEmail(UserDto userDto){
+        if (userDto.getEmail() == null){
             return null;
         }
-        List<ExerciseProgressList> list = exerciseProgressRepository.findByEmail(user.getEmail());
-        return list;
+        List<ExerciseProgressDto> find = new ArrayList<>();
+        User searchedUser = userRepository.findByEmail(userDto.getEmail());
+        UserDto searchedUserDto = UserDto.builder()
+                .email(searchedUser.getEmail())
+                .nickname(searchedUser.getNickname())
+                .name(searchedUser.getName())
+                .build();
+
+        List<ExerciseProgressList> list = exerciseProgressRepository.findByEmail(userDto.getEmail());
+        for (ExerciseProgressList exerciseProgressList : list) {
+            ExerciseList exerciseList = exerciseProgressList.getExerciseList();
+            ExerciseDto exerciseDto = ExerciseDto.builder()
+                    .category(exerciseList.getCategory())
+                    .calorie(exerciseList.getCalorie())
+                    .name(exerciseList.getName())
+                    .build();
+
+            ExerciseProgressDto exerciseProgressDto = ExerciseProgressDto.builder()
+                    .date(exerciseProgressList.getDate())
+                    .repetitionCount(exerciseProgressList.getRepetitionCount())
+                    .setCount(exerciseProgressList.getSetCount())
+                    .weight(exerciseProgressList.getWeight())
+                    .userDto(searchedUserDto)
+                    .exerciseDto(exerciseDto)
+                    .build();
+
+
+            find.add(exerciseProgressDto);
+        }
+        return find;
     }
     // user가 해당 날짜에 해당하는 운동 진행 내역들 찾기 (user Dto와 연계하여 사용해야됨)
-    public List<ExerciseProgressList> findProgressedExerciseByDate(ExerciseProgressDto exerciseProgressDto, User user){
-        if (user.getEmail() == null || exerciseProgressDto.getDate() == null){
+    public List<ExerciseProgressDto> findProgressedExerciseByDate(ExerciseProgressDto exerciseProgressDto){
+        if (exerciseProgressDto.getDate() == null){
             return null;
         }
-        List<ExerciseProgressList> lists = exerciseProgressRepository.findExerciseProgressListsByEmailAndDate(user.getEmail(), exerciseProgressDto.getDate());
+        List<ExerciseProgressList> list = exerciseProgressRepository.findExerciseProgressListsByDate(exerciseProgressDto.getDate());
+        List<ExerciseProgressDto> findList = new ArrayList<>();
+        for (ExerciseProgressList exerciseProgressList : list) {
+            // 이때 객체가 null일수도 있음(entity - not null로 수정)
+            User findUser = exerciseProgressList.getUser();
+            ExerciseList findExercise = exerciseProgressList.getExerciseList();
 
-        return lists;
+            UserDto findUserDto = UserDto.builder()
+                    .id(findUser.getId())
+                    .email(findUser.getEmail())
+                    .nickname(findUser.getNickname())
+                    .name(findUser.getName())
+                    .build();
+
+            ExerciseDto findExerciseDto = ExerciseDto.builder()
+                    .id(findExercise.getId())
+                    .name(findExercise.getName())
+                    .calorie(findExercise.getCalorie())
+                    .category(findExercise.getCategory())
+                    .build();
+
+            ExerciseProgressDto find = ExerciseProgressDto.builder()
+                    .id(exerciseProgressList.getId())
+                    .exerciseDto(findExerciseDto)
+                    .date(exerciseProgressList.getDate())
+                    .userDto(findUserDto)
+                    .weight(exerciseProgressList.getWeight())
+                    .repetitionCount(exerciseProgressList.getRepetitionCount())
+                    .build();
+
+            findList.add(find);
+        }
+        return findList;
     }
 
 }
