@@ -44,7 +44,6 @@ public class ExerciseProgressService {
                 .id(searchedUser.getId())
                 .email(searchedUser.getEmail())
                 .name(searchedUser.getName())
-                .nickname(searchedUser.getNickname())
                 .build();
 
         ExerciseDto insertedExercise = ExerciseDto.builder()
@@ -69,7 +68,6 @@ public class ExerciseProgressService {
         User searchedUser = userRepository.findByEmail(userDto.getEmail());
         UserDto searchedUserDto = UserDto.builder()
                 .email(searchedUser.getEmail())
-                .nickname(searchedUser.getNickname())
                 .name(searchedUser.getName())
                 .build();
 
@@ -111,7 +109,6 @@ public class ExerciseProgressService {
             UserDto findUserDto = UserDto.builder()
                     .id(findUser.getId())
                     .email(findUser.getEmail())
-                    .nickname(findUser.getNickname())
                     .name(findUser.getName())
                     .build();
 

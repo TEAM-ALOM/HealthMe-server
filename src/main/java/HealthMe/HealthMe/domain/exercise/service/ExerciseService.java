@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-// exerciseList와 관련된 service 완지랄
 
 /**
  * exception 처리
