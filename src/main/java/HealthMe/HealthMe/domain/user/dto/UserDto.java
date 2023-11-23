@@ -18,10 +18,10 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 public class UserDto {
-    private Long id;    // pk를 위한 id
-    private String email;   // email
-    private String nickname;    // 별명
-    private String name;        // 본명
+    private Long id;
+    private String email;
+    private String nickname;
+    private String name;
     @Builder
     public UserDto(Long id, String email, String nickname, String name){
         this.id = id;
@@ -33,7 +33,6 @@ public class UserDto {
         return User.builder()
                 .id(id)
                 .email(email)
-                .nickname(nickname)
                 .name(name)
                 .build();
     }
