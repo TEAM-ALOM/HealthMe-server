@@ -38,7 +38,6 @@ public class EmailCreateService {
         String authCode = this.createCode();
         emailService.sendEmail(toEmail, title, authCode);
 
-
         EmailSession byEmail = emailRepositioy.findByEmail(toEmail);
         if(byEmail!=null) {
             byEmail.setVerifyCode(authCode);
@@ -74,6 +73,7 @@ public class EmailCreateService {
         }
     }
 
+    // 이메일 인증
     public boolean verifiedCode(String email, String authCode) {
         this.checkDuplicatedEmail(email);
         EmailSession authInfo = emailRepositioy.findByEmail(email);

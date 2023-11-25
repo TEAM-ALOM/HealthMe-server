@@ -5,6 +5,7 @@ import HealthMe.HealthMe.domain.food.domain.IngestionList;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,15 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<ExerciseProgressList> exerciseProgressLists = new ArrayList<>();
+
+    public User hashPassword(PasswordEncoder passwordEncoder){
+        this.password = passwordEncoder.encode(this.password);
+        return this;
+    }
+
+    public boolean checkPassword(String rawPassword, PasswordEncoder passwordEncoder){
+        return passwordEncoder.matches(rawPassword, this.password);
+    }
 }
 
 
