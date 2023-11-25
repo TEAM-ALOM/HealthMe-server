@@ -1,6 +1,7 @@
 package HealthMe.HealthMe.domain.user.controller;
 
 
+import HealthMe.HealthMe.common.dto.ErrorResponseDto;
 import HealthMe.HealthMe.domain.user.service.EmailCreateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +24,6 @@ public class EmailController {
     @GetMapping("/verification")
     public ResponseEntity verificationEmail(@RequestParam("email") String email,
                                             @RequestParam("code") String authCode) {
-        boolean response = userService.verifiedCode(email, authCode);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(userService.verifiedCode(email, authCode), HttpStatus.OK);
     }
 }

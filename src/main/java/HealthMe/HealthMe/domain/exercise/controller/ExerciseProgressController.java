@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+
+// 11/25 미사용 : 리턴 타입 responseEntity로 변경
+//@RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("api/v1/progress")
+//@RequestMapping("api/v1/progress")
 public class ExerciseProgressController {
     private final ExerciseProgressService exerciseProgressService;
 
@@ -32,8 +34,7 @@ public class ExerciseProgressController {
     @PostMapping("/insert")
     public ExerciseProgressList insert(@RequestBody ExerciseProgressDto exerciseProgressDto){
         // DTO가 아니라 entity로 다시 바꿔라
-        ExerciseProgressList inserted = exerciseProgressService.insert(exerciseProgressDto);
-        log.info("inserted = {}", inserted);
-        return inserted;
+        exerciseProgressService.insert(exerciseProgressDto);
+        return null;
     }
 }

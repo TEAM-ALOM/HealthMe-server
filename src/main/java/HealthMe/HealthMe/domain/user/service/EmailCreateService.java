@@ -78,6 +78,7 @@ public class EmailCreateService {
         this.checkDuplicatedEmail(email);
         EmailSession authInfo = emailRepositioy.findByEmail(email);
         String AuthCode = authInfo.getVerifyCode();
+
         LocalDateTime createdTime = authInfo.getCreatedTime();
         LocalDateTime now = LocalDateTime.now();
         Duration duration = Duration.between(createdTime, now);

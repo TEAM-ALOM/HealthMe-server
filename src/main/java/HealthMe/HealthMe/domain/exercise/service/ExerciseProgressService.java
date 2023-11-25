@@ -1,6 +1,7 @@
 package HealthMe.HealthMe.domain.exercise.service;
 
 
+import HealthMe.HealthMe.common.exception.GlobalExceptionHandler;
 import HealthMe.HealthMe.domain.exercise.domain.ExerciseList;
 import HealthMe.HealthMe.domain.exercise.domain.ExerciseProgressList;
 import HealthMe.HealthMe.domain.exercise.dto.ExerciseDto;
@@ -13,6 +14,7 @@ import HealthMe.HealthMe.domain.user.dto.UserDto;
 import HealthMe.HealthMe.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,33 +32,37 @@ public class ExerciseProgressService {
     private final ExerciseRepository exerciseRepository;
     private final UserRepository userRepository;
     //삽입
-    public ExerciseProgressList insert(ExerciseProgressDto exerciseProgressDto){
-        // 받은 parameter에 해당 정보 없을시 리턴 값 수정
-        String userEmail = exerciseProgressDto.getUserDto().getEmail();
-        String exerciseName = exerciseProgressDto.getExerciseDto().getName();
+    public void insert(ExerciseProgressDto exerciseProgressDto){
 
-        // 해당 parameter에 해당 row 없을시 리턴 값 수정
-        User searchedUser = userRepository.findByEmail(userEmail);
-        Optional<ExerciseList> exerciseList = exerciseRepository.findByName(exerciseName);
-        ExerciseList searchedExercise = exerciseList.get();
+        try {
+            String userEmail = exerciseProgressDto.getUserDto().getEmail();
+            User searchedUser = userRepository.findByEmail(userEmail);
+            UserDto insertedUser = UserDto.builder()
+                    .id(searchedUser.getId())
+                    .email(searchedUser.getEmail())
+                    .name(searchedUser.getName())
+                    .build();
+            try {
+                String exerciseName = exerciseProgressDto.getExerciseDto().getName();
+                ExerciseList searchedExercise = exerciseRepository.findByName(exerciseName);
+                ExerciseDto insertedExercise = ExerciseDto.builder()
+                        .id(searchedExercise.getId())
+                        .name(searchedExercise.getName())
+                        .calorie(searchedExercise.getCalorie())
+                        .category(searchedExercise.getCategory())
+                        .build();
 
-        UserDto insertedUser = UserDto.builder()
-                .id(searchedUser.getId())
-                .email(searchedUser.getEmail())
-                .name(searchedUser.getName())
-                .build();
+                ExerciseProgressList exerciseProgressList = exerciseProgressDto.toEntity(insertedUser, insertedExercise);
+                exerciseProgressRepository.save(exerciseProgressList);
+            }
+            catch (NullPointerException e){
+                throw e;
+            }
+        }
+        catch (NullPointerException e){
+            throw e;
+        }
 
-        ExerciseDto insertedExercise = ExerciseDto.builder()
-                .id(searchedExercise.getId())
-                .name(searchedExercise.getName())
-                .calorie(searchedExercise.getCalorie())
-                .category(searchedExercise.getCategory())
-                .build();
-
-        ExerciseProgressList exerciseProgressList = exerciseProgressDto.toEntity(insertedUser, insertedExercise);
-        ExerciseProgressList inserted = exerciseProgressRepository.save(exerciseProgressList);
-
-        return inserted;
     }
 
 
