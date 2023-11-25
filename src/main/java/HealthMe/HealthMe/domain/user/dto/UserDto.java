@@ -20,20 +20,21 @@ import java.util.List;
 public class UserDto {
     private Long id;
     private String email;
-    private String nickname;
     private String name;
+    private boolean autoLogin; // 11/25 추가 : 자동 로그인 관련
     @Builder
-    public UserDto(Long id, String email, String nickname, String name){
+    public UserDto(Long id, String email, String name, boolean autoLogin){
         this.id = id;
         this.email = email;
-        this.nickname = nickname;
         this.name = name;
+        this.autoLogin = autoLogin;
     }
     public User toEntity(){
         return User.builder()
                 .id(id)
                 .email(email)
                 .name(name)
+                .autoLogin(autoLogin)
                 .build();
     }
 }
