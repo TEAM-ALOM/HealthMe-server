@@ -23,8 +23,8 @@ public class User {
     @Column(unique = true)
     private String email;
     private String password;
-//    private String nickname;   2023/11/23 삭제 : 불필요한 데이터
     private String name;
+    private boolean autoLogin = false;  // 11/25 추가 : 자동 로그인 관련
 
     @OneToMany(mappedBy = "user")
     private List<IngestionList> ingestionLists = new ArrayList<>();
