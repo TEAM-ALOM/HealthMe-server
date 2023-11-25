@@ -24,8 +24,12 @@ public enum ErrorCode {
     UNAUTHORIZED(2001, "Unauthorized", HttpStatus.UNAUTHORIZED),
     ACCOUNT_NOT_FOUND(2002, "Account Not Found", HttpStatus.UNAUTHORIZED),
     VERIFY_NOT_ALLOWED(2003, "Verify Code Is Not Allowed", HttpStatus.UNAUTHORIZED),
-    EMAIL_NOT_FOUND(2003, "Email Not Found", HttpStatus.NOT_FOUND);
+    EMAIL_NOT_FOUND(2003, "Email Not Found", HttpStatus.NOT_FOUND),
 
+    /**
+     * 3xxx -> 운동 관련 에러
+     */
+    DATE_NOT_FOUND(3001, "Date Not Found", HttpStatus.NOT_FOUND);
     private final int code;
     private final String message;
     private final HttpStatus httpStatus;

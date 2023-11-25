@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,9 +20,9 @@ import java.sql.SQLException;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(CustonException.class)
+    @ExceptionHandler(CustomException.class)
     protected ResponseEntity<ErrorResponseDto> handleCommonException(
-            final CustonException e,
+            final CustomException e,
             final HttpServletRequest request
             ){
         log.error("CustomException : {} {}", e.getErrorCode(), request.getRequestURI());
