@@ -36,9 +36,9 @@ public class ExerciseService {
         if(exerciseDto.getName() == null){
             return new ExerciseList();
         }
-        Optional<ExerciseList> exerciseList = exerciseRepository.findByName(exerciseDto.getName());
+        ExerciseList exerciseList = exerciseRepository.findByName(exerciseDto.getName());
 
-        return exerciseList.orElseGet(ExerciseList::new);
+        return exerciseList;
     }
 
 
