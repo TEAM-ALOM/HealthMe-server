@@ -1,5 +1,6 @@
 package HealthMe.HealthMe.domain.exercise.controller;
 
+import HealthMe.HealthMe.common.exception.CustomException;
 import HealthMe.HealthMe.domain.exercise.domain.ExerciseProgressList;
 import HealthMe.HealthMe.domain.exercise.dto.ExerciseProgressDto;
 import HealthMe.HealthMe.domain.exercise.service.ExerciseProgressService;
@@ -23,12 +24,12 @@ public class ExerciseProgressController {
     private final ExerciseProgressService exerciseProgressService;
 
     @GetMapping("/findByEmail")
-    public List<ExerciseProgressDto> findByEmail(@RequestBody UserDto userDto){
+    public List<ExerciseProgressDto> findByEmail(@RequestBody UserDto userDto) throws CustomException {
         return exerciseProgressService.findProgressedExerciseByEmail(userDto);
     }
 
     @GetMapping("/findByDate")
-    public List<ExerciseProgressDto> findByDate(@RequestBody ExerciseProgressDto exerciseProgressDto){
+    public List<ExerciseProgressDto> findByDate(@RequestBody ExerciseProgressDto exerciseProgressDto) throws CustomException {
         return exerciseProgressService.findProgressedExerciseByDate(exerciseProgressDto);
     }
     @PostMapping("/insert")

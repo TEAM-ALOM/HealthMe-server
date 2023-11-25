@@ -1,6 +1,8 @@
 package HealthMe.HealthMe.domain.exercise.service;
 
 
+import HealthMe.HealthMe.common.exception.CustomException;
+import HealthMe.HealthMe.common.exception.ErrorCode;
 import HealthMe.HealthMe.common.exception.GlobalExceptionHandler;
 import HealthMe.HealthMe.domain.exercise.domain.ExerciseList;
 import HealthMe.HealthMe.domain.exercise.domain.ExerciseProgressList;
@@ -15,6 +17,7 @@ import HealthMe.HealthMe.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,42 +37,36 @@ public class ExerciseProgressService {
     //삽입
     public void insert(ExerciseProgressDto exerciseProgressDto){
 
-        try {
-            String userEmail = exerciseProgressDto.getUserDto().getEmail();
-            User searchedUser = userRepository.findByEmail(userEmail);
-            UserDto insertedUser = UserDto.builder()
+        // email 없으면 null pointer ex 뜸
+        String userEmail = exerciseProgressDto.getUserDto().getEmail();
+        User searchedUser = userRepository.findByEmail(userEmail);
+        UserDto insertedUser = UserDto.builder()
                     .id(searchedUser.getId())
                     .email(searchedUser.getEmail())
                     .name(searchedUser.getName())
                     .build();
-            try {
-                String exerciseName = exerciseProgressDto.getExerciseDto().getName();
-                ExerciseList searchedExercise = exerciseRepository.findByName(exerciseName);
-                ExerciseDto insertedExercise = ExerciseDto.builder()
+
+        // exercise name 없으면 null pointer ex 뜸
+        String exerciseName = exerciseProgressDto.getExerciseDto().getName();
+        ExerciseList searchedExercise = exerciseRepository.findByName(exerciseName);
+        ExerciseDto insertedExercise = ExerciseDto.builder()
                         .id(searchedExercise.getId())
                         .name(searchedExercise.getName())
                         .calorie(searchedExercise.getCalorie())
                         .category(searchedExercise.getCategory())
                         .build();
 
-                ExerciseProgressList exerciseProgressList = exerciseProgressDto.toEntity(insertedUser, insertedExercise);
-                exerciseProgressRepository.save(exerciseProgressList);
-            }
-            catch (NullPointerException e){
-                throw e;
-            }
-        }
-        catch (NullPointerException e){
-            throw e;
-        }
 
+        ExerciseProgressList exerciseProgressList = exerciseProgressDto.toEntity(insertedUser, insertedExercise);
+        exerciseProgressRepository.save(exerciseProgressList);
     }
 
 
-    public List<ExerciseProgressDto> findProgressedExerciseByEmail(UserDto userDto){
+    public List<ExerciseProgressDto> findProgressedExerciseByEmail(UserDto userDto) throws CustomException {
         if (userDto.getEmail() == null){
-            return null;
+            throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
+
         List<ExerciseProgressDto> find = new ArrayList<>();
         User searchedUser = userRepository.findByEmail(userDto.getEmail());
         UserDto searchedUserDto = UserDto.builder()
@@ -101,9 +98,9 @@ public class ExerciseProgressService {
         return find;
     }
     // user가 해당 날짜에 해당하는 운동 진행 내역들 찾기 (user Dto와 연계하여 사용해야됨)
-    public List<ExerciseProgressDto> findProgressedExerciseByDate(ExerciseProgressDto exerciseProgressDto){
+    public List<ExerciseProgressDto> findProgressedExerciseByDate(ExerciseProgressDto exerciseProgressDto) throws CustomException {
         if (exerciseProgressDto.getDate() == null){
-            return null;
+            throw new CustomException(ErrorCode.DATE_NOT_FOUND);
         }
         List<ExerciseProgressList> list = exerciseProgressRepository.findExerciseProgressListsByDate(exerciseProgressDto.getDate());
         List<ExerciseProgressDto> findList = new ArrayList<>();
