@@ -33,9 +33,6 @@ public class EmailSession {
     @Column(name="createdTime")
     private LocalDateTime createdTime;
 
-    @OneToOne
-    private User user;
-
     public void setVerifyCode(String verifyCode) {
         this.verifyCode = verifyCode;
     }

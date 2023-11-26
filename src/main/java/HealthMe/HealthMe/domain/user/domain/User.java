@@ -8,13 +8,13 @@ import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity(name = "USER")
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,13 @@ public class User {
     private String email;
     private String password;
     private String name;
-    private boolean autoLogin = false;  // 11/25 추가 : 자동 로그인 관련
+    private boolean autoLogin = true;
+
+    // 11/26 수정 : userBodyInformation table 삭제에 따른 column 합체
+    private double height;
+    private double weight;
+    private String gender;
+    private Date birthday;
 
     @OneToMany(mappedBy = "user")
     private List<IngestionList> ingestionLists = new ArrayList<>();
@@ -40,6 +46,14 @@ public class User {
 
     public boolean checkPassword(String rawPassword, PasswordEncoder passwordEncoder){
         return passwordEncoder.matches(rawPassword, this.password);
+    }
+
+    public void getUserBodyInformation(String name, Date birthday, double height, double weight, String gender){
+        this.name = name;
+        this.birthday = birthday;
+        this.height = height;
+        this.weight = weight;
+        this.gender = gender;
     }
 }
 

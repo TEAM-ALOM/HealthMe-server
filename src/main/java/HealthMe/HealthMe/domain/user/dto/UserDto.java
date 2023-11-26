@@ -37,4 +37,5 @@ public class UserDto {
                 .autoLogin(autoLogin)
                 .build();
     }
+
 }

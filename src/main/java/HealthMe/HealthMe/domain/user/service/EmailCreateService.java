@@ -1,5 +1,7 @@
 package HealthMe.HealthMe.domain.user.service;
 
+import HealthMe.HealthMe.common.exception.CustomException;
+import HealthMe.HealthMe.common.exception.ErrorCode;
 import HealthMe.HealthMe.domain.user.domain.EmailSession;
 import HealthMe.HealthMe.domain.user.domain.User;
 import HealthMe.HealthMe.domain.user.dto.EmailDto;
@@ -32,13 +34,14 @@ public class EmailCreateService {
     @Value("${spring.mail.auth-code-expiration-millis}")
     private long authCodeExpirationMillis;
 
-    public void sendCodeToEmail(String toEmail) {
+    public void sendCodeToEmail(String toEmail) throws CustomException {
         this.checkDuplicatedEmail(toEmail);
         String title = "Health me 이메일 인증 번호";
         String authCode = this.createCode();
         emailService.sendEmail(toEmail, title, authCode);
 
         EmailSession byEmail = emailRepositioy.findByEmail(toEmail);
+        // 더티 체킹을 위한 엔티티 수정
         if(byEmail!=null) {
             byEmail.setVerifyCode(authCode);
         }
@@ -51,11 +54,10 @@ public class EmailCreateService {
         }
     }
 
-    private void checkDuplicatedEmail(String email) {
+    private void checkDuplicatedEmail(String email) throws CustomException {
         User user = userRepository.findByEmail(email);
         if (user!=null) {
-            log.debug("MemberServiceImpl.checkDuplicatedEmail exception occur email: {}", email);
-            throw new RuntimeException();
+            throw new CustomException(ErrorCode.DUPLICATED_EMAIL);
         }
     }
     private String createCode() {
@@ -74,7 +76,7 @@ public class EmailCreateService {
     }
 
     // 이메일 인증
-    public boolean verifiedCode(String email, String authCode) {
+    public boolean verifiedCode(String email, String authCode) throws CustomException {
         this.checkDuplicatedEmail(email);
         EmailSession authInfo = emailRepositioy.findByEmail(email);
         String AuthCode = authInfo.getVerifyCode();
