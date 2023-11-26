@@ -34,11 +34,11 @@ public class Preset {
     @Column(name = "PRESET_ID")
     private Long id;    // pk를 위한 id
 
-    private Long presetNumber;  // 프리셋 번호
-    private Double weight;  // 무게
-    private Integer setCount;   // 세트 수
+    private Long presetNumber;          // 프리셋 번호
+    private Double weight;              // 무게
+    private Integer setCount;           // 세트 수
     private Integer repetitionCount;    // 반복 횟수
-    private Integer restTime;   // 쉬는 시간 (나중에 시간 자료형으로 변경 계획 있음)
+    private Integer restTime;           // 쉬는 시간 (나중에 시간 자료형으로 변경 계획 있음)
     private String exerciseName;
     private String category;
 
