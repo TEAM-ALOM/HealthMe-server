@@ -2,14 +2,14 @@ package HealthMe.HealthMe.domain.user.controller;
 
 import HealthMe.HealthMe.common.exception.CustomException;
 import HealthMe.HealthMe.domain.user.domain.User;
+import HealthMe.HealthMe.domain.user.dto.UserPasswordChangeDto;
 import HealthMe.HealthMe.domain.user.dto.UserSignUpDto;
-import HealthMe.HealthMe.domain.user.dto.UserSignUpInformationDto;
+import HealthMe.HealthMe.domain.user.dto.UserSignUpBodyInformationDto;
 import HealthMe.HealthMe.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,7 +29,17 @@ public class UserController {
     }
 
     @PostMapping("/information")
-    public ResponseEntity getInformation(@RequestBody UserSignUpInformationDto userSignUpInformationDto) throws CustomException{
+    public ResponseEntity getInformation(@RequestBody UserSignUpBodyInformationDto userSignUpInformationDto) throws CustomException{
         return new ResponseEntity<>(userService.enterBodyInformation(userSignUpInformationDto), HttpStatus.OK);
+    }
+
+    @GetMapping("/checkPassword")
+    public ResponseEntity checkPassword(@RequestBody UserPasswordChangeDto userPasswordChangeDto) throws CustomException{
+        return new ResponseEntity(userService.checkPassword(userPasswordChangeDto), HttpStatus.OK);
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity changePassword(@RequestBody UserPasswordChangeDto userPasswordChangeDto) throws CustomException{
+        return new ResponseEntity(userService.changePassword(userPasswordChangeDto), HttpStatus.OK);
     }
 }

@@ -3,8 +3,10 @@ package HealthMe.HealthMe.domain.user.service;
 import HealthMe.HealthMe.common.exception.CustomException;
 import HealthMe.HealthMe.common.exception.ErrorCode;
 import HealthMe.HealthMe.domain.user.domain.User;
+import HealthMe.HealthMe.domain.user.dto.UserPasswordChangeDto;
 import HealthMe.HealthMe.domain.user.dto.UserSignUpDto;
-import HealthMe.HealthMe.domain.user.dto.UserSignUpInformationDto;
+import HealthMe.HealthMe.domain.user.dto.UserSignUpBodyInformationDto;
+import HealthMe.HealthMe.domain.user.repository.EmailRepositioy;
 import HealthMe.HealthMe.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,9 +32,10 @@ public class UserService {
 
         User newUser = userSignUpDto.toEntity();
         newUser.hashPassword(bCryptPasswordEncoder);
-        return userRepository.save(newUser);
+        User save = userRepository.save(newUser);
+        return save;
     }
-    public User enterBodyInformation(UserSignUpInformationDto userSignUpInformationDto) throws CustomException{
+    public User enterBodyInformation(UserSignUpBodyInformationDto userSignUpInformationDto) throws CustomException{
         if(userSignUpInformationDto==null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
@@ -58,6 +61,32 @@ public class UserService {
         else{
             throw new CustomException(ErrorCode.ACCOUNT_NOT_FOUND);
         }
+    }
+
+
+    // 환경 설정 -> 비밀번호 변경 시 사용할 password check
+    public User changePassword(UserPasswordChangeDto userPasswordChangeDto) throws CustomException{
+        User findUser = userRepository.findByEmail(userPasswordChangeDto.getEmail());
+        if(findUser == null){
+            throw new CustomException(ErrorCode.ACCOUNT_NOT_FOUND);
+        }
+        findUser.updatePassword(userPasswordChangeDto.getChangedPassword());
+        findUser.hashPassword(bCryptPasswordEncoder);
+
+        return findUser;
+    }
+    public boolean checkPassword(UserPasswordChangeDto userPasswordChangeDto) throws CustomException{
+        if(userPasswordChangeDto.getEmail() == null){
+            throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
+        }
+        User findUser = userRepository.findByEmail(userPasswordChangeDto.getEmail());
+        if(findUser==null){
+            throw new CustomException(ErrorCode.ACCOUNT_NOT_FOUND);
+        }
+        if(!findUser.checkPassword(userPasswordChangeDto.getPassword(), bCryptPasswordEncoder)){
+            throw new CustomException(ErrorCode.PASSWORD_NOT_MATCH);
+        }
+        return true;
     }
 
 }
