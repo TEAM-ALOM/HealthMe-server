@@ -7,6 +7,8 @@ import HealthMe.HealthMe.domain.user.domain.User;
 import HealthMe.HealthMe.domain.user.dto.EmailDto;
 import HealthMe.HealthMe.domain.user.repository.EmailRepositioy;
 import HealthMe.HealthMe.domain.user.repository.UserRepository;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,17 +35,19 @@ public class EmailCreateService {
     private final EmailRepositioy emailRepositioy;
     @Value("${spring.mail.auth-code-expiration-millis}")
     private long authCodeExpirationMillis;
-
-    public void sendCodeToEmail(String toEmail) throws CustomException {
+    // flag 0 : 회원가입 1 : 비번 찾기
+    public void sendCodeToEmail(String toEmail) throws CustomException, MessagingException {
         this.checkDuplicatedEmail(toEmail);
-        String title = "Health me 이메일 인증 번호";
+        String title = "Health Me 이메일 인증";
         String authCode = this.createCode();
-        emailService.sendEmail(toEmail, title, authCode);
+
+        emailService.sendEmail(toEmail, title, authCode, 0);
 
         EmailSession byEmail = emailRepositioy.findByEmail(toEmail);
         // 더티 체킹을 위한 엔티티 수정
         if(byEmail!=null) {
-            byEmail.setVerifyCode(authCode);
+            byEmail.reSetVerifyCode(authCode, LocalDateTime.now());
+
         }
         else {
             emailRepositioy.save(EmailDto.builder()
@@ -53,7 +57,30 @@ public class EmailCreateService {
                     .build().toEntity());
         }
     }
+    public void sendPasswordResetEmail(String toEmail) throws CustomException, MessagingException {
+        if(userRepository.findByEmail(toEmail)==null){
+            throw new CustomException(ErrorCode.ACCOUNT_NOT_FOUND);
+        }
 
+        String title = "Health Me 이메일 인증";
+        String authCode = this.createCode();
+
+        emailService.sendEmail(toEmail, title, authCode, 1);
+
+        EmailSession byEmail = emailRepositioy.findByEmail(toEmail);
+        // 더티 체킹을 위한 엔티티 수정
+        if(byEmail!=null) {
+            byEmail.reSetVerifyCode(authCode, LocalDateTime.now());
+        }
+        else {
+            emailRepositioy.save(EmailDto.builder()
+                    .email(toEmail)
+                    .verifyCode(authCode)
+                    .createdTime(LocalDateTime.now())
+                    .build().toEntity());
+        }
+
+    }
     private void checkDuplicatedEmail(String email) throws CustomException {
         User user = userRepository.findByEmail(email);
         if (user!=null) {
@@ -76,8 +103,10 @@ public class EmailCreateService {
     }
 
     // 이메일 인증
-    public boolean verifiedCode(String email, String authCode) throws CustomException {
-        this.checkDuplicatedEmail(email);
+    public boolean verifiedCode(String email, String authCode, int flag) throws CustomException {
+        if (flag == 0) {
+            this.checkDuplicatedEmail(email);
+        }
         EmailSession authInfo = emailRepositioy.findByEmail(email);
         String AuthCode = authInfo.getVerifyCode();
 

@@ -12,7 +12,7 @@ import java.util.Date;
 @Setter
 @Getter
 @NoArgsConstructor
-public class UserSignUpInformationDto {
+public class UserSignUpBodyInformationDto {
     private double height;
     private double weight;
     private String gender;
@@ -21,7 +21,7 @@ public class UserSignUpInformationDto {
     private String email;
 
     @Builder
-    public UserSignUpInformationDto(String email, double height, double weight, String gender, Date birthday, String name) {
+    public UserSignUpBodyInformationDto(String email, double height, double weight, String gender, Date birthday, String name) {
         this.height = height;
         this.weight = weight;
         this.gender = gender;

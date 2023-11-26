@@ -55,6 +55,10 @@ public class User {
         this.weight = weight;
         this.gender = gender;
     }
+
+    public void updatePassword(String password){
+        this.password = password;
+    }
 }
 
 

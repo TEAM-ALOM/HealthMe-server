@@ -33,7 +33,8 @@ public class EmailSession {
     @Column(name="createdTime")
     private LocalDateTime createdTime;
 
-    public void setVerifyCode(String verifyCode) {
+    public void reSetVerifyCode(String verifyCode, LocalDateTime createdTime) {
         this.verifyCode = verifyCode;
+        this.createdTime = createdTime;
     }
 }

@@ -26,6 +26,7 @@ public enum ErrorCode {
     VERIFY_NOT_ALLOWED(2003, "Verify Code Is Not Allowed", HttpStatus.UNAUTHORIZED),
     EMAIL_NOT_FOUND(2003, "Email Not Found", HttpStatus.NOT_FOUND),
     EMAIL_EXSIST(2004, "Email Already Exist", HttpStatus.ALREADY_REPORTED),
+    PASSWORD_NOT_MATCH(2005, "Password Not Match", HttpStatus.UNAUTHORIZED),
     /**
      * 3xxx -> 운동 관련 에러
      */

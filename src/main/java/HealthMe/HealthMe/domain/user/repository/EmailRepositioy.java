@@ -10,6 +10,6 @@ import java.util.UUID;
 
 // 11/25 추가 : 이메일 인증코드 저장용 리포지토리
 public interface EmailRepositioy extends JpaRepository<EmailSession, Long> {
-
-EmailSession findByEmail(@Param("email") String email);
+    EmailSession findByEmail(@Param("email") String email);
+    EmailSession deleteByEmail(@Param("email") String email);
 }
