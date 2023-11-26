@@ -20,7 +20,7 @@ public enum ErrorCode {
     /**
      * 2xxx -> 계정 에러
      */
-    DUPLICATED_LOGIN_ID(2000, "Duplicated Login Id", HttpStatus.UNAUTHORIZED),
+    DUPLICATED_EMAIL(2000, "Duplicated Email", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(2001, "Unauthorized", HttpStatus.UNAUTHORIZED),
     ACCOUNT_NOT_FOUND(2002, "Account Not Found", HttpStatus.UNAUTHORIZED),
     VERIFY_NOT_ALLOWED(2003, "Verify Code Is Not Allowed", HttpStatus.UNAUTHORIZED),

@@ -3,6 +3,7 @@ package HealthMe.HealthMe.domain.user.controller;
 import HealthMe.HealthMe.common.exception.CustomException;
 import HealthMe.HealthMe.domain.user.domain.User;
 import HealthMe.HealthMe.domain.user.dto.UserSignUpDto;
+import HealthMe.HealthMe.domain.user.dto.UserSignUpInformationDto;
 import HealthMe.HealthMe.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,4 +28,8 @@ public class UserController {
         return new ResponseEntity(userService.signIn(user), HttpStatus.OK);
     }
 
+    @PostMapping("/information")
+    public ResponseEntity getInformation(@RequestBody UserSignUpInformationDto userSignUpInformationDto) throws CustomException{
+        return new ResponseEntity<>(userService.enterBodyInformation(userSignUpInformationDto), HttpStatus.OK);
+    }
 }

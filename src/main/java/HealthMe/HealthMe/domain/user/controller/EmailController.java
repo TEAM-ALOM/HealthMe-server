@@ -2,6 +2,7 @@ package HealthMe.HealthMe.domain.user.controller;
 
 
 import HealthMe.HealthMe.common.dto.ErrorResponseDto;
+import HealthMe.HealthMe.common.exception.CustomException;
 import HealthMe.HealthMe.domain.user.service.EmailCreateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,13 +18,13 @@ public class EmailController {
     private final EmailCreateService userService;
 
     @PostMapping("/verification-request")
-    public ResponseEntity sendMessage(@RequestParam("email") String email) {
+    public ResponseEntity sendMessage(@RequestParam("email") String email) throws CustomException {
         userService.sendCodeToEmail(email);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @GetMapping("/verification")
     public ResponseEntity verificationEmail(@RequestParam("email") String email,
-                                            @RequestParam("code") String authCode) {
+                                            @RequestParam("code") String authCode) throws CustomException{
         return new ResponseEntity<>(userService.verifiedCode(email, authCode), HttpStatus.OK);
     }
 }
