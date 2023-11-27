@@ -2,10 +2,13 @@ package HealthMe.HealthMe.domain.user.controller;
 
 import HealthMe.HealthMe.common.exception.CustomException;
 import HealthMe.HealthMe.domain.user.domain.User;
+import HealthMe.HealthMe.domain.user.dto.UserDto;
 import HealthMe.HealthMe.domain.user.dto.UserPasswordChangeDto;
 import HealthMe.HealthMe.domain.user.dto.UserSignUpDto;
 import HealthMe.HealthMe.domain.user.dto.UserSignUpBodyInformationDto;
 import HealthMe.HealthMe.domain.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,7 +27,10 @@ public class UserController {
     }
 
     @GetMapping("/signIn")
-    public ResponseEntity signIn(@RequestBody UserSignUpDto user) throws CustomException{
+    public ResponseEntity signIn(@RequestBody UserSignUpDto user, HttpServletRequest httpServletRequest) throws CustomException{
+        UserDto userDto = userService.signIn(user);
+        // 나중에 추가
+        HttpSession httpSession = httpServletRequest.getSession();
         return new ResponseEntity(userService.signIn(user), HttpStatus.OK);
     }
 

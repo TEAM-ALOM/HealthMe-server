@@ -3,6 +3,7 @@ package HealthMe.HealthMe.domain.user.service;
 import HealthMe.HealthMe.common.exception.CustomException;
 import HealthMe.HealthMe.common.exception.ErrorCode;
 import HealthMe.HealthMe.domain.user.domain.User;
+import HealthMe.HealthMe.domain.user.dto.UserDto;
 import HealthMe.HealthMe.domain.user.dto.UserPasswordChangeDto;
 import HealthMe.HealthMe.domain.user.dto.UserSignUpDto;
 import HealthMe.HealthMe.domain.user.dto.UserSignUpBodyInformationDto;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+
+// 11/27 수정 -> entity 리턴에서 dto리턴으로
 @Slf4j
 @Service
 @Transactional
@@ -25,7 +28,7 @@ public class UserService {
 
 
     // 11/26 추가 : 회원가입 기능 : front랑 상의해서 가입 버튼 막을지 말지 결정
-    public User signUp(UserSignUpDto userSignUpDto) throws CustomException{
+    public UserDto signUp(UserSignUpDto userSignUpDto) throws CustomException{
         if(userRepository.findByEmail(userSignUpDto.getEmail())!=null){
             throw new CustomException(ErrorCode.EMAIL_EXSIST);
         }
@@ -33,9 +36,14 @@ public class UserService {
         User newUser = userSignUpDto.toEntity();
         newUser.hashPassword(bCryptPasswordEncoder);
         User save = userRepository.save(newUser);
-        return save;
+        UserDto savedDto = UserDto.builder()
+                .name(save.getName())
+                .email(save.getEmail())
+                .autoLogin(save.isAutoLogin())
+                .build();
+        return savedDto;
     }
-    public User enterBodyInformation(UserSignUpBodyInformationDto userSignUpInformationDto) throws CustomException{
+    public UserSignUpBodyInformationDto enterBodyInformation(UserSignUpBodyInformationDto userSignUpInformationDto) throws CustomException{
         if(userSignUpInformationDto==null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
@@ -46,17 +54,22 @@ public class UserService {
                 userSignUpInformationDto.getHeight(),
                 userSignUpInformationDto.getWeight(),
                 userSignUpInformationDto.getGender());
-        return user;
+
+        return userSignUpInformationDto;
     }
     // 11/26 추가 : 로그인 기능 : session 방식 적용 해야됨
-    public User signIn(UserSignUpDto userSignUpDto) throws CustomException{
+    public UserDto signIn(UserSignUpDto userSignUpDto) throws CustomException{
         if(userSignUpDto.getEmail()==null){
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
         User findUser = userRepository.findByEmail(userSignUpDto.getEmail());
         boolean result = findUser.checkPassword(userSignUpDto.getPassword(), bCryptPasswordEncoder);
         if(result == true){
-            return findUser;
+            return UserDto.builder()
+                    .email(userSignUpDto.getEmail())
+                    .name(userSignUpDto.getName())
+                    .autoLogin(userSignUpDto.isAutoLogin())
+                    .build();
         }
         else{
             throw new CustomException(ErrorCode.ACCOUNT_NOT_FOUND);
@@ -65,7 +78,7 @@ public class UserService {
 
 
     // 환경 설정 -> 비밀번호 변경 시 사용할 password check
-    public User changePassword(UserPasswordChangeDto userPasswordChangeDto) throws CustomException{
+    public UserDto changePassword(UserPasswordChangeDto userPasswordChangeDto) throws CustomException{
         User findUser = userRepository.findByEmail(userPasswordChangeDto.getEmail());
         if(findUser == null){
             throw new CustomException(ErrorCode.ACCOUNT_NOT_FOUND);
@@ -73,7 +86,10 @@ public class UserService {
         findUser.updatePassword(userPasswordChangeDto.getChangedPassword());
         findUser.hashPassword(bCryptPasswordEncoder);
 
-        return findUser;
+        return UserDto.builder()
+                .name(findUser.getName())
+                .email(findUser.getPassword())
+                .build();
     }
     public boolean checkPassword(UserPasswordChangeDto userPasswordChangeDto) throws CustomException{
         if(userPasswordChangeDto.getEmail() == null){
