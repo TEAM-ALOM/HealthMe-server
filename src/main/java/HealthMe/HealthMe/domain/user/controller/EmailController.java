@@ -33,6 +33,7 @@ public class EmailController {
         emailCreateService.sendPasswordResetEmail(email);
         return new ResponseEntity(HttpStatus.OK);
     }
+
     @GetMapping("/password-change-verification")
     public ResponseEntity verificationCode(@RequestParam("email") String email, @RequestParam("code") String autoCode) throws CustomException{
         return new ResponseEntity(emailCreateService.verifiedCode(email, autoCode, 1), HttpStatus.OK);

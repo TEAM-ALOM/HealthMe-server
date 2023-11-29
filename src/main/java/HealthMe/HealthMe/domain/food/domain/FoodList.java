@@ -14,11 +14,12 @@ public class FoodList {
     @Column(name = "FOOD_LIST_ID")
     private Long id;
 
-    @Column(unique = true, nullable = false)
     private String name;
     private Double carbohydrate;
     private Double protein;
     private Double fat;
     private Double calorie;
+    private Double mess;
+
 
 }

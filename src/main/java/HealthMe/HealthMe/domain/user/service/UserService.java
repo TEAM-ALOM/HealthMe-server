@@ -9,6 +9,8 @@ import HealthMe.HealthMe.domain.user.dto.UserSignUpDto;
 import HealthMe.HealthMe.domain.user.dto.UserSignUpBodyInformationDto;
 import HealthMe.HealthMe.domain.user.repository.EmailRepositioy;
 import HealthMe.HealthMe.domain.user.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -58,23 +60,7 @@ public class UserService {
         return userSignUpInformationDto;
     }
     // 11/26 추가 : 로그인 기능 : session 방식 적용 해야됨
-    public UserDto signIn(UserSignUpDto userSignUpDto) throws CustomException{
-        if(userSignUpDto.getEmail()==null){
-            throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
-        }
-        User findUser = userRepository.findByEmail(userSignUpDto.getEmail());
-        boolean result = findUser.checkPassword(userSignUpDto.getPassword(), bCryptPasswordEncoder);
-        if(result == true){
-            return UserDto.builder()
-                    .email(userSignUpDto.getEmail())
-                    .name(userSignUpDto.getName())
-                    .autoLogin(userSignUpDto.isAutoLogin())
-                    .build();
-        }
-        else{
-            throw new CustomException(ErrorCode.ACCOUNT_NOT_FOUND);
-        }
-    }
+
 
 
     // 환경 설정 -> 비밀번호 변경 시 사용할 password check

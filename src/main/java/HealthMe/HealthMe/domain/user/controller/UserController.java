@@ -26,15 +26,7 @@ public class UserController {
         return new ResponseEntity(userService.signUp(user), HttpStatus.OK);
     }
 
-    @GetMapping("/signIn")
-    public ResponseEntity signIn(@RequestBody UserSignUpDto user, HttpServletRequest httpServletRequest) throws CustomException{
-        UserDto userDto = userService.signIn(user);
-        // 나중에 추가
-        HttpSession httpSession = httpServletRequest.getSession();
-        return new ResponseEntity(userService.signIn(user), HttpStatus.OK);
-    }
-
-    @PostMapping("/information")
+    @GetMapping("/information")
     public ResponseEntity getInformation(@RequestBody UserSignUpBodyInformationDto userSignUpInformationDto) throws CustomException{
         return new ResponseEntity<>(userService.enterBodyInformation(userSignUpInformationDto), HttpStatus.OK);
     }
