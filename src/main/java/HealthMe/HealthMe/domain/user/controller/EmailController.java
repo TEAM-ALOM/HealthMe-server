@@ -18,7 +18,7 @@ public class EmailController {
     private final EmailCreateService emailCreateService;
 
     @PostMapping("/verification-request")
-    public ResponseEntity sendMessage(@RequestParam("email") String email) throws CustomException, MessagingException {
+    public ResponseEntity sendMessage(@RequestParam("email") String email) throws CustomException, javax.mail.MessagingException {
         emailCreateService.sendCodeToEmail(email);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -29,7 +29,7 @@ public class EmailController {
     }
 
     @PostMapping("/password-change-verification-request")
-    public ResponseEntity sendPasswordChangeMessage(@RequestParam("email") String email) throws CustomException, MessagingException {
+    public ResponseEntity sendPasswordChangeMessage(@RequestParam("email") String email) throws CustomException, javax.mail.MessagingException {
         emailCreateService.sendPasswordResetEmail(email);
         return new ResponseEntity(HttpStatus.OK);
     }
