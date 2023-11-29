@@ -1,6 +1,4 @@
 package HealthMe.HealthMe.domain.user.controller;
-
-
 import HealthMe.HealthMe.common.exception.CustomException;
 import HealthMe.HealthMe.domain.user.service.EmailCreateService;
 import lombok.RequiredArgsConstructor;
