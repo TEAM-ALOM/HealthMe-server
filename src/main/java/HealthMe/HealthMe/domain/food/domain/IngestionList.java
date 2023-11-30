@@ -19,6 +19,7 @@ public class IngestionList {
 
     @Column(nullable = false)
     private Date date;
+    private Double mess;
 
     @ManyToOne
     @JoinColumn(name="USER_ID")
@@ -28,4 +29,5 @@ public class IngestionList {
     @JoinColumn(name = "FOOD_LIST_ID")
     @JsonBackReference
     private FoodList foodList;
+
 }
