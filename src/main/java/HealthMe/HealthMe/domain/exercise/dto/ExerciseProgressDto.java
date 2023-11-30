@@ -1,8 +1,6 @@
 package HealthMe.HealthMe.domain.exercise.dto;
 
-import HealthMe.HealthMe.domain.exercise.domain.ExerciseList;
 import HealthMe.HealthMe.domain.exercise.domain.ExerciseProgressList;
-import HealthMe.HealthMe.domain.user.domain.User;
 
 import HealthMe.HealthMe.domain.user.dto.UserDto;
 import lombok.Builder;

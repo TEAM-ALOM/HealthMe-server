@@ -20,12 +20,13 @@ public class PresetDto {
     private Double weight;              // 무게
     private Integer setCount;           // 세트 수
     private Integer repetitionCount;    // 반복 횟수
-    private Integer restTime;           // 쉬는 시간 (나중에 시간 자료형으로 변경 계획 있음)
+   // private Integer restTime;           // 쉬는 시간 (나중에 시간 자료형으로 변경 계획 있음)
     private String exerciseName;
     private String category;
 
     //private User user;                  // User 클래스 -> 어떻게 할지 생각, 엔티티 직접 사용 x -> 차라리 userDto를 사용
     private UserDto userDto;              //  user 엔티티 대신 userDto로 사용
+    /*
     @Builder
     public PresetDto(Long id, Long presetNumber, Double weight, Integer setCount, Integer repetitionCount,
                      Integer restTime, String exerciseName, String category, UserDto userDto){
@@ -39,6 +40,19 @@ public class PresetDto {
         this.category = category;
         this.userDto = userDto;
     }
+    */
+    @Builder
+    public PresetDto(Long id, Long presetNumber, Double weight, Integer setCount, Integer repetitionCount,
+                     String exerciseName, String category, UserDto userDto){
+        this.id = id;
+        this.presetNumber = presetNumber;
+        this.weight = weight;
+        this.setCount = setCount;
+        this.repetitionCount = repetitionCount;
+        this.exerciseName = exerciseName;
+        this.category = category;
+        this.userDto = userDto;
+    }
 
     public Preset toEntity(User user){    // dto -> entity 변환
         return Preset.builder()
@@ -47,11 +61,27 @@ public class PresetDto {
                 .weight(weight)
                 .setCount(setCount)
                 .repetitionCount(repetitionCount)
-                .restTime(restTime)
+                //.restTime(restTime)
                 .exerciseName(exerciseName)
                 .category(category)
                 .user(userDto.toEntity())
                 .build();
     }
+
+    // entity -> dto 변환 메소드
+    public static PresetDto from(Preset preset){
+        return PresetDto.builder()
+                .id(preset.getId())
+                .presetNumber(preset.getPresetNumber())
+                .weight(preset.getWeight())
+                .setCount(preset.getSetCount())
+                .repetitionCount(preset.getRepetitionCount())
+                .exerciseName(preset.getExerciseName())
+                .category(preset.getCategory())
+                .userDto(UserDto.from(preset.getUser()))
+                // UserDto.from()이 User 객체를 UserDto 객체로 변환하도록 -> userDto에도 from 메소드 구현 해놔야 작동
+                .build();
+    }
+
 
 }

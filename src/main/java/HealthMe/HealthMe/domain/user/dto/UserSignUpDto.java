@@ -1,33 +1,29 @@
 package HealthMe.HealthMe.domain.user.dto;
 
-import HealthMe.HealthMe.domain.exercise.domain.ExerciseList;
-import HealthMe.HealthMe.domain.exercise.domain.ExerciseProgressList;
-import HealthMe.HealthMe.domain.food.domain.IngestionList;
 import HealthMe.HealthMe.domain.user.domain.User;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToMany;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Setter
 @Getter
 @NoArgsConstructor
-public class UserDto {
+public class UserSignUpDto {
     private Long id;
     private String email;
     private String name;
+    private String password;
     private boolean autoLogin; // 11/25 추가 : 자동 로그인 관련
+    private String authCode;
     @Builder
-    public UserDto(Long id, String email, String name, boolean autoLogin){
+    public UserSignUpDto(Long id, String email, String name, boolean autoLogin, String password, String authCode){
         this.id = id;
         this.email = email;
         this.name = name;
         this.autoLogin = autoLogin;
+        this.password = password;
+        this.authCode = authCode;
     }
     public User toEntity(){
         return User.builder()
@@ -35,7 +31,7 @@ public class UserDto {
                 .email(email)
                 .name(name)
                 .autoLogin(autoLogin)
+                .password(password)
                 .build();
     }
-
 }
