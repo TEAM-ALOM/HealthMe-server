@@ -26,6 +26,7 @@ public class UserController {
         return new ResponseEntity(userService.signUp(user), HttpStatus.OK);
     }
 
+
     @GetMapping("/information")
     public ResponseEntity getInformation(@RequestBody UserSignUpBodyInformationDto userSignUpInformationDto) throws CustomException{
         return new ResponseEntity<>(userService.enterBodyInformation(userSignUpInformationDto), HttpStatus.OK);

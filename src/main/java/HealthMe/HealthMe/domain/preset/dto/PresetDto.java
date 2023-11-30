@@ -68,8 +68,8 @@ public class PresetDto {
                 .build();
     }
 
-    // entity -> dto 변환 메소드
-    public static PresetDto from(Preset preset){
+    // dto로 변환하는거 코드 안늘어나게 여기다 만들어놓고 이 메소드만 갖다 쓰는게 나은가?
+    public static PresetDto fromEntity(Preset preset, UserDto userDto) {
         return PresetDto.builder()
                 .id(preset.getId())
                 .presetNumber(preset.getPresetNumber())
@@ -78,10 +78,7 @@ public class PresetDto {
                 .repetitionCount(preset.getRepetitionCount())
                 .exerciseName(preset.getExerciseName())
                 .category(preset.getCategory())
-                .userDto(UserDto.from(preset.getUser()))
-                // UserDto.from()이 User 객체를 UserDto 객체로 변환하도록 -> userDto에도 from 메소드 구현 해놔야 작동
+                .userDto(userDto)
                 .build();
     }
-
-
 }

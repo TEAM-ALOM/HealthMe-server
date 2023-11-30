@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PresetRepository extends JpaRepository<Preset, Long> {
-    @Query("SELECT p FROM Preset p WHERE p.user.id = :userId")  // 쿼리문 공부 현재 preset에 빨간 줄 그어져 있음 수정하기
+    @Query("SELECT p FROM PRESET p WHERE p.user.id = :userId")  // 쿼리문 공부 현재 preset에 빨간 줄 그어져 있음 수정하기
     List<Preset> findByUserId(@Param("userId") Long userId);
 
     // List<Preset> findByUserId(Long userId); userId로 그 유저의 모든 preset 가져오기
