@@ -28,7 +28,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
 
-
     // 11/26 추가 : 회원가입 기능 : front랑 상의해서 가입 버튼 막을지 말지 결정
     public UserDto signUp(UserSignUpDto userSignUpDto) throws CustomException{
         if(userRepository.findByEmail(userSignUpDto.getEmail())!=null){

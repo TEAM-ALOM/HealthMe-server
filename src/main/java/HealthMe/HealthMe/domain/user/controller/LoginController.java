@@ -36,7 +36,8 @@ public class LoginController {
 
         // 세션에 userId를 넣어줌
         session.setAttribute("userEmail", loginDto.getEmail());
-        session.setMaxInactiveInterval(30 * 60); // Session이 30분동안 유지
+        session.setMaxInactiveInterval(30 * 60); // Session이 30 * 60초동안 유지
+        // 다른데에다 세션 붙여서 검증
         return new ResponseEntity(loginDto, HttpStatus.OK);
     }
 
