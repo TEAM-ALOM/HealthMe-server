@@ -26,6 +26,7 @@ public class User {
     private String password;
     private String name;
     private boolean autoLogin = true;
+    private String refreshToken;
 
     // 11/26 수정 : userBodyInformation table 삭제에 따른 column 합체
     private double height;
