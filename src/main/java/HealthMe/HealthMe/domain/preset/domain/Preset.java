@@ -5,13 +5,14 @@ import HealthMe.HealthMe.domain.exercise.domain.ExerciseList;
 import HealthMe.HealthMe.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.http.HttpStatusCode;
 
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "PRESET")
-public class Preset {
+public class Preset{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PRESET_ID")
@@ -27,5 +28,4 @@ public class Preset {
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
-
 }
