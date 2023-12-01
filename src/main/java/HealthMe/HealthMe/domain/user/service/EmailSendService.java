@@ -4,10 +4,10 @@ import javax.mail.*;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+
+import HealthMe.HealthMe.domain.user.configuration.EmailConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,26 +20,19 @@ import java.util.Properties;
 @Transactional
 @RequiredArgsConstructor
 public class EmailSendService {
-    private final JavaMailSender emailSender;
-    private final String user = "healthmeemailService@gmail.com";
-    private final String password ="kdnfemmwaldjmggc";
+    private final EmailConfig emailConfig;
     public void sendEmail(String toEmail,
                           String title,
                           String authCode, int flag) throws MessagingException {
-        Properties prop = new Properties();
-        prop.put("mail.smtp.host", "smtp.gmail.com");
-        prop.put("mail.smtp.port", "587");
-        prop.put("mail.smtp.auth", "true");
-        prop.put("mail.smtp.ssl.protocols", "TLSv1.2");
-        prop.put("mail.smtp.starttls.enable", "true");
+        Properties prop = emailConfig.getMailProperties();
         Session session = Session.getInstance(prop, new javax.mail.Authenticator(){
             protected PasswordAuthentication getPasswordAuthentication(){
-                return new PasswordAuthentication(user, password);
+                return new PasswordAuthentication(emailConfig.getUsername(), emailConfig.getPassword());
             }
         });
         try {
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(user));
+            message.setFrom(new InternetAddress(emailConfig.getUsername()));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
 
             String msg = "";
@@ -142,15 +135,4 @@ public class EmailSendService {
         }
     }
 
-    // 발신할 이메일 데이터 세팅
-    private SimpleMailMessage createEmailForm(String toEmail,
-                                              String title,
-                                              String text) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(toEmail);
-        message.setSubject(title);
-        message.setText(text);
-
-        return message;
-    }
 }
