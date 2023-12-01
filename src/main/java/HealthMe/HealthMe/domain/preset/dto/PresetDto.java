@@ -26,21 +26,7 @@ public class PresetDto {
 
     //private User user;                  // User 클래스 -> 어떻게 할지 생각, 엔티티 직접 사용 x -> 차라리 userDto를 사용
     private UserDto userDto;              //  user 엔티티 대신 userDto로 사용
-    /*
-    @Builder
-    public PresetDto(Long id, Long presetNumber, Double weight, Integer setCount, Integer repetitionCount,
-                     Integer restTime, String exerciseName, String category, UserDto userDto){
-        this.id = id;
-        this.presetNumber = presetNumber;
-        this.weight = weight;
-        this.setCount = setCount;
-        this.repetitionCount = repetitionCount;
-        this.restTime = restTime;
-        this.exerciseName = exerciseName;
-        this.category = category;
-        this.userDto = userDto;
-    }
-    */
+
     @Builder
     public PresetDto(Long id, Long presetNumber, Double weight, Integer setCount, Integer repetitionCount,
                      String exerciseName, String category, UserDto userDto){
@@ -65,20 +51,6 @@ public class PresetDto {
                 .exerciseName(exerciseName)
                 .category(category)
                 .user(userDto.toEntity())
-                .build();
-    }
-
-    // dto로 변환하는거 코드 안늘어나게 여기다 만들어놓고 이 메소드만 갖다 쓰는게 나은가?
-    public static PresetDto fromEntity(Preset preset, UserDto userDto) {
-        return PresetDto.builder()
-                .id(preset.getId())
-                .presetNumber(preset.getPresetNumber())
-                .weight(preset.getWeight())
-                .setCount(preset.getSetCount())
-                .repetitionCount(preset.getRepetitionCount())
-                .exerciseName(preset.getExerciseName())
-                .category(preset.getCategory())
-                .userDto(userDto)
                 .build();
     }
 }

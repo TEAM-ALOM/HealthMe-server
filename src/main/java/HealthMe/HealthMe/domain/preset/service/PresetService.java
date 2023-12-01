@@ -13,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -25,7 +23,7 @@ public class PresetService {
     private final UserRepository userRepository;
 
     // new preset -> preset table에 저장
-    public PresetDto savePreset(PresetDto presetDto, User user){
+    public PresetDto savePreset(PresetDto presetDto){
         // errorcode 새로 만들어서 그걸로 throw 하도록 수정 필요?
         if(presetDto == null) {
             throw new IllegalArgumentException("PresetDto is null");
@@ -34,8 +32,17 @@ public class PresetService {
             throw new IllegalArgumentException("Exercise is null");
         }
 
+        // presetDto로 부터 userDto 얻어오기, userDto 널 exception 추가
+        UserDto userDto = presetDto.getUserDto();
+        if(userDto == null){
+            throw new IllegalArgumentException("userDto is null");
+        }
+
+        User user = userDto.toEntity();
+
         Preset newPreset = presetDto.toEntity(user);
         newPreset = presetRepository.save(newPreset);
+
 
         PresetDto newPresetDto = PresetDto.builder()
                 .id(newPreset.getId())
@@ -45,34 +52,39 @@ public class PresetService {
                 .repetitionCount(newPreset.getRepetitionCount())
                 .exerciseName(newPreset.getExerciseName())
                 .category(newPreset.getCategory())
-                .userDto(newPreset.getUser())
+                .userDto(userDto)   // userdto 하나 만들어서 받아넣기
                 .build();
 
         return newPresetDto;
     }
 
     //db에 있는 프리셋 불러오기 ( userId를 통해 그 유저의 모든 프리셋), null 체크 추가?
-    public List<PresetDto> findPresetByUserId(Long userId){
-        if(userId == null){
-            return new ArrayList<>();
-            // null 들어와도 빈 객체 반환? 아님 throw exception?
+    // id X email로 받아옴
+    public List<PresetDto> findPresetByUserEmail(String userEmail){
+        if(userEmail == null){
+            throw new IllegalArgumentException("userEmail is null");
         }
 
-        List<Preset> presets = presetRepository.findByUserId(userId);
+        List<Preset> presets = presetRepository.findByUserEmail(userEmail);
 
         // List<Preset> 이 null 인 경우 exception
 
         List<PresetDto> presetDtos = new ArrayList<>();
 
-        /*
-        User user = userRepository.findById(userId);
+        //findByEmail로 바꿔서 해야함, 매개변수도 userdto 받아서 해야 함
+        User user = userRepository.findByEmail(userEmail);  // userRepositoy의 메소드 사용
+
+        if(user == null){
+            throw new IllegalArgumentException("user is null");
+        }
+
         UserDto userDto = UserDto.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
                 .autoLogin(user.isAutoLogin())
                 .build();
-        */
+
 
         // List<Preset> to List<PresetDto>
         for(Preset preset : presets){

@@ -18,9 +18,6 @@ public class Preset{
     @Column(name = "PRESET_ID")
     private Long id;
 
-    //private Integer restTime;           // 쉬는 시간 (나중에 시간 자료형으로 변경 계획 있음)
-    //restTime 필드 필요없어서 삭제한 것?
-
     private Long presetNumber;
     private Double weight;
     private Integer setCount;

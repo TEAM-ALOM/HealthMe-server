@@ -3,6 +3,7 @@ package HealthMe.HealthMe.domain.preset.controller;
 import HealthMe.HealthMe.domain.preset.dto.PresetDto;
 import HealthMe.HealthMe.domain.preset.service.PresetService;
 import HealthMe.HealthMe.domain.user.domain.User;
+import HealthMe.HealthMe.domain.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,32 +19,19 @@ import java.util.List;
 public class PresetController {
     private final PresetService presetService;
 
-    // 1
-    @PostMapping
-    public ResponseEntity savePreset(@RequestBody PresetDto presetDto, @RequestBody User user){
-        return new ResponseEntity(presetService.savePreset(presetDto,user), HttpStatus.OK);
-    }
-    //@RequestBody 한 메소드에 한개만 사용 가능 (한번의 HTTP 요청에는 하나의 본문 내용만 존재하기 때문)
-    // >>> 그러면 user를 어떻게 받나 ?
-    // >>> presetDto 내부의 userDto 사용해서 받기 ?
-    // >>> 그러면 savePreset 메소드 의 매개변수 다 presetDto 하나만 받는걸로 수정?
-
-    // 2
+    //@RequestBody 메소드에 한번만 사용 -> presetDto만 받아오기 (userDto 정보 같이 들어있다 가정, 나중에 상의)
     @PostMapping("나중에 설정")
     public ResponseEntity<PresetDto> savePreset(@RequestBody PresetDto presetDto){  // Dto로 리턴 <PresetDto>
-        PresetDto savedPresetDto = presetService.savePreset(presetDto, presetDto.getUserDto().toEntity());
-        //presetService.savePreset이 지금 Preset를 리턴하게 돼있음 -> PresetDto 리턴하게 메소드 수정 필요
-
-        //PresetDto savedPresetDto = presetService.savePreset(presetDto); // 메소드 매개변수 하나로 수정?
-        //PresetDto savedPresetDto2 = presetService.savePreset(presetDto, presetDto.getUserDto().toEntity());
-        // 아니면 여기서 service의 savePreset 부를땐 presetDto 내부의 userDto를 toEntity로 변환해서
-        // 그걸 매개변수 값으로 넣어주면 상관 없나?
+        PresetDto savedPresetDto = presetService.savePreset(presetDto);
         return new ResponseEntity<>(savedPresetDto, HttpStatus.CREATED);
     }
 
-    @GetMapping("user/userId")  // @PathVariable -> user/뒤의 userId를 파라미터로 전달
-    public ResponseEntity<List<PresetDto>> findPresetByUserId(@PathVariable Long userId) {
-        List<PresetDto> presetDtos = presetService.findPresetByUserId(userId);
+    // @PathVariable -> user/뒤의 userId를 파라미터로 전달 -> dto 받기 @RequestBody로 수정
+    // 받아온 userDto에서 email 얻어온 다음 findPresetByUserEmail 실행
+    @GetMapping("user/userId")
+    public ResponseEntity<List<PresetDto>> findPresetByUserId(@RequestBody UserDto userDto) {
+        String userEmail = userDto.getEmail();
+        List<PresetDto> presetDtos = presetService.findPresetByUserEmail(userEmail);
         return new ResponseEntity<>(presetDtos, HttpStatus.OK);
     }
 
