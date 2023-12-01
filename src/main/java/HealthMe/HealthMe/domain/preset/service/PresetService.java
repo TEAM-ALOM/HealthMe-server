@@ -60,31 +60,23 @@ public class PresetService {
 
     //db에 있는 프리셋 불러오기 ( userId를 통해 그 유저의 모든 프리셋), null 체크 추가?
     // id X email로 받아옴
-    public List<PresetDto> findPresetByUserEmail(String userEmail){
+    public List<PresetDto> findPresetByUserEmail(UserDto userDto){
+        if(userDto == null){
+            throw new IllegalArgumentException("userDto is null");
+        }
+
+        String userEmail = userDto.getEmail();
         if(userEmail == null){
             throw new IllegalArgumentException("userEmail is null");
         }
 
         List<Preset> presets = presetRepository.findByUserEmail(userEmail);
-
         // List<Preset> 이 null 인 경우 exception
 
         List<PresetDto> presetDtos = new ArrayList<>();
 
         //findByEmail로 바꿔서 해야함, 매개변수도 userdto 받아서 해야 함
-        User user = userRepository.findByEmail(userEmail);  // userRepositoy의 메소드 사용
-
-        if(user == null){
-            throw new IllegalArgumentException("user is null");
-        }
-
-        UserDto userDto = UserDto.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .email(user.getEmail())
-                .autoLogin(user.isAutoLogin())
-                .build();
-
+        //userDto 받으면서 userRepository로부터 받아올 필요 없이 매개변수로 들어온거 그냥 사용
 
         // List<Preset> to List<PresetDto>
         for(Preset preset : presets){

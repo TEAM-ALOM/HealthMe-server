@@ -30,11 +30,9 @@ public class PresetController {
     // 받아온 userDto에서 email 얻어온 다음 findPresetByUserEmail 실행
     @GetMapping("user/userId")
     public ResponseEntity<List<PresetDto>> findPresetByUserId(@RequestBody UserDto userDto) {
-        String userEmail = userDto.getEmail();
-        List<PresetDto> presetDtos = presetService.findPresetByUserEmail(userEmail);
+
+        List<PresetDto> presetDtos = presetService.findPresetByUserEmail(userDto);
         return new ResponseEntity<>(presetDtos, HttpStatus.OK);
     }
-
-
 
 }
