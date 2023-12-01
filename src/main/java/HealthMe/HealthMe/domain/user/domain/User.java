@@ -49,7 +49,7 @@ public class User {
         return passwordEncoder.matches(rawPassword, this.password);
     }
 
-    public void getUserBodyInformation(String name, Date birthday, double height, double weight, String gender){
+    public void setUserBodyInformation(String name, Date birthday, double height, double weight, String gender){
         this.name = name;
         this.birthday = birthday;
         this.height = height;
