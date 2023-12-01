@@ -30,7 +30,13 @@ public enum ErrorCode {
     /**
      * 3xxx -> 운동 관련 에러
      */
-    DATE_NOT_FOUND(3001, "Date Not Found", HttpStatus.NOT_FOUND);
+    DATE_NOT_FOUND(3001, "Date Not Found", HttpStatus.NOT_FOUND),
+    PRESET_NOT_FOUND(3002, "Preset Not Fount", HttpStatus.NOT_FOUND),
+    WEIGHT_NOT_FOUND(3003, "Weight Not Found", HttpStatus.NOT_FOUND),
+    SET_COUNT_NOT_FOUND(3004, "Set Count Not Found", HttpStatus.NOT_FOUND),
+    REPETITION_COUNT_NOT_FOUND(3005, "Repetition Count Not Found", HttpStatus.NOT_FOUND),
+    PRESET_NUMBER_NOT_FOUND(3006, "Preset Number Not Found", HttpStatus.NOT_FOUND),
+    EXERCISE_NAME_NOT_FOUND(3007, "Exercise Name Not Found", HttpStatus.NOT_FOUND);
     private final int code;
     private final String message;
     private final HttpStatus httpStatus;
