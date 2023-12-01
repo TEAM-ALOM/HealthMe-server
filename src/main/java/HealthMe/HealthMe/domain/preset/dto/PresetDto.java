@@ -23,13 +23,11 @@ public class PresetDto {
    // private Integer restTime;           // 쉬는 시간 (나중에 시간 자료형으로 변경 계획 있음)
     private String exerciseName;
     private String category;
-
-    //private User user;                  // User 클래스 -> 어떻게 할지 생각, 엔티티 직접 사용 x -> 차라리 userDto를 사용
-    private UserDto userDto;              //  user 엔티티 대신 userDto로 사용
+    private String userEmail;
 
     @Builder
     public PresetDto(Long id, Long presetNumber, Double weight, Integer setCount, Integer repetitionCount,
-                     String exerciseName, String category, UserDto userDto){
+                     String exerciseName, String category, String userEmail){
         this.id = id;
         this.presetNumber = presetNumber;
         this.weight = weight;
@@ -37,7 +35,7 @@ public class PresetDto {
         this.repetitionCount = repetitionCount;
         this.exerciseName = exerciseName;
         this.category = category;
-        this.userDto = userDto;
+        this.userEmail =userEmail;
     }
 
     public Preset toEntity(User user){    // dto -> entity 변환
@@ -47,10 +45,9 @@ public class PresetDto {
                 .weight(weight)
                 .setCount(setCount)
                 .repetitionCount(repetitionCount)
-                //.restTime(restTime)
                 .exerciseName(exerciseName)
                 .category(category)
-                .user(userDto.toEntity())
+                .user(user)
                 .build();
     }
 }
