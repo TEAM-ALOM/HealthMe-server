@@ -62,6 +62,7 @@ public class UserService {
         if(userSignUpDto.getEmail()==null){
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
+
         User findUser = userRepository.findByEmail(userSignUpDto.getEmail());
         boolean result = findUser.checkPassword(userSignUpDto.getPassword(), bCryptPasswordEncoder);
         if(result == true){

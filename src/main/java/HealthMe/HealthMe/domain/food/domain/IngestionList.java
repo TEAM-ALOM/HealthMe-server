@@ -19,7 +19,7 @@ public class IngestionList {
 
     @Column(nullable = false)
     private Date date;
-
+    private Double mass;
     @ManyToOne
     @JoinColumn(name="USER_ID")
     private User user;
