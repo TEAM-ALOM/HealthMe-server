@@ -57,7 +57,8 @@ public class EmailConfig {
         return mailSender;
     }
 
-    private Properties getMailProperties() {
+    @Bean
+    public Properties getMailProperties() {
         Properties properties = new Properties();
         properties.put("mail.smtp.auth", auth);
         properties.put("mail.smtp.starttls.enable", starttlsEnable);
@@ -65,7 +66,18 @@ public class EmailConfig {
         properties.put("mail.smtp.connectiontimeout", connectionTimeout);
         properties.put("mail.smtp.timeout", timeout);
         properties.put("mail.smtp.writetimeout", writeTimeout);
-
+        properties.put("mail.smtp.host", host);
+        properties.put("mail.smtp.port", port);
+        properties.put("mail.smtp.auth", auth);
+        properties.put("mail.smtp.ssl.protocols", "TLSv1.2");
         return properties;
+    }
+    @Bean
+    public String getUsername(){
+        return username;
+    }
+    @Bean
+    public String getPassword(){
+        return password;
     }
 }

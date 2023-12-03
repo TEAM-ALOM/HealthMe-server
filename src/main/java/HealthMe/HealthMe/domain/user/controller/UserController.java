@@ -1,14 +1,11 @@
 package HealthMe.HealthMe.domain.user.controller;
 
 import HealthMe.HealthMe.common.exception.CustomException;
-import HealthMe.HealthMe.domain.user.domain.User;
+import HealthMe.HealthMe.domain.user.dto.UserBodyInformationDto;
 import HealthMe.HealthMe.domain.user.dto.UserDto;
 import HealthMe.HealthMe.domain.user.dto.UserPasswordChangeDto;
 import HealthMe.HealthMe.domain.user.dto.UserSignUpDto;
-import HealthMe.HealthMe.domain.user.dto.UserSignUpBodyInformationDto;
 import HealthMe.HealthMe.domain.user.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,16 +23,8 @@ public class UserController {
         return new ResponseEntity(userService.signUp(user), HttpStatus.OK);
     }
 
-    @GetMapping("/signIn")
-    public ResponseEntity signIn(@RequestBody UserSignUpDto user, HttpServletRequest httpServletRequest) throws CustomException{
-        UserDto userDto = userService.signIn(user);
-        // 나중에 추가
-        HttpSession httpSession = httpServletRequest.getSession();
-        return new ResponseEntity(userService.signIn(user), HttpStatus.OK);
-    }
-
     @PostMapping("/information")
-    public ResponseEntity getInformation(@RequestBody UserSignUpBodyInformationDto userSignUpInformationDto) throws CustomException{
+    public ResponseEntity setInformation(@RequestBody UserBodyInformationDto userSignUpInformationDto) throws CustomException{
         return new ResponseEntity<>(userService.enterBodyInformation(userSignUpInformationDto), HttpStatus.OK);
     }
 
@@ -47,5 +36,10 @@ public class UserController {
     @PostMapping("/changePassword")
     public ResponseEntity changePassword(@RequestBody UserPasswordChangeDto userPasswordChangeDto) throws CustomException{
         return new ResponseEntity(userService.changePassword(userPasswordChangeDto), HttpStatus.OK);
+    }
+
+    @GetMapping("/bodyInformation")
+    public ResponseEntity getInformation(@RequestBody UserDto userDto) throws CustomException {
+        return new ResponseEntity<>(userService.getUserBodyInformation(userDto), HttpStatus.OK);
     }
 }

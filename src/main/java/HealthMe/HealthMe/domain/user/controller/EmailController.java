@@ -1,9 +1,7 @@
 package HealthMe.HealthMe.domain.user.controller;
-
-
 import HealthMe.HealthMe.common.exception.CustomException;
+import HealthMe.HealthMe.domain.user.dto.EmailDto;
 import HealthMe.HealthMe.domain.user.service.EmailCreateService;
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,23 +16,23 @@ public class EmailController {
     private final EmailCreateService emailCreateService;
 
     @PostMapping("/verification-request")
-    public ResponseEntity sendMessage(@RequestParam("email") String email) throws CustomException, MessagingException {
-        emailCreateService.sendCodeToEmail(email);
+    public ResponseEntity sendMessage(@RequestBody EmailDto emailDto) throws CustomException, javax.mail.MessagingException {
+        emailCreateService.sendCodeToEmail(emailDto.getEmail());
         return new ResponseEntity<>(HttpStatus.OK);
     }
     @GetMapping("/verification")
-    public ResponseEntity verificationEmail(@RequestParam("email") String email,
-                                            @RequestParam("code") String authCode) throws CustomException{
-        return new ResponseEntity<>(emailCreateService.verifiedCode(email, authCode, 0), HttpStatus.OK);
+    public ResponseEntity verificationEmail(@RequestBody EmailDto emailDto) throws CustomException{
+        return new ResponseEntity<>(emailCreateService.verifiedCode(emailDto.getEmail(), emailDto.getVerifyCode(), 0), HttpStatus.OK);
     }
 
     @PostMapping("/password-change-verification-request")
-    public ResponseEntity sendPasswordChangeMessage(@RequestParam("email") String email) throws CustomException, MessagingException {
-        emailCreateService.sendPasswordResetEmail(email);
+    public ResponseEntity sendPasswordChangeMessage(@RequestBody EmailDto emailDto) throws CustomException, javax.mail.MessagingException {
+        emailCreateService.sendPasswordResetEmail(emailDto.getEmail());
         return new ResponseEntity(HttpStatus.OK);
     }
+
     @GetMapping("/password-change-verification")
-    public ResponseEntity verificationCode(@RequestParam("email") String email, @RequestParam("code") String autoCode) throws CustomException{
-        return new ResponseEntity(emailCreateService.verifiedCode(email, autoCode, 1), HttpStatus.OK);
+    public ResponseEntity verificationCode(@RequestBody EmailDto emailDto) throws CustomException{
+        return new ResponseEntity(emailCreateService.verifiedCode(emailDto.getEmail(), emailDto.getVerifyCode(), 1), HttpStatus.OK);
     }
 }
