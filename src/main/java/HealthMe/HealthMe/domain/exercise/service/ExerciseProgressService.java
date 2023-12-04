@@ -3,7 +3,6 @@ package HealthMe.HealthMe.domain.exercise.service;
 
 import HealthMe.HealthMe.common.exception.CustomException;
 import HealthMe.HealthMe.common.exception.ErrorCode;
-import HealthMe.HealthMe.common.exception.GlobalExceptionHandler;
 import HealthMe.HealthMe.domain.exercise.domain.ExerciseList;
 import HealthMe.HealthMe.domain.exercise.domain.ExerciseProgressList;
 import HealthMe.HealthMe.domain.exercise.dto.ExerciseDto;
@@ -16,16 +15,11 @@ import HealthMe.HealthMe.domain.user.dto.UserDto;
 import HealthMe.HealthMe.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.repository.query.Param;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.charset.CoderMalfunctionError;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -53,7 +47,6 @@ public class ExerciseProgressService {
                     .name(searchedUser.getName())
                     .build();
 
-        // exercise name 없으면 null pointer ex 뜸
         String exerciseName = exerciseProgressDto.getExerciseName();
         if(exerciseName == null){
             throw new CustomException(ErrorCode.EXERCISE_NAME_NOT_FOUND);
@@ -87,11 +80,6 @@ public class ExerciseProgressService {
         if(searchedUser == null){
             throw new CustomException(ErrorCode.ACCOUNT_NOT_FOUND);
         }
-
-        UserDto searchedUserDto = UserDto.builder()
-                .email(searchedUser.getEmail())
-                .name(searchedUser.getName())
-                .build();
 
         List<ExerciseProgressList> list = exerciseProgressRepository.findByEmail(userDto.getEmail());
         for (ExerciseProgressList exerciseProgressList : list) {

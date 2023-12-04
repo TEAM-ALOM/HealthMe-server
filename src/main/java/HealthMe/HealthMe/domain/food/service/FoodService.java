@@ -1,5 +1,6 @@
 package HealthMe.HealthMe.domain.food.service;
 
+import HealthMe.HealthMe.domain.food.domain.FoodList;
 import HealthMe.HealthMe.domain.food.dto.FoodListDto;
 import HealthMe.HealthMe.domain.food.repository.FoodListRepository;
 import HealthMe.HealthMe.domain.food.repository.IngestionListRepository;

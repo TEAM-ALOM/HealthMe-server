@@ -24,7 +24,6 @@ public class PresetService {
 
     @Transactional
     public PresetDto savePreset(PresetDto presetDto) throws CustomException {
-        // errorcode 새로 만들어서 그걸로 throw 하도록 수정 필요?
         if(presetDto == null) {
             throw new CustomException(ErrorCode.PRESET_NOT_FOUND);
         }
@@ -41,7 +40,6 @@ public class PresetService {
             throw new CustomException(ErrorCode.SET_COUNT_NOT_FOUND);
         }
 
-        // presetDto로 부터 userDto 얻어오기, userDto 널 exception 추가
         String email = presetDto.getUserEmail();
         if(email == null){
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);

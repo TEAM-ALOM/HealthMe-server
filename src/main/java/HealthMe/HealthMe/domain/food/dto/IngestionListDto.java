@@ -19,31 +19,26 @@ public class IngestionListDto {
     private Date date;  // 섭취 날짜
     private User user;
     private Double mass;
-    private FoodListDto foodListDto;
-    private UserDto userDto;
+    private String userEmail;
+    private String foodName;
 
     @Builder
-    public IngestionListDto(Long id,
-                            Date date,
-                            User user,
-                            Double mass,
-                            FoodListDto foodListDto,
-                            UserDto userDto) {
+    public IngestionListDto(Long id, Date date, User user, Double mass, String userEmail, String foodName) {
         this.id = id;
         this.date = date;
         this.user = user;
         this.mass = mass;
-        this.foodListDto = foodListDto;
-        this.userDto = userDto;
+        this.userEmail = userEmail;
+        this.foodName = foodName;
     }
 
-    public IngestionList toEntity(){
+    public IngestionList toEntity(User user, FoodList foodList){
         return IngestionList.builder()
                 .id(id)
                 .date(date)
-                .user(user)
                 .mass(mass)
-                .foodList(foodListDto.toEntity())
+                .user(user)
+                .foodList(foodList)
                 .build();
     }
 }
