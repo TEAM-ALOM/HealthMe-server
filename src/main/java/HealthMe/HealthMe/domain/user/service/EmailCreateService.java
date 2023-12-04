@@ -8,11 +8,10 @@ import HealthMe.HealthMe.domain.user.dto.EmailDto;
 import HealthMe.HealthMe.domain.user.repository.EmailRepositioy;
 import HealthMe.HealthMe.domain.user.repository.UserRepository;
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +19,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Random;
 
 // 11/25 추가 : 이메일 전송 기능

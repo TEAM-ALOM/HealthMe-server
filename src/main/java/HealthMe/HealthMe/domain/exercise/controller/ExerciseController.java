@@ -28,7 +28,8 @@ public class ExerciseController {
 
     @GetMapping("/save")
     public ResponseEntity save(@RequestBody ExerciseDto exerciseDto) throws CustomException {
-        return new ResponseEntity(exerciseService.save(exerciseDto), HttpStatus.CREATED);
+        exerciseService.save(exerciseDto);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @GetMapping("/findByName")

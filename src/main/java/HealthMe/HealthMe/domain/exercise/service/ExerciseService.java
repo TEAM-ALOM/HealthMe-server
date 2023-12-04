@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -20,7 +20,7 @@ import java.util.Optional;
 public class ExerciseService {
     private final ExerciseRepository exerciseRepository;
 
-    public ExerciseList findByName(ExerciseDto exerciseDto) throws CustomException {
+    public ExerciseDto findByName(ExerciseDto exerciseDto) throws CustomException {
         if(exerciseDto == null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
@@ -34,11 +34,15 @@ public class ExerciseService {
             throw new CustomException(ErrorCode.EXERCISE_NOT_FOUND);
         }
 
-        return exerciseList;
+        return ExerciseDto.builder().id(exerciseList.getId())
+                .name(exerciseList.getName())
+                .category(exerciseList.getCategory())
+                .calorie(exerciseList.getCalorie())
+                .build();
     }
 
     @Transactional
-    public ExerciseList save(ExerciseDto exerciseDto) throws CustomException {
+    public void save(ExerciseDto exerciseDto) throws CustomException {
         if(exerciseDto == null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
@@ -50,12 +54,22 @@ public class ExerciseService {
         }
 
         ExerciseList exerciseList = exerciseDto.toEntity();
-        ExerciseList save = exerciseRepository.save(exerciseList);
-        return save;
+        exerciseRepository.save(exerciseList);
     }
 
-    public List<ExerciseList> findAll(){
-        return exerciseRepository.findAll();
+    public List<ExerciseDto> findAll(){
+
+        List<ExerciseList> find = exerciseRepository.findAll();
+        List<ExerciseDto> result = new ArrayList<>();
+        for (ExerciseList exerciseList : find) {
+            result.add(ExerciseDto.builder()
+                    .id(exerciseList.getId())
+                    .name(exerciseList.getName())
+                    .category(exerciseList.getCategory())
+                    .calorie(exerciseList.getCalorie())
+                    .build());
+        }
+        return result;
     }
 
 

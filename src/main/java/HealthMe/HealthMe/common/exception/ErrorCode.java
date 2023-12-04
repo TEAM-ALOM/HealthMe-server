@@ -38,7 +38,13 @@ public enum ErrorCode {
     PRESET_NUMBER_NOT_FOUND(3006, "Preset Number Not Found", HttpStatus.NOT_FOUND),
     EXERCISE_NAME_NOT_FOUND(3007, "Exercise Name Not Found", HttpStatus.NOT_FOUND),
     EXERCISE_NOT_FOUND(3008, "Exercise Not Found", HttpStatus.NOT_FOUND),
-    EXERCISE_CATEGORY_NOT_FOUND(3009, "Exercise Category Not Found", HttpStatus.NOT_FOUND);
+    EXERCISE_CATEGORY_NOT_FOUND(3009, "Exercise Category Not Found", HttpStatus.NOT_FOUND),
+    /**
+     * 4xxx -> 음식 관련 에러
+     */
+    FOOD_NAME_NOT_FOUND(4001, "Food Name Not Found", HttpStatus.NOT_FOUND),
+    FOOD_NOT_FOUND(4002, "Food Not Found In Data Base", HttpStatus.NOT_FOUND),
+    FOOD_MASS_NOT_FOUND(4003, "Food Mass Not Selected", HttpStatus.NOT_FOUND);
     private final int code;
     private final String message;
     private final HttpStatus httpStatus;
