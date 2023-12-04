@@ -19,13 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 // 11/27 수정 -> entity 리턴에서 dto리턴으로
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
 
-    // 11/26 추가 : 회원가입 기능 : front랑 상의해서 가입 버튼 막을지 말지 결정
+    @Transactional
     public UserDto signUp(UserSignUpDto userSignUpDto) throws CustomException{
         if(userRepository.findByEmail(userSignUpDto.getEmail())!=null){
             throw new CustomException(ErrorCode.EMAIL_EXSIST);
@@ -41,6 +40,7 @@ public class UserService {
                 .build();
         return savedDto;
     }
+    @Transactional
     public UserBodyInformationDto enterBodyInformation(UserBodyInformationDto userInformationDto) throws CustomException{
         if(userInformationDto==null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
@@ -71,7 +71,7 @@ public class UserService {
     }
 
 
-    // 환경 설정 -> 비밀번호 변경 시 사용할 password check
+    @Transactional
     public UserDto changePassword(UserPasswordChangeDto userPasswordChangeDto) throws CustomException{
         User findUser = userRepository.findByEmail(userPasswordChangeDto.getEmail());
         if(findUser == null){

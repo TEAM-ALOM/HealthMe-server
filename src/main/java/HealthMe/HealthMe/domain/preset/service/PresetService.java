@@ -18,13 +18,11 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional    // 필요한지 확인
-
 public class PresetService {
     private final PresetRepository presetRepository;
     private final UserRepository userRepository;
 
-    // new preset -> preset table에 저장
+    @Transactional
     public PresetDto savePreset(PresetDto presetDto) throws CustomException {
         // errorcode 새로 만들어서 그걸로 throw 하도록 수정 필요?
         if(presetDto == null) {

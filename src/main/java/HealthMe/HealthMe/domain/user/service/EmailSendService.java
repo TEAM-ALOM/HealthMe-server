@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 
@@ -32,7 +33,7 @@ public class EmailSendService {
         });
         try {
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(emailConfig.getUsername()));
+            message.setFrom(new InternetAddress(emailConfig.getUsername()+"@gmail.com", emailConfig.getUsername(), "utf-8"));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
 
             String msg = "";
@@ -132,6 +133,8 @@ public class EmailSendService {
         }
         catch (MessagingException e){
             log.error(e.getMessage());
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         }
     }
 

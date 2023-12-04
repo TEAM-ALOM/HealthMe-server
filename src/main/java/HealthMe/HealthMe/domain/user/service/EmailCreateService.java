@@ -35,7 +35,7 @@ public class EmailCreateService {
     private final EmailRepositioy emailRepositioy;
     @Value("${spring.mail.auth-code-expiration-millis}")
     private long authCodeExpirationMillis;
-    // flag 0 : 회원가입 1 : 비번 찾기
+
     public void sendCodeToEmail(String toEmail) throws CustomException, MessagingException {
         this.checkDuplicatedEmail(toEmail);
         String title = "Health Me 이메일 인증";

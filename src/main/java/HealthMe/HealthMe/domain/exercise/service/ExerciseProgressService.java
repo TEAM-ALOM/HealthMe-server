@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.charset.CoderMalfunctionError;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,17 +30,23 @@ import java.util.Optional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-// @Transactional 필요한 메서드만 붙이기 class단에 붙이면 느려짐
 public class ExerciseProgressService {
     private final ExerciseProgressRepository exerciseProgressRepository;
     private final ExerciseRepository exerciseRepository;
     private final UserRepository userRepository;
-    //삽입
-    public void insert(ExerciseProgressDto exerciseProgressDto){
+    @Transactional
+    public void insert(ExerciseProgressDto exerciseProgressDto) throws CustomException {
 
-        // email 없으면 null pointer ex 뜸
-        String userEmail = exerciseProgressDto.getUserDto().getEmail();
+        String userEmail = exerciseProgressDto.getUserEmail();
+        if(userEmail == null){
+            throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
+        }
+
         User searchedUser = userRepository.findByEmail(userEmail);
+        if(searchedUser == null){
+            throw new CustomException(ErrorCode.ACCOUNT_NOT_FOUND);
+        }
+
         UserDto insertedUser = UserDto.builder()
                     .id(searchedUser.getId())
                     .email(searchedUser.getEmail())
@@ -47,8 +54,16 @@ public class ExerciseProgressService {
                     .build();
 
         // exercise name 없으면 null pointer ex 뜸
-        String exerciseName = exerciseProgressDto.getExerciseDto().getName();
+        String exerciseName = exerciseProgressDto.getExerciseName();
+        if(exerciseName == null){
+            throw new CustomException(ErrorCode.EXERCISE_NAME_NOT_FOUND);
+        }
+
         ExerciseList searchedExercise = exerciseRepository.findByName(exerciseName);
+        if(searchedExercise == null){
+            throw new CustomException(ErrorCode.EXERCISE_NOT_FOUND);
+        }
+
         ExerciseDto insertedExercise = ExerciseDto.builder()
                         .id(searchedExercise.getId())
                         .name(searchedExercise.getName())
@@ -63,12 +78,16 @@ public class ExerciseProgressService {
 
 
     public List<ExerciseProgressDto> findProgressedExerciseByEmail(UserDto userDto) throws CustomException {
+        List<ExerciseProgressDto> find = new ArrayList<>();
         if (userDto.getEmail() == null){
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
 
-        List<ExerciseProgressDto> find = new ArrayList<>();
         User searchedUser = userRepository.findByEmail(userDto.getEmail());
+        if(searchedUser == null){
+            throw new CustomException(ErrorCode.ACCOUNT_NOT_FOUND);
+        }
+
         UserDto searchedUserDto = UserDto.builder()
                 .email(searchedUser.getEmail())
                 .name(searchedUser.getName())
@@ -88,8 +107,8 @@ public class ExerciseProgressService {
                     .repetitionCount(exerciseProgressList.getRepetitionCount())
                     .setCount(exerciseProgressList.getSetCount())
                     .weight(exerciseProgressList.getWeight())
-                    .userDto(searchedUserDto)
-                    .exerciseDto(exerciseDto)
+                    .userEmail(userDto.getEmail())
+                    .exerciseName(exerciseDto.getName())
                     .build();
 
 
@@ -97,15 +116,15 @@ public class ExerciseProgressService {
         }
         return find;
     }
-    // user가 해당 날짜에 해당하는 운동 진행 내역들 찾기 (user Dto와 연계하여 사용해야됨)
+
     public List<ExerciseProgressDto> findProgressedExerciseByDate(ExerciseProgressDto exerciseProgressDto) throws CustomException {
         if (exerciseProgressDto.getDate() == null){
             throw new CustomException(ErrorCode.DATE_NOT_FOUND);
         }
         List<ExerciseProgressList> list = exerciseProgressRepository.findExerciseProgressListsByDate(exerciseProgressDto.getDate());
         List<ExerciseProgressDto> findList = new ArrayList<>();
+
         for (ExerciseProgressList exerciseProgressList : list) {
-            // 이때 객체가 null일수도 있음(entity - not null로 수정)
             User findUser = exerciseProgressList.getUser();
             ExerciseList findExercise = exerciseProgressList.getExerciseList();
 
@@ -124,9 +143,9 @@ public class ExerciseProgressService {
 
             ExerciseProgressDto find = ExerciseProgressDto.builder()
                     .id(exerciseProgressList.getId())
-                    .exerciseDto(findExerciseDto)
+                    .exerciseName(findExerciseDto.getName())
                     .date(exerciseProgressList.getDate())
-                    .userDto(findUserDto)
+                    .userEmail(findUserDto.getEmail())
                     .weight(exerciseProgressList.getWeight())
                     .repetitionCount(exerciseProgressList.getRepetitionCount())
                     .build();

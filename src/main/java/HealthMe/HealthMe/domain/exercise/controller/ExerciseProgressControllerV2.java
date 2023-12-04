@@ -31,8 +31,8 @@ public class ExerciseProgressControllerV2 {
         return new ResponseEntity<>(exerciseProgressService.findProgressedExerciseByDate(exerciseProgressDto), HttpStatus.OK);
     }
     @PostMapping("/insert")
-    public ResponseEntity insert(@RequestBody ExerciseProgressDto exerciseProgressDto){
+    public ResponseEntity insert(@RequestBody ExerciseProgressDto exerciseProgressDto) throws CustomException {
         exerciseProgressService.insert(exerciseProgressDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

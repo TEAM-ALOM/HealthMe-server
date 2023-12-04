@@ -1,5 +1,7 @@
 package HealthMe.HealthMe.domain.exercise.service;
 
+import HealthMe.HealthMe.common.exception.CustomException;
+import HealthMe.HealthMe.common.exception.ErrorCode;
 import HealthMe.HealthMe.domain.exercise.domain.ExerciseList;
 import HealthMe.HealthMe.domain.exercise.dto.ExerciseDto;
 import HealthMe.HealthMe.domain.exercise.repository.ExerciseRepository;
@@ -8,55 +10,48 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import java.util.List;
 import java.util.Optional;
 
-
-/**
- * exception 처리
- */
 @Service
 @Slf4j
 @RequiredArgsConstructor
-
 public class ExerciseService {
     private final ExerciseRepository exerciseRepository;
 
-    public ExerciseList findById(ExerciseDto exerciseDto){
-        if(exerciseDto.getId() == null){
-            return new ExerciseList();
+    public ExerciseList findByName(ExerciseDto exerciseDto) throws CustomException {
+        if(exerciseDto == null){
+            throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
-        Optional<ExerciseList> exerciseList = exerciseRepository.findById(exerciseDto.getId());
 
-        // optional 처리 공부
-        return exerciseList.orElseGet(ExerciseList::new);
-    }
-
-    public ExerciseList findByName(ExerciseDto exerciseDto){
         if(exerciseDto.getName() == null){
-            return new ExerciseList();
+            throw new CustomException(ErrorCode.EXERCISE_NAME_NOT_FOUND);
         }
+
         ExerciseList exerciseList = exerciseRepository.findByName(exerciseDto.getName());
+        if(exerciseList == null){
+            throw new CustomException(ErrorCode.EXERCISE_NOT_FOUND);
+        }
 
         return exerciseList;
     }
 
-
-    public ExerciseList save(ExerciseDto exerciseDto){
-        ExerciseList exerciseList = exerciseDto.toEntity();
-        if(exerciseDto.getName() == null || exerciseDto.getCategory() == null){
-            /**
-             * exception 처리 : Error code(enum),custom exception (Error code 상속) 만들고,
-             * global exception handler 따로 만들고
-             * throw new custom excetion 던지기
-             * @RestControllerAdvice : controller단에서 일어나는 모든 exception 받음
-             * @ExceptionHandler(ex.class) : 해당 exception (ex)의 로직 처리
-             */
-            log.error("error occur");
-            return new ExerciseList();
+    @Transactional
+    public ExerciseList save(ExerciseDto exerciseDto) throws CustomException {
+        if(exerciseDto == null){
+            throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
-        exerciseRepository.save(exerciseList);
-        return exerciseList;
+        if(exerciseDto.getName() == null){
+            throw new CustomException(ErrorCode.EXERCISE_NAME_NOT_FOUND);
+        }
+        if(exerciseDto.getCategory() == null){
+            throw new CustomException(ErrorCode.EXERCISE_CATEGORY_NOT_FOUND);
+        }
+
+        ExerciseList exerciseList = exerciseDto.toEntity();
+        ExerciseList save = exerciseRepository.save(exerciseList);
+        return save;
     }
 
     public List<ExerciseList> findAll(){
