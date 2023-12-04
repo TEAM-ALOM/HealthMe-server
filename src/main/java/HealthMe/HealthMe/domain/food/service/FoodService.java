@@ -17,6 +17,5 @@ public class FoodService {
     private final FoodListRepository foodListRepository;
     private final IngestionListRepository ingestionListRepository;
 
-    //public FoodListDto
 
 }

@@ -21,8 +21,8 @@ public class ExerciseProgressDto {
     Integer setCount;   // 세트 수
     private Integer repetitionCount;    // 반복 횟수
 
-    private UserDto userDto;
-    private ExerciseDto exerciseDto;
+    private String userEmail;
+    private String exerciseName;
 
     @Builder
     public ExerciseProgressDto(Long id,
@@ -30,15 +30,15 @@ public class ExerciseProgressDto {
                                Double weight,
                                Integer setCount,
                                Integer repetitionCount,
-                               UserDto userDto,
-                               ExerciseDto exerciseDto){
+                               String userEmail,
+                               String exerciseName){
         this.id = id;
         this.date = date;
         this.weight = weight;
         this.setCount = setCount;
         this.repetitionCount = repetitionCount;
-        this.userDto = userDto;
-        this.exerciseDto = exerciseDto;
+        this.userEmail = userEmail;
+        this.exerciseName = exerciseName;
     }
 
     public ExerciseProgressList toEntity(UserDto userDto, ExerciseDto exerciseDto){

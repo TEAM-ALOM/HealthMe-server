@@ -36,7 +36,9 @@ public enum ErrorCode {
     SET_COUNT_NOT_FOUND(3004, "Set Count Not Found", HttpStatus.NOT_FOUND),
     REPETITION_COUNT_NOT_FOUND(3005, "Repetition Count Not Found", HttpStatus.NOT_FOUND),
     PRESET_NUMBER_NOT_FOUND(3006, "Preset Number Not Found", HttpStatus.NOT_FOUND),
-    EXERCISE_NAME_NOT_FOUND(3007, "Exercise Name Not Found", HttpStatus.NOT_FOUND);
+    EXERCISE_NAME_NOT_FOUND(3007, "Exercise Name Not Found", HttpStatus.NOT_FOUND),
+    EXERCISE_NOT_FOUND(3008, "Exercise Not Found", HttpStatus.NOT_FOUND),
+    EXERCISE_CATEGORY_NOT_FOUND(3009, "Exercise Category Not Found", HttpStatus.NOT_FOUND);
     private final int code;
     private final String message;
     private final HttpStatus httpStatus;
