@@ -37,15 +37,14 @@ public class IngestionService {
         if(userEmail == null){
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
-        User user = userRepository.findByEmail(userEmail);
-        if(user == null){
-            throw new CustomException(ErrorCode.ACCOUNT_NOT_FOUND);
-        }
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
         String foodName = ingestionListDto.getFoodName();
         if(foodName == null){
             throw new CustomException(ErrorCode.FOOD_NAME_NOT_FOUND);
         }
-        FoodList foodList = foodListRepository.findByName(foodName);
+        FoodList foodList = foodListRepository.findByName(foodName).orElseThrow(() -> new CustomException(ErrorCode.FOOD_NOT_FOUND));
 
         if(ingestionListDto.getDate() == null){
             throw new CustomException(ErrorCode.DATE_NOT_FOUND);

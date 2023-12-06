@@ -45,10 +45,9 @@ public class PresetService {
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
 
-        User user = userRepository.findByEmail(email);
-        if(user == null){
-            throw new CustomException(ErrorCode.ACCOUNT_NOT_FOUND);
-        }
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
 
         Preset newPreset = presetDto.toEntity(user);
         presetRepository.save(newPreset);

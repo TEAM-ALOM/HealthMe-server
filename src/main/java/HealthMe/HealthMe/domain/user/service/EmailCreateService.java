@@ -12,6 +12,7 @@ import javax.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,22 +42,18 @@ public class EmailCreateService {
 
         emailService.sendEmail(toEmail, title, authCode, 0);
 
-        EmailSession byEmail = emailRepositioy.findByEmail(toEmail);
-        // 더티 체킹을 위한 엔티티 수정
-        if(byEmail!=null) {
-            byEmail.reSetVerifyCode(authCode, LocalDateTime.now());
+        EmailSession byEmail = emailRepositioy.findByEmail(toEmail)
+                .orElseGet(()-> emailRepositioy.save(EmailDto.builder()
+                .email(toEmail)
+                .verifyCode(authCode)
+                .createdTime(LocalDateTime.now())
+                .build().toEntity()));
 
-        }
-        else {
-            emailRepositioy.save(EmailDto.builder()
-                    .email(toEmail)
-                    .verifyCode(authCode)
-                    .createdTime(LocalDateTime.now())
-                    .build().toEntity());
-        }
+        byEmail.reSetVerifyCode(authCode, LocalDateTime.now());
+
     }
     public void sendPasswordResetEmail(String toEmail) throws CustomException, MessagingException {
-        if(userRepository.findByEmail(toEmail)==null){
+        if(userRepository.findByEmail(toEmail).isEmpty()){
             throw new CustomException(ErrorCode.ACCOUNT_NOT_FOUND);
         }
 
@@ -65,25 +62,19 @@ public class EmailCreateService {
 
         emailService.sendEmail(toEmail, title, authCode, 1);
 
-        EmailSession byEmail = emailRepositioy.findByEmail(toEmail);
-        // 더티 체킹을 위한 엔티티 수정
-        if(byEmail!=null) {
-            byEmail.reSetVerifyCode(authCode, LocalDateTime.now());
-        }
-        else {
-            emailRepositioy.save(EmailDto.builder()
-                    .email(toEmail)
-                    .verifyCode(authCode)
-                    .createdTime(LocalDateTime.now())
-                    .build().toEntity());
-        }
+        EmailSession byEmail = emailRepositioy.findByEmail(toEmail)
+                .orElseGet(()->emailRepositioy.save(EmailDto.builder()
+                .email(toEmail)
+                .verifyCode(authCode)
+                .createdTime(LocalDateTime.now())
+                .build().toEntity()));
+
+
+        byEmail.reSetVerifyCode(authCode, LocalDateTime.now());
 
     }
     private void checkDuplicatedEmail(String email) throws CustomException {
-        User user = userRepository.findByEmail(email);
-        if (user!=null) {
-            throw new CustomException(ErrorCode.DUPLICATED_EMAIL);
-        }
+        userRepository.findByEmail(email).orElseThrow(() -> new CustomException(ErrorCode.DUPLICATED_EMAIL));
     }
     private String createCode() {
         int lenth = 6;
@@ -105,13 +96,14 @@ public class EmailCreateService {
         if (flag == 0) {
             this.checkDuplicatedEmail(email);
         }
-        EmailSession authInfo = emailRepositioy.findByEmail(email);
+        EmailSession authInfo = emailRepositioy.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
         String AuthCode = authInfo.getVerifyCode();
 
         LocalDateTime createdTime = authInfo.getCreatedTime();
         LocalDateTime now = LocalDateTime.now();
         Duration duration = Duration.between(createdTime, now);
-        log.info("Duration = {}", duration.toMillis());
+
         boolean authResult = (duration.toMillis() <= authCodeExpirationMillis) && AuthCode.equals(authCode);
         if(authResult == true){
             emailRepositioy.delete(authInfo);

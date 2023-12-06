@@ -26,7 +26,14 @@ public class UserService {
 
     @Transactional
     public UserDto signUp(UserSignUpDto userSignUpDto) throws CustomException{
-        if(userRepository.findByEmail(userSignUpDto.getEmail())!=null){
+        if(userSignUpDto.getEmail() == null){
+            throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
+        }
+        if(userSignUpDto.getPassword() ==null){
+            throw new CustomException(ErrorCode.PASSWORD_NOT_FOUND);
+        }
+
+        if(userRepository.findByEmail(userSignUpDto.getEmail()).isPresent()){
             throw new CustomException(ErrorCode.EMAIL_EXSIST);
         }
 
@@ -38,6 +45,7 @@ public class UserService {
                 .email(save.getEmail())
                 .autoLogin(save.isAutoLogin())
                 .build();
+
         return savedDto;
     }
     @Transactional
@@ -49,7 +57,9 @@ public class UserService {
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
         // 더티채킹
-        User user = userRepository.findByEmail(userInformationDto.getEmail());
+        User user = userRepository.findByEmail(userInformationDto.getEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
         user.setUserBodyInformation(userInformationDto.getName(),
                 userInformationDto.getBirthday(),
                 userInformationDto.getHeight(),
@@ -61,10 +71,16 @@ public class UserService {
 
 
     public UserBodyInformationDto getUserBodyInformation(UserDto userDto) throws CustomException {
+        if(userDto == null){
+            throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
+        }
         if(userDto.getEmail() == null){
             throw new CustomException(ErrorCode.ACCOUNT_NOT_FOUND);
         }
-        User user = userRepository.findByEmail(userDto.getEmail());
+
+        User user = userRepository.findByEmail(userDto.getEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
         return UserBodyInformationDto.builder()
                 .height(user.getHeight())
                 .weight(user.getWeight())
@@ -79,14 +95,14 @@ public class UserService {
         if(userPasswordChangeDto == null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
+
         String email = userPasswordChangeDto.getEmail();
         if(email==null){
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
-        User findUser = userRepository.findByEmail(email);
-        if(findUser == null){
-            throw new CustomException(ErrorCode.ACCOUNT_NOT_FOUND);
-        }
+
+        User findUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
         findUser.updatePassword(userPasswordChangeDto.getChangedPassword());
         findUser.hashPassword(bCryptPasswordEncoder);
 
@@ -95,21 +111,24 @@ public class UserService {
                 .email(findUser.getPassword())
                 .build();
     }
+
     public boolean checkPassword(UserPasswordChangeDto userPasswordChangeDto) throws CustomException{
         if(userPasswordChangeDto == null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
+
         String email = userPasswordChangeDto.getEmail();
         if(email == null){
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
-        User findUser = userRepository.findByEmail(email);
-        if(findUser==null){
-            throw new CustomException(ErrorCode.ACCOUNT_NOT_FOUND);
-        }
+
+        User findUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
         if(!findUser.checkPassword(userPasswordChangeDto.getPassword(), bCryptPasswordEncoder)){
-            throw new CustomException(ErrorCode.PASSWORD_NOT_MATCH);
+            return false;
         }
+
         return true;
     }
 

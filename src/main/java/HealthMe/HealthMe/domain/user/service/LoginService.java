@@ -23,7 +23,9 @@ public class LoginService {
         if(loginDto.getEmail()==null){
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
-        User findUser = userRepository.findByEmail(loginDto.getEmail());
+        User findUser = userRepository.findByEmail(loginDto.getEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
         boolean result = findUser.checkPassword(loginDto.getPassword(), bCryptPasswordEncoder);
 
         if(result == true){

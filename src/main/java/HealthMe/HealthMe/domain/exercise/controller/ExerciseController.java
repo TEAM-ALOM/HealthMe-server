@@ -12,32 +12,29 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("api/v1")
+@RequestMapping("api/exercise")
 public class ExerciseController {
     private final ExerciseService exerciseService;
 
-    @GetMapping("/save")
+    @PostMapping("/save")
     public ResponseEntity save(@RequestBody ExerciseDto exerciseDto) throws CustomException {
         exerciseService.save(exerciseDto);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @GetMapping("/findByName")
+    @GetMapping("/by-name")
     public ResponseEntity findByName(@RequestBody ExerciseDto exerciseDto) throws CustomException {
         return new ResponseEntity(exerciseService.findByName(exerciseDto), HttpStatus.OK);
     }
 
-    @GetMapping("/findAll")
+    @GetMapping
     public ResponseEntity findAll(){
         return new ResponseEntity(exerciseService.findAll(), HttpStatus.OK);
     }

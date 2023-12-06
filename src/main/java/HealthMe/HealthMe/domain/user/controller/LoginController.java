@@ -13,20 +13,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("api")
+@RequestMapping("api/user")
 public class LoginController {
     private final LoginService loginService;
 
-    @GetMapping("/signIn")
-    public ResponseEntity signIn(@RequestBody LoginDto user, HttpServletRequest httpServletRequest) throws CustomException {
+    @PostMapping("/login")
+    public ResponseEntity logIn(@RequestBody LoginDto user, HttpServletRequest httpServletRequest) throws CustomException {
         LoginDto loginDto = loginService.signIn(user);
         // 로그인 성공 -> 신규 세션 생성
 
