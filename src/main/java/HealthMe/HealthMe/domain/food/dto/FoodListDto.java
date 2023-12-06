@@ -16,20 +16,22 @@ public class FoodListDto {
     private Double protein; // 단백질
     private Double fat; // 지방
     private Double calorie; // 칼로리
-
+    private Double mass;
     @Builder
     public FoodListDto(Long id,
                        String name,
                        Double carbohydrate,
                        Double protein,
                        Double fat,
-                       Double calorie) {
+                       Double calorie,
+                       Double mass) {
         this.id = id;
         this.name = name;
         this.carbohydrate = carbohydrate;
         this.protein = protein;
         this.fat = fat;
         this.calorie = calorie;
+        this.mass = mass;
     }
 
     public FoodList toEntity(){
@@ -40,6 +42,7 @@ public class FoodListDto {
                 .protein(protein)
                 .fat(fat)
                 .calorie(calorie)
+                .mass(mass)
                 .build();
     }
 }

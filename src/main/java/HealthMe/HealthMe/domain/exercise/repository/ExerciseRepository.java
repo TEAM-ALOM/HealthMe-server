@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface ExerciseRepository extends JpaRepository<ExerciseList, Long> {
-    ExerciseList findByName(@Param("exerciseName") String exerciseName);
+    Optional<ExerciseList> findByName(@Param("exerciseName") String exerciseName);
 
 
 }

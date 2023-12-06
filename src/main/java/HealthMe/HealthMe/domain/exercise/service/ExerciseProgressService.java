@@ -36,10 +36,9 @@ public class ExerciseProgressService {
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
 
-        User searchedUser = userRepository.findByEmail(userEmail);
-        if(searchedUser == null){
-            throw new CustomException(ErrorCode.ACCOUNT_NOT_FOUND);
-        }
+        User searchedUser = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
 
         UserDto insertedUser = UserDto.builder()
                     .id(searchedUser.getId())
@@ -52,10 +51,8 @@ public class ExerciseProgressService {
             throw new CustomException(ErrorCode.EXERCISE_NAME_NOT_FOUND);
         }
 
-        ExerciseList searchedExercise = exerciseRepository.findByName(exerciseName);
-        if(searchedExercise == null){
-            throw new CustomException(ErrorCode.EXERCISE_NOT_FOUND);
-        }
+        ExerciseList searchedExercise = exerciseRepository.findByName(exerciseName)
+                .orElseThrow(() -> new CustomException(ErrorCode.EXERCISE_NOT_FOUND));
 
         ExerciseDto insertedExercise = ExerciseDto.builder()
                         .id(searchedExercise.getId())
@@ -71,17 +68,12 @@ public class ExerciseProgressService {
 
 
     public List<ExerciseProgressDto> findProgressedExerciseByEmail(UserDto userDto) throws CustomException {
-        List<ExerciseProgressDto> find = new ArrayList<>();
         if (userDto.getEmail() == null){
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
-
-        User searchedUser = userRepository.findByEmail(userDto.getEmail());
-        if(searchedUser == null){
-            throw new CustomException(ErrorCode.ACCOUNT_NOT_FOUND);
-        }
-
         List<ExerciseProgressList> list = exerciseProgressRepository.findByEmail(userDto.getEmail());
+        List<ExerciseProgressDto> find = new ArrayList<>();
+
         for (ExerciseProgressList exerciseProgressList : list) {
             ExerciseList exerciseList = exerciseProgressList.getExerciseList();
             ExerciseDto exerciseDto = ExerciseDto.builder()

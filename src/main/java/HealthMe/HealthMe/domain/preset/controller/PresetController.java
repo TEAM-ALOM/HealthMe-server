@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("api/v1/preset")
+@RequestMapping("api/preset")
 public class PresetController {
     private final PresetService presetService;
 
@@ -29,7 +29,7 @@ public class PresetController {
 
     // @PathVariable -> user/뒤의 userId를 파라미터로 전달 -> dto 받기 @RequestBody로 수정
     // 받아온 userDto에서 email 얻어온 다음 findPresetByUserEmail 실행
-    @GetMapping("/findByEmail")
+    @GetMapping("/by-email")
     public ResponseEntity<List<PresetDto>> findPresetByUserId(@RequestBody UserDto userDto) throws CustomException {
 
         List<PresetDto> presetDtos = presetService.findPresetByUserEmail(userDto);

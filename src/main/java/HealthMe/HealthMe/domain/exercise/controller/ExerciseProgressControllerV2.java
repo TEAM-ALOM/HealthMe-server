@@ -17,21 +17,21 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("api/v2/progress")
+@RequestMapping("api/exercise")
 public class ExerciseProgressControllerV2 {
     private final ExerciseProgressService exerciseProgressService;
 
-    @GetMapping("/findByEmail")
-    public ResponseEntity<List<ExerciseProgressDto>> findByEmail(@RequestBody UserDto userDto) throws CustomException {
-        return new ResponseEntity<>(exerciseProgressService.findProgressedExerciseByEmail(userDto), HttpStatus.OK);
+    @GetMapping("progress/by-email")
+    public ResponseEntity findByEmail(@RequestBody UserDto userDto) throws CustomException {
+        return new ResponseEntity(exerciseProgressService.findProgressedExerciseByEmail(userDto), HttpStatus.OK);
     }
 
-    @GetMapping("/findByDate")
-    public ResponseEntity<List<ExerciseProgressDto>> findByDate(@RequestBody ExerciseProgressDto exerciseProgressDto) throws CustomException {
-        return new ResponseEntity<>(exerciseProgressService.findProgressedExerciseByDate(exerciseProgressDto), HttpStatus.OK);
+    @GetMapping("progress/by-date")
+    public ResponseEntity findByDate(@RequestBody ExerciseProgressDto exerciseProgressDto) throws CustomException {
+        return new ResponseEntity(exerciseProgressService.findProgressedExerciseByDate(exerciseProgressDto), HttpStatus.OK);
     }
-    @PostMapping("/insert")
-    public ResponseEntity insert(@RequestBody ExerciseProgressDto exerciseProgressDto) throws CustomException {
+    @PostMapping("progress/save")
+    public ResponseEntity save(@RequestBody ExerciseProgressDto exerciseProgressDto) throws CustomException {
         exerciseProgressService.insert(exerciseProgressDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

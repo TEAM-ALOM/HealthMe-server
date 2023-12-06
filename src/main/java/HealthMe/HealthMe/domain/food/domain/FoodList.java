@@ -19,7 +19,7 @@ public class FoodList {
     private Double protein;
     private Double fat;
     private Double calorie;
-    private Double mess;
+    private Double mass;
 
 
 }

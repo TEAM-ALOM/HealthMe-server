@@ -29,10 +29,8 @@ public class ExerciseService {
             throw new CustomException(ErrorCode.EXERCISE_NAME_NOT_FOUND);
         }
 
-        ExerciseList exerciseList = exerciseRepository.findByName(exerciseDto.getName());
-        if(exerciseList == null){
-            throw new CustomException(ErrorCode.EXERCISE_NOT_FOUND);
-        }
+        ExerciseList exerciseList = exerciseRepository.findByName(exerciseDto.getName())
+                .orElseThrow(() -> new CustomException(ErrorCode.EXERCISE_NOT_FOUND));
 
         return ExerciseDto.builder().id(exerciseList.getId())
                 .name(exerciseList.getName())
@@ -58,7 +56,6 @@ public class ExerciseService {
     }
 
     public List<ExerciseDto> findAll(){
-
         List<ExerciseList> find = exerciseRepository.findAll();
         List<ExerciseDto> result = new ArrayList<>();
         for (ExerciseList exerciseList : find) {
