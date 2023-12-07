@@ -25,7 +25,6 @@ jobs:
 
     # 1-1. application.yml 세팅
     - name: application setting
-      uses: actions/checkout@v3
       run: |
             touch ./src/main/resources/application.yml
             echo "${{ secrets.APPLICATION_YML }}" > ./src/main/resources/application.yml
