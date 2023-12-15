@@ -23,6 +23,13 @@ jobs:
         java-version: '17'
         distribution: 'adopt'
 
+    # 1-1. application.yml 세팅
+    - name: Set YML
+      run: |
+        mkdir -p src/main/resources
+        echo "${{ secrets.APPLICATION_YML }}" > src/main/resources/application.yml
+        
+        
     # 2. Spring Boot 애플리케이션 빌드
     - name: Build with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
@@ -61,7 +68,7 @@ jobs:
 
       # 3. 최신 이미지를 컨테이너화하여 실행시킵니다
       - name: docker run new container
-        run: sudo docker run --name github-actions-demo --rm -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/health-me
+        run: sudo docker run -d -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/health-me
 
       # 4. 미사용 이미지를 정리합니다
       - name: delete old docker image
