@@ -33,18 +33,19 @@ public class IngestionService {
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
 
-        String userEmail = ingestionListDto.getUserEmail();
-        if(userEmail == null){
+        String email = ingestionListDto.getUserEmail();
+        if(email == null){
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
-        User user = userRepository.findByEmail(userEmail)
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
         String foodName = ingestionListDto.getFoodName();
         if(foodName == null){
             throw new CustomException(ErrorCode.FOOD_NAME_NOT_FOUND);
         }
-        FoodList foodList = foodListRepository.findByName(foodName).orElseThrow(() -> new CustomException(ErrorCode.FOOD_NOT_FOUND));
+        FoodList foodList = foodListRepository.findByName(foodName)
+                .orElseThrow(() -> new CustomException(ErrorCode.FOOD_NOT_FOUND));
 
         if(ingestionListDto.getDate() == null){
             throw new CustomException(ErrorCode.DATE_NOT_FOUND);
@@ -64,6 +65,7 @@ public class IngestionService {
         if(email == null){
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
+
         List<IngestionList> byEmail = ingestionListRepository.findByEmail(email);
         List<IngestionListDto> result = new ArrayList<>();
         for (IngestionList ingestionList : byEmail) {
@@ -84,10 +86,12 @@ public class IngestionService {
         if(ingestionListDto == null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
+
         Date date = ingestionListDto.getDate();
         if(date == null){
             throw new CustomException(ErrorCode.DATE_NOT_FOUND);
         }
+
         List<IngestionList> byDate = ingestionListRepository.findByDate(date);
         List<IngestionListDto> result = new ArrayList<>();
 

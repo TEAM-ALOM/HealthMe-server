@@ -12,7 +12,6 @@ import javax.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +28,6 @@ import java.util.Random;
 @Transactional
 public class EmailCreateService {
     private final UserRepository userRepository;
-    private static final String AUTH_CODE_PREFIX = "AuthCode ";
     private final EmailSendService emailService;
     private final EmailRepositioy emailRepositioy;
     @Value("${spring.mail.auth-code-expiration-millis}")

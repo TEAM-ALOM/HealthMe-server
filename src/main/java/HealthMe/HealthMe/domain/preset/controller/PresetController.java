@@ -3,7 +3,6 @@ package HealthMe.HealthMe.domain.preset.controller;
 import HealthMe.HealthMe.common.exception.CustomException;
 import HealthMe.HealthMe.domain.preset.dto.PresetDto;
 import HealthMe.HealthMe.domain.preset.service.PresetService;
-import HealthMe.HealthMe.domain.user.domain.User;
 import HealthMe.HealthMe.domain.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

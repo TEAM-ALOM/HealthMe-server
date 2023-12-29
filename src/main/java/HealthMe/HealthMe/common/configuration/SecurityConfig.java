@@ -36,7 +36,7 @@ public class SecurityConfig{
                 .authorizeHttpRequests()
                 .requestMatchers("/api/user/signup").permitAll() // 로그인 api
                 .requestMatchers("/api/user/login").permitAll() // 회원가입 api
-                .requestMatchers("/api/refresh").permitAll()
+                .requestMatchers("/api/refresh").permitAll() // 토큰 리프레쉬 api
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtFilter(authTokenProvider), UsernamePasswordAuthenticationFilter.class);

@@ -27,10 +27,10 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        // 로그인시 토큰 제공
+
         String token = resolveToken(request);
         try {
-            // validation 실패하면 refresh 가능하도록 지정.
+
             if(token != null && tokenProvider.validateToken(token)){
                 Authentication authentication = tokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);

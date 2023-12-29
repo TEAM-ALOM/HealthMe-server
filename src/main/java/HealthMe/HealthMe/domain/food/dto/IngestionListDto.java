@@ -3,7 +3,6 @@ package HealthMe.HealthMe.domain.food.dto;
 import HealthMe.HealthMe.domain.food.domain.FoodList;
 import HealthMe.HealthMe.domain.food.domain.IngestionList;
 import HealthMe.HealthMe.domain.user.domain.User;
-import HealthMe.HealthMe.domain.user.dto.UserDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

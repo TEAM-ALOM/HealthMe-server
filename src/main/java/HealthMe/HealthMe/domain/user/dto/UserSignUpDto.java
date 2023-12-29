@@ -14,14 +14,12 @@ public class UserSignUpDto {
     private String email;
     private String name;
     private String password;
-    private boolean autoLogin; // 11/25 추가 : 자동 로그인 관련
     private String authCode;
     @Builder
-    public UserSignUpDto(Long id, String email, String name, boolean autoLogin, String password, String authCode){
+    public UserSignUpDto(Long id, String email, String name, String password, String authCode){
         this.id = id;
         this.email = email;
         this.name = name;
-        this.autoLogin = autoLogin;
         this.password = password;
         this.authCode = authCode;
     }
@@ -30,7 +28,6 @@ public class UserSignUpDto {
                 .id(id)
                 .email(email)
                 .name(name)
-                .autoLogin(autoLogin)
                 .password(password)
                 .build();
     }

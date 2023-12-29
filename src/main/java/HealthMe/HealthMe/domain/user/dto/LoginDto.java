@@ -13,19 +13,16 @@ import lombok.Setter;
 public class LoginDto {
     private String email;
     private String password;
-    private boolean autoLogin;
 
     @Builder
-    public LoginDto(String email, HttpSession session, boolean autoLogin, String password) {
+    public LoginDto(String email, String password) {
         this.email = email;
-        this.autoLogin = autoLogin;
         this.password = password;
     }
 
     public User toEntity(){
         return User.builder()
                 .email(email)
-                .autoLogin(autoLogin)
                 .password(password)
                 .build();
     }
