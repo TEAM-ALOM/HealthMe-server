@@ -3,8 +3,9 @@ package HealthMe.HealthMe.common.token.service;
 
 import HealthMe.HealthMe.common.exception.CustomException;
 import HealthMe.HealthMe.common.exception.ErrorCode;
-import HealthMe.HealthMe.common.token.AuthToken;
+import HealthMe.HealthMe.common.token.dto.AuthToken;
 import HealthMe.HealthMe.common.token.AuthTokenProvider;
+import HealthMe.HealthMe.common.token.dto.RefreshDto;
 import HealthMe.HealthMe.domain.user.domain.User;
 import HealthMe.HealthMe.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,16 +24,16 @@ public class RefreshService {
     private final UserRepository userRepository;
 
     private final AuthTokenProvider authTokenProvider;
-    public AuthToken refresh(AuthToken authToken) throws CustomException, ParseException {
-        String refreshToken = authToken.getRefreshToken();
-        this.validation(refreshToken);
-
+    public AuthToken refresh(RefreshDto refreshDto) throws CustomException, ParseException {
+        this.validation(refreshDto);
+        String refreshToken = refreshDto.getRefreshToken();
         String payload = this.decode(refreshToken);
         JSONParser parser = new JSONParser();
         JSONObject object = (JSONObject) parser.parse(payload);
         String subject = object.get("sub").toString();
 
-        Authentication authentication = authTokenProvider.getAuthentication(authToken.getAccessToken());
+        Authentication authentication = authTokenProvider.getAuthentication(refreshDto.getAccessToken());
+
         AuthToken newAuthToken = authTokenProvider.generateToken(authentication);
         User findUser = userRepository.findByEmail(subject)
                 .orElseThrow(()-> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -41,9 +42,21 @@ public class RefreshService {
 
         return newAuthToken;
     }
-    private boolean validation(String refreshToken) throws CustomException, ParseException {
-        if(refreshToken.isEmpty()){
+    private boolean validation(RefreshDto refreshDto) throws CustomException, ParseException {
+        if(refreshDto.getRefreshToken() == null){
             throw new CustomException(ErrorCode.INVALID_JWT_TOKEN);
+        }
+        String refreshToken = refreshDto.getRefreshToken();
+        if(refreshDto.getEmail() == null){
+            throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
+        }
+
+        User user = userRepository.findByEmail(refreshDto.getEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        String userRefreshToken = user.getRefreshToken();
+        if(!userRefreshToken.equals(refreshToken)){
+            throw new CustomException(ErrorCode.INCORRECT_REFRESH_TOKEN);
         }
 
         long now = System.currentTimeMillis();

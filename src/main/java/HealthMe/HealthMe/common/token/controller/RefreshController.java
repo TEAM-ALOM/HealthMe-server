@@ -2,7 +2,8 @@ package HealthMe.HealthMe.common.token.controller;
 
 
 import HealthMe.HealthMe.common.exception.CustomException;
-import HealthMe.HealthMe.common.token.AuthToken;
+import HealthMe.HealthMe.common.token.dto.AuthToken;
+import HealthMe.HealthMe.common.token.dto.RefreshDto;
 import HealthMe.HealthMe.common.token.service.RefreshService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +20,8 @@ public class RefreshController {
     private final RefreshService refreshService;
 
     @GetMapping
-    public ResponseEntity refresh(@RequestBody AuthToken authToken) throws CustomException, ParseException {
-        AuthToken refresh = refreshService.refresh(authToken);
+    public ResponseEntity refresh(@RequestBody RefreshDto refreshDto) throws CustomException, ParseException {
+        AuthToken refresh = refreshService.refresh(refreshDto);
         return new ResponseEntity(refresh, HttpStatus.OK);
     }
 }
