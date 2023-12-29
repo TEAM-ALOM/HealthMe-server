@@ -45,20 +45,20 @@ public class UserService {
         UserDto savedDto = UserDto.builder()
                 .name(save.getName())
                 .email(save.getEmail())
-                .autoLogin(save.isAutoLogin())
                 .build();
 
         return savedDto;
     }
     @Transactional
-    public UserBodyInformationDto enterBodyInformation(UserBodyInformationDto userInformationDto) throws CustomException{
+    public UserDto insertBodyInformation(UserDto userInformationDto) throws CustomException{
         if(userInformationDto==null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
-        if(userInformationDto.getEmail() == null){
+        String email = userInformationDto.getEmail();
+        if(email == null){
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
-        // 더티채킹
+
         User user = userRepository.findByEmail(userInformationDto.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
@@ -72,7 +72,7 @@ public class UserService {
     }
 
 
-    public UserBodyInformationDto getUserBodyInformation(UserDto userDto) throws CustomException {
+    public UserDto getBodyInformation(UserDto userDto) throws CustomException {
         if(userDto == null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
@@ -83,7 +83,7 @@ public class UserService {
         User user = userRepository.findByEmail(userDto.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-        return UserBodyInformationDto.builder()
+        return UserDto.builder()
                 .height(user.getHeight())
                 .weight(user.getWeight())
                 .birthday(user.getBirthday())
@@ -161,4 +161,5 @@ public class UserService {
         userRepository.save(user);
         return true;
     }
+
 }

@@ -24,15 +24,16 @@ public class ExerciseService {
         if(exerciseDto == null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
-
-        if(exerciseDto.getName() == null){
+        String name = exerciseDto.getName();
+        if(name == null){
             throw new CustomException(ErrorCode.EXERCISE_NAME_NOT_FOUND);
         }
 
-        ExerciseList exerciseList = exerciseRepository.findByName(exerciseDto.getName())
+        ExerciseList exerciseList = exerciseRepository.findByName(name)
                 .orElseThrow(() -> new CustomException(ErrorCode.EXERCISE_NOT_FOUND));
 
-        return ExerciseDto.builder().id(exerciseList.getId())
+        return ExerciseDto.builder()
+                .id(exerciseList.getId())
                 .name(exerciseList.getName())
                 .category(exerciseList.getCategory())
                 .calorie(exerciseList.getCalorie())
@@ -44,10 +45,13 @@ public class ExerciseService {
         if(exerciseDto == null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
-        if(exerciseDto.getName() == null){
+
+        String name = exerciseDto.getName();
+        String category = exerciseDto.getCategory();
+        if(name == null){
             throw new CustomException(ErrorCode.EXERCISE_NAME_NOT_FOUND);
         }
-        if(exerciseDto.getCategory() == null){
+        if(category == null){
             throw new CustomException(ErrorCode.EXERCISE_CATEGORY_NOT_FOUND);
         }
 

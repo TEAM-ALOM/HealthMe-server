@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * todo : 모든 음식 로드
- */
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j

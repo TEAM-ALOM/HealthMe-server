@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -39,16 +40,14 @@ public class ExerciseProgressService {
         User searchedUser = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-
         UserDto insertedUser = UserDto.builder()
-                    .id(searchedUser.getId())
                     .email(searchedUser.getEmail())
                     .name(searchedUser.getName())
                     .build();
 
         String exerciseName = exerciseProgressDto.getExerciseName();
         if(exerciseName == null){
-            throw new CustomException(ErrorCode.EXERCISE_NAME_NOT_FOUND);
+            throw new CustomException(ErrorCode.EXERCISE_NOT_FOUND);
         }
 
         ExerciseList searchedExercise = exerciseRepository.findByName(exerciseName)
@@ -61,17 +60,17 @@ public class ExerciseProgressService {
                         .category(searchedExercise.getCategory())
                         .build();
 
-
         ExerciseProgressList exerciseProgressList = exerciseProgressDto.toEntity(insertedUser, insertedExercise);
         exerciseProgressRepository.save(exerciseProgressList);
     }
 
 
     public List<ExerciseProgressDto> findProgressedExerciseByEmail(UserDto userDto) throws CustomException {
-        if (userDto.getEmail() == null){
+        String email = userDto.getEmail();
+        if (email == null){
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
-        List<ExerciseProgressList> list = exerciseProgressRepository.findByEmail(userDto.getEmail());
+        List<ExerciseProgressList> list = exerciseProgressRepository.findByEmail(email);
         List<ExerciseProgressDto> find = new ArrayList<>();
 
         for (ExerciseProgressList exerciseProgressList : list) {
@@ -98,10 +97,12 @@ public class ExerciseProgressService {
     }
 
     public List<ExerciseProgressDto> findProgressedExerciseByDate(ExerciseProgressDto exerciseProgressDto) throws CustomException {
-        if (exerciseProgressDto.getDate() == null){
+        Date date = exerciseProgressDto.getDate();
+        if (date == null){
             throw new CustomException(ErrorCode.DATE_NOT_FOUND);
         }
-        List<ExerciseProgressList> list = exerciseProgressRepository.findExerciseProgressListsByDate(exerciseProgressDto.getDate());
+        List<ExerciseProgressList> list = exerciseProgressRepository.findExerciseProgressListsByDate(date);
+
         List<ExerciseProgressDto> findList = new ArrayList<>();
 
         for (ExerciseProgressList exerciseProgressList : list) {
@@ -109,7 +110,6 @@ public class ExerciseProgressService {
             ExerciseList findExercise = exerciseProgressList.getExerciseList();
 
             UserDto findUserDto = UserDto.builder()
-                    .id(findUser.getId())
                     .email(findUser.getEmail())
                     .name(findUser.getName())
                     .build();
