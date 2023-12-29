@@ -2,27 +2,29 @@ package HealthMe.HealthMe.domain.user.service;
 
 import HealthMe.HealthMe.common.exception.CustomException;
 import HealthMe.HealthMe.common.exception.ErrorCode;
+import HealthMe.HealthMe.common.token.AuthToken;
+import HealthMe.HealthMe.common.token.AuthTokenProvider;
 import HealthMe.HealthMe.domain.user.domain.User;
-import HealthMe.HealthMe.domain.user.dto.UserBodyInformationDto;
-import HealthMe.HealthMe.domain.user.dto.UserDto;
-import HealthMe.HealthMe.domain.user.dto.UserPasswordChangeDto;
-import HealthMe.HealthMe.domain.user.dto.UserSignUpDto;
+import HealthMe.HealthMe.domain.user.dto.*;
 import HealthMe.HealthMe.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-
-// 11/27 수정 -> entity 리턴에서 dto리턴으로
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
+    private final AuthTokenProvider authTokenProvider;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @Transactional
     public UserDto signUp(UserSignUpDto userSignUpDto) throws CustomException{
@@ -130,6 +132,21 @@ public class UserService {
         }
 
         return true;
+    }
+
+    private void updateRefreshToken(String email, String refreshToken) throws CustomException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+        user.updateRefreshToken(refreshToken);
+        userRepository.save(user);
+    }
+
+    public AuthToken signIn(LoginDto loginDto) throws CustomException {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        AuthToken authToken = authTokenProvider.generateToken(authentication);
+        this.updateRefreshToken(loginDto.getEmail(), authToken.getRefreshToken());
+        return authToken;
     }
 
 }
