@@ -84,4 +84,5 @@ public class GlobalExceptionHandler {
                 .status(ErrorCode.OBJECT_NOT_FOUND.getHttpStatus())
                 .body(new ErrorResponseDto(ErrorCode.OBJECT_NOT_FOUND));
     }
+
 }

@@ -45,7 +45,16 @@ public enum ErrorCode {
      */
     FOOD_NAME_NOT_FOUND(4001, "Food Name Not Found", HttpStatus.NOT_FOUND),
     FOOD_NOT_FOUND(4002, "Food Not Found In Data Base", HttpStatus.NOT_FOUND),
-    FOOD_MASS_NOT_FOUND(4003, "Food Mass Not Selected", HttpStatus.NOT_FOUND);
+    FOOD_MASS_NOT_FOUND(4003, "Food Mass Not Selected", HttpStatus.NOT_FOUND),
+
+    /**
+     * 5xxx -> jwt 관련 에러
+     */
+    JWT_EMPTY(5001, "Access Token Is Empty", HttpStatus.UNAUTHORIZED),
+    JWT_EXPIRED(5002, "Access Token has expired", HttpStatus.UNAUTHORIZED),
+    INVALID_JWT_TOKEN(5003, "Access Token Is Invalid", HttpStatus.UNAUTHORIZED),
+    INVALID_REFRESH_TOKEN(5004, "Refresh Token Is Invalid", HttpStatus.UNAUTHORIZED),
+    INCORRECT_REFRESH_TOKEN(5005, "Refresh Token Mismatched With User's Refresh Token", HttpStatus.UNAUTHORIZED);
     private final int code;
     private final String message;
     private final HttpStatus httpStatus;

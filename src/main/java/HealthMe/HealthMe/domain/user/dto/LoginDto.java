@@ -12,14 +12,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class LoginDto {
     private String email;
-    private String name;
     private String password;
     private boolean autoLogin;
 
     @Builder
-    public LoginDto(String email, String name, HttpSession session, boolean autoLogin, String password) {
+    public LoginDto(String email, HttpSession session, boolean autoLogin, String password) {
         this.email = email;
-        this.name = name;
         this.autoLogin = autoLogin;
         this.password = password;
     }
@@ -27,7 +25,6 @@ public class LoginDto {
     public User toEntity(){
         return User.builder()
                 .email(email)
-                .name(name)
                 .autoLogin(autoLogin)
                 .password(password)
                 .build();
