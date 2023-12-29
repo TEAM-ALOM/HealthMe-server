@@ -2,7 +2,7 @@ package HealthMe.HealthMe.domain.user.service;
 
 import HealthMe.HealthMe.common.exception.CustomException;
 import HealthMe.HealthMe.common.exception.ErrorCode;
-import HealthMe.HealthMe.common.token.AuthToken;
+import HealthMe.HealthMe.common.token.dto.AuthToken;
 import HealthMe.HealthMe.common.token.AuthTokenProvider;
 import HealthMe.HealthMe.domain.user.domain.User;
 import HealthMe.HealthMe.domain.user.dto.*;
