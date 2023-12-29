@@ -25,7 +25,7 @@ public class LoginController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity logout(HttpServletRequest httpServletRequest){
-        return new ResponseEntity("redirect:/", HttpStatus.OK);
+    public ResponseEntity logout(@RequestBody LoginDto loginDto) throws CustomException {
+        return new ResponseEntity(userService.logout(loginDto), HttpStatus.OK);
     }
 }
