@@ -19,7 +19,6 @@ import java.util.List;
 public class FoodService {
 
     private final FoodListRepository foodListRepository;
-    private final IngestionListRepository ingestionListRepository;
 
     public List<FoodListDto> findAll(){
         List<FoodListDto> find = new ArrayList<>();

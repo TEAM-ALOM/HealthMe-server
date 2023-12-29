@@ -1,7 +1,6 @@
 package HealthMe.HealthMe.domain.user.controller;
 
 import HealthMe.HealthMe.common.exception.CustomException;
-import HealthMe.HealthMe.domain.user.dto.UserBodyInformationDto;
 import HealthMe.HealthMe.domain.user.dto.UserDto;
 import HealthMe.HealthMe.domain.user.dto.UserPasswordChangeDto;
 import HealthMe.HealthMe.domain.user.dto.UserSignUpDto;
@@ -24,11 +23,10 @@ public class UserController {
     }
 
     @PostMapping("/save-body-information")
-    public ResponseEntity setInformation(@RequestBody UserBodyInformationDto userSignUpInformationDto) throws CustomException{
-        return new ResponseEntity<>(userService.enterBodyInformation(userSignUpInformationDto), HttpStatus.OK);
+    public ResponseEntity setInformation(@RequestBody UserDto userSignUpInformationDto) throws CustomException{
+        return new ResponseEntity<>(userService.insertBodyInformation(userSignUpInformationDto), HttpStatus.OK);
     }
 
-    // 왜넣었을까
     @GetMapping("/checkPassword")
     public ResponseEntity checkPassword(@RequestBody UserPasswordChangeDto userPasswordChangeDto) throws CustomException{
         return new ResponseEntity(userService.checkPassword(userPasswordChangeDto), HttpStatus.OK);
@@ -41,6 +39,6 @@ public class UserController {
 
     @GetMapping("/body-information")
     public ResponseEntity getInformation(@RequestBody UserDto userDto) throws CustomException {
-        return new ResponseEntity<>(userService.getUserBodyInformation(userDto), HttpStatus.OK);
+        return new ResponseEntity<>(userService.getBodyInformation(userDto), HttpStatus.OK);
     }
 }

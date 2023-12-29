@@ -2,9 +2,6 @@ package HealthMe.HealthMe.domain.preset.dto;
 
 import HealthMe.HealthMe.domain.preset.domain.Preset;
 import HealthMe.HealthMe.domain.user.domain.User;
-import HealthMe.HealthMe.domain.user.dto.UserDto;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

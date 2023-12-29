@@ -10,8 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 
 // 11/25 v2 추가 : 리턴 타입 ResponseEntity로 수정
 @RestController
