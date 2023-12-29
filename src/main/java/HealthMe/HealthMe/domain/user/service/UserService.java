@@ -149,4 +149,16 @@ public class UserService {
         return authToken;
     }
 
+    public boolean logout(LoginDto loginDto) throws CustomException {
+        String email = loginDto.getEmail();
+        if(email == null){
+            throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
+        }
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        user.updateRefreshToken(null);
+        userRepository.save(user);
+        return true;
+    }
 }
