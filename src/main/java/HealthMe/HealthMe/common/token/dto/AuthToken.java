@@ -1,4 +1,4 @@
-package HealthMe.HealthMe.common.token;
+package HealthMe.HealthMe.common.token.dto;
 import lombok.*;
 
 

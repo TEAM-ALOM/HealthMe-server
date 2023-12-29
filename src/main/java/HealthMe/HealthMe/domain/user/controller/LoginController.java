@@ -2,7 +2,7 @@ package HealthMe.HealthMe.domain.user.controller;
 
 
 import HealthMe.HealthMe.common.exception.CustomException;
-import HealthMe.HealthMe.common.token.AuthToken;
+import HealthMe.HealthMe.common.token.dto.AuthToken;
 import HealthMe.HealthMe.domain.user.dto.LoginDto;
 import HealthMe.HealthMe.domain.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +26,6 @@ public class LoginController {
 
     @GetMapping("/logout")
     public ResponseEntity logout(HttpServletRequest httpServletRequest){
-        httpServletRequest.getSession().invalidate();
         return new ResponseEntity("redirect:/", HttpStatus.OK);
     }
 }
