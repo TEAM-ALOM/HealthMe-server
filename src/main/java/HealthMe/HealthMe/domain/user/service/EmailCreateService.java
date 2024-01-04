@@ -113,6 +113,9 @@ public class EmailCreateService {
         if(authResult == true){
             emailRepositioy.delete(authInfo);
         }
+        else{
+            throw new CustomException(ErrorCode.VERIFY_NOT_ALLOWED);
+        }
         EmailDto emailDto = EmailDto.builder()
                 .email(email)
                 .authResult(authResult)
