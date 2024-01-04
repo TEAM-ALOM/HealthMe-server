@@ -24,7 +24,7 @@ public class LoginController {
         return new ResponseEntity(authToken, HttpStatus.OK);
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public ResponseEntity logout(@RequestBody LoginDto loginDto) throws CustomException {
         return new ResponseEntity(userService.logout(loginDto), HttpStatus.OK);
     }

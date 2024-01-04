@@ -29,7 +29,7 @@ public class ExerciseController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @GetMapping("/by-name")
+    @PostMapping("/by-name")
     public ResponseEntity findByName(@RequestBody ExerciseDto exerciseDto) throws CustomException {
         return new ResponseEntity(exerciseService.findByName(exerciseDto), HttpStatus.OK);
     }
