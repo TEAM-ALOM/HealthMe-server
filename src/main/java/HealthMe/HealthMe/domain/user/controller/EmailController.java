@@ -18,7 +18,7 @@ public class EmailController {
     @PostMapping("/verification-request")
     public ResponseEntity sendMessage(@RequestBody EmailDto emailDto) throws CustomException, javax.mail.MessagingException {
         emailCreateService.sendCodeToEmail(emailDto.getEmail());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
     @PostMapping("/verification")
     public ResponseEntity verificationEmail(@RequestBody EmailDto emailDto) throws CustomException{
