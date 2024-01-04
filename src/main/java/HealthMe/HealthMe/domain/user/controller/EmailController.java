@@ -1,6 +1,7 @@
 package HealthMe.HealthMe.domain.user.controller;
 import HealthMe.HealthMe.common.exception.CustomException;
 import HealthMe.HealthMe.domain.user.dto.EmailDto;
+import HealthMe.HealthMe.domain.user.dto.UserDto;
 import HealthMe.HealthMe.domain.user.service.EmailCreateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +18,8 @@ public class EmailController {
 
     @PostMapping("/verification-request")
     public ResponseEntity sendMessage(@RequestBody EmailDto emailDto) throws CustomException, javax.mail.MessagingException {
-        emailCreateService.sendCodeToEmail(emailDto.getEmail());
-        return new ResponseEntity<>(true, HttpStatus.OK);
+        UserDto userDto = emailCreateService.sendCodeToEmail(emailDto.getEmail());
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
     @PostMapping("/verification")
     public ResponseEntity verificationEmail(@RequestBody EmailDto emailDto) throws CustomException{

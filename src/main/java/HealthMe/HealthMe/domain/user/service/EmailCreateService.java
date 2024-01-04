@@ -5,6 +5,7 @@ import HealthMe.HealthMe.common.exception.ErrorCode;
 import HealthMe.HealthMe.domain.user.domain.EmailSession;
 import HealthMe.HealthMe.domain.user.domain.User;
 import HealthMe.HealthMe.domain.user.dto.EmailDto;
+import HealthMe.HealthMe.domain.user.dto.UserDto;
 import HealthMe.HealthMe.domain.user.repository.EmailRepository;
 import HealthMe.HealthMe.domain.user.repository.UserRepository;
 import javax.mail.MessagingException;
@@ -34,13 +35,15 @@ public class EmailCreateService {
     @Value("${spring.mail.auth-code-expiration-millis}")
     private long authCodeExpirationMillis;
 
-    public void sendCodeToEmail(String toEmail) throws CustomException, MessagingException {
+    public UserDto sendCodeToEmail(String toEmail) throws CustomException, MessagingException {
         this.checkDuplicatedEmail(toEmail);
         String title = "Health Me 이메일 인증";
         String authCode = this.createCode();
 
         emailService.sendEmail(toEmail, title, authCode, 0);
-
+        UserDto user = UserDto.builder()
+                .email(toEmail)
+                .build();
         EmailSession byEmail = emailRepositioy.findByEmail(toEmail)
                 .orElseGet(()-> emailRepositioy.save(EmailDto.builder()
                 .email(toEmail)
@@ -49,7 +52,7 @@ public class EmailCreateService {
                 .build().toEntity()));
 
         byEmail.reSetVerifyCode(authCode, LocalDateTime.now());
-
+        return user;
     }
     public void sendPasswordResetEmail(String toEmail) throws CustomException, MessagingException {
         if(userRepository.findByEmail(toEmail).isEmpty()){
