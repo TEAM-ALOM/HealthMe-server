@@ -28,6 +28,7 @@ public enum ErrorCode {
     EMAIL_EXSIST(2004, "Email Already Exist", HttpStatus.ALREADY_REPORTED),
     PASSWORD_NOT_MATCH(2005, "Password Not Match", HttpStatus.UNAUTHORIZED),
     PASSWORD_NOT_FOUND(2006, "Password Input Not Found", HttpStatus.NOT_FOUND),
+    TIME_OVER(2007, "Auth Time Over", HttpStatus.REQUEST_TIMEOUT),
     /**
      * 3xxx -> 운동 관련 에러
      */
