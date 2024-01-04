@@ -5,7 +5,7 @@ import HealthMe.HealthMe.common.exception.ErrorCode;
 import HealthMe.HealthMe.domain.user.domain.EmailSession;
 import HealthMe.HealthMe.domain.user.domain.User;
 import HealthMe.HealthMe.domain.user.dto.EmailDto;
-import HealthMe.HealthMe.domain.user.repository.EmailRepositioy;
+import HealthMe.HealthMe.domain.user.repository.EmailRepository;
 import HealthMe.HealthMe.domain.user.repository.UserRepository;
 import javax.mail.MessagingException;
 
@@ -19,6 +19,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Random;
 
 // 11/25 추가 : 이메일 전송 기능
@@ -29,7 +30,7 @@ import java.util.Random;
 public class EmailCreateService {
     private final UserRepository userRepository;
     private final EmailSendService emailService;
-    private final EmailRepositioy emailRepositioy;
+    private final EmailRepository emailRepositioy;
     @Value("${spring.mail.auth-code-expiration-millis}")
     private long authCodeExpirationMillis;
 
@@ -72,7 +73,9 @@ public class EmailCreateService {
 
     }
     private void checkDuplicatedEmail(String email) throws CustomException {
-        userRepository.findByEmail(email).orElseThrow(() -> new CustomException(ErrorCode.DUPLICATED_EMAIL));
+        if(userRepository.findByEmail(email).get() != null){
+            throw new CustomException(ErrorCode.DUPLICATED_EMAIL);
+        }
     }
     private String createCode() {
         int lenth = 6;
