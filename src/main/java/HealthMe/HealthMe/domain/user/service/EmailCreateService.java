@@ -73,7 +73,7 @@ public class EmailCreateService {
 
     }
     private void checkDuplicatedEmail(String email) throws CustomException {
-        if(userRepository.findByEmail(email).get() != null){
+        if(!userRepository.findByEmail(email).isEmpty()){
             throw new CustomException(ErrorCode.DUPLICATED_EMAIL);
         }
     }
