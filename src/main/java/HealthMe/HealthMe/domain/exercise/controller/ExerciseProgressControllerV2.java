@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.*;
 public class ExerciseProgressControllerV2 {
     private final ExerciseProgressService exerciseProgressService;
 
-    @GetMapping("progress/by-email")
+    @PostMapping("progress/by-email")
     public ResponseEntity findByEmail(@RequestBody UserDto userDto) throws CustomException {
         return new ResponseEntity(exerciseProgressService.findProgressedExerciseByEmail(userDto), HttpStatus.OK);
     }
 
-    @GetMapping("progress/by-date")
+    @PostMapping("progress/by-date")
     public ResponseEntity findByDate(@RequestBody ExerciseProgressDto exerciseProgressDto) throws CustomException {
         return new ResponseEntity(exerciseProgressService.findProgressedExerciseByDate(exerciseProgressDto), HttpStatus.OK);
     }

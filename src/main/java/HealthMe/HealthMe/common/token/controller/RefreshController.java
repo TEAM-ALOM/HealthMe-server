@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/refresh")
 public class RefreshController {
     private final RefreshService refreshService;
-    @GetMapping
+    @PostMapping
     public ResponseEntity refresh(@RequestBody RefreshDto refreshDto) throws CustomException, ParseException {
         return new ResponseEntity(refreshService.refresh(refreshDto), HttpStatus.OK);
     }
