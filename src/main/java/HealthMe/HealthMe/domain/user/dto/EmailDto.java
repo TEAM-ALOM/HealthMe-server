@@ -23,13 +23,15 @@ public class EmailDto {
     private LocalDateTime createdTime;      // 11/25 추가 : 생성시간
     private String email;
     private UserDto userDto;
+    private boolean authResult;
     @Builder
-    public EmailDto(Long id, String verifyCode, UserDto userDto, LocalDateTime createdTime, String email) {
+    public EmailDto(Long id, String verifyCode, UserDto userDto, LocalDateTime createdTime, String email, boolean authResult) {
         this.id = id;
         this.verifyCode = verifyCode;
         this.email = email;
         this.createdTime = createdTime;
         this.userDto=userDto;
+        this.authResult =authResult;
     }
 
     public EmailSession toEntity(){
