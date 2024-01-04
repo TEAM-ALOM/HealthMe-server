@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/user")
 public class LoginController {
     private final UserService userService;
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity logIn(@RequestBody LoginDto user) throws CustomException {
         AuthToken authToken = userService.signIn(user);
         return new ResponseEntity(authToken, HttpStatus.OK);
