@@ -103,6 +103,7 @@ public class EmailCreateService {
         }
         EmailSession authInfo = emailRepositioy.findByEmail(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
         String AuthCode = authInfo.getVerifyCode();
 
         LocalDateTime createdTime = authInfo.getCreatedTime();
@@ -110,6 +111,12 @@ public class EmailCreateService {
         Duration duration = Duration.between(createdTime, now);
 
         boolean authResult = (duration.toMillis() <= authCodeExpirationMillis) && AuthCode.equals(authCode);
+        if(duration.toMillis() > authCodeExpirationMillis){
+            throw new CustomException(ErrorCode.TIME_OVER);
+        }
+        else if(!AuthCode.equals(authCode)){
+            throw new CustomException(ErrorCode.VERIFY_NOT_ALLOWED);
+        }
         if(authResult == true){
             emailRepositioy.delete(authInfo);
         }
