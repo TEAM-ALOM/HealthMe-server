@@ -44,6 +44,7 @@ public class EmailCreateService {
         UserDto user = UserDto.builder()
                 .email(toEmail)
                 .build();
+
         EmailSession byEmail = emailRepositioy.findByEmail(toEmail)
                 .orElseGet(()-> emailRepositioy.save(EmailDto.builder()
                 .email(toEmail)
@@ -96,7 +97,7 @@ public class EmailCreateService {
     }
 
     // 이메일 인증
-    public boolean verifiedCode(String email, String authCode, int flag) throws CustomException {
+    public EmailDto verifiedCode(String email, String authCode, int flag) throws CustomException {
         if (flag == 0) {
             this.checkDuplicatedEmail(email);
         }
@@ -112,6 +113,10 @@ public class EmailCreateService {
         if(authResult == true){
             emailRepositioy.delete(authInfo);
         }
-        return authResult;
+        EmailDto emailDto = EmailDto.builder()
+                .email(email)
+                .authResult(authResult)
+                .build();
+        return emailDto;
     }
 }
