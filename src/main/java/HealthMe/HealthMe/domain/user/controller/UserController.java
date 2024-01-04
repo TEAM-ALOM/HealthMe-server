@@ -27,7 +27,7 @@ public class UserController {
         return new ResponseEntity<>(userService.insertBodyInformation(userSignUpInformationDto), HttpStatus.OK);
     }
 
-    @GetMapping("/checkPassword")
+    @PostMapping("/checkPassword")
     public ResponseEntity checkPassword(@RequestBody UserPasswordChangeDto userPasswordChangeDto) throws CustomException{
         return new ResponseEntity(userService.checkPassword(userPasswordChangeDto), HttpStatus.OK);
     }
@@ -37,7 +37,7 @@ public class UserController {
         return new ResponseEntity(userService.changePassword(userPasswordChangeDto), HttpStatus.OK);
     }
 
-    @GetMapping("/body-information")
+    @PostMapping("/body-information")
     public ResponseEntity getInformation(@RequestBody UserDto userDto) throws CustomException {
         return new ResponseEntity<>(userService.getBodyInformation(userDto), HttpStatus.OK);
     }

@@ -23,12 +23,12 @@ public class IngestionController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @GetMapping("ingestion/by-email")
+    @PostMapping("ingestion/by-email")
     public ResponseEntity findByEmail(@RequestBody UserDto userDto) throws CustomException {
         return new ResponseEntity(ingestionService.findByEmail(userDto), HttpStatus.OK);
     }
 
-    @GetMapping("ingestion/by-date")
+    @PostMapping("ingestion/by-date")
     public ResponseEntity findByDate(@RequestBody IngestionListDto ingestionListDto) throws CustomException {
         return new ResponseEntity(ingestionService.findByDate(ingestionListDto), HttpStatus.OK);
     }

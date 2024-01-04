@@ -20,7 +20,7 @@ public class EmailController {
         emailCreateService.sendCodeToEmail(emailDto.getEmail());
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @GetMapping("/verification")
+    @PostMapping("/verification")
     public ResponseEntity verificationEmail(@RequestBody EmailDto emailDto) throws CustomException{
         return new ResponseEntity<>(emailCreateService.verifiedCode(emailDto.getEmail(), emailDto.getVerifyCode(), 0), HttpStatus.OK);
     }
@@ -31,7 +31,7 @@ public class EmailController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping("/password-change-verification")
+    @PostMapping("/password-change-verification")
     public ResponseEntity verificationCode(@RequestBody EmailDto emailDto) throws CustomException{
         return new ResponseEntity(emailCreateService.verifiedCode(emailDto.getEmail(), emailDto.getVerifyCode(), 1), HttpStatus.OK);
     }
