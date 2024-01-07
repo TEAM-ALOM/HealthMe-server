@@ -36,6 +36,8 @@ public class SecurityConfig{
                 .requestMatchers("/api/refresh").permitAll() // 토큰 리프레쉬 api
                 .requestMatchers("/api/email/verification-request").permitAll()
                 .requestMatchers("/api/email/verification").permitAll()
+                .requestMatchers("/v3/api-docs/**").permitAll()
+                .requestMatchers("/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtFilter(authTokenProvider), UsernamePasswordAuthenticationFilter.class);
