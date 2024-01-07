@@ -41,10 +41,15 @@ public class UserService {
 
         User newUser = userSignUpDto.toEntity();
         newUser.hashPassword(bCryptPasswordEncoder);
-        User save = userRepository.save(newUser);
+        userRepository.save(newUser);
+
         UserDto savedDto = UserDto.builder()
-                .name(save.getName())
-                .email(save.getEmail())
+                .name(newUser.getName())
+                .email(newUser.getEmail())
+                .weight(newUser.getWeight())
+                .height(newUser.getHeight())
+                .gender(newUser.getGender())
+                .birthday(newUser.getBirthday())
                 .build();
 
         return savedDto;
