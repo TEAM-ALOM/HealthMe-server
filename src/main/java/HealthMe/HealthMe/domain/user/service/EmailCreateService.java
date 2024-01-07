@@ -29,7 +29,7 @@ import java.util.Random;
 public class EmailCreateService {
     private final UserRepository userRepository;
     private final EmailSendService emailService;
-    private final EmailRepository emailRepositioy;
+    private final EmailRepository emailRepository;
     @Value("${spring.mail.auth-code-expiration-millis}")
     private long authCodeExpirationMillis;
 
@@ -43,8 +43,8 @@ public class EmailCreateService {
                 .email(toEmail)
                 .build();
 
-        EmailSession byEmail = emailRepositioy.findByEmail(toEmail)
-                .orElseGet(() -> emailRepositioy.save(EmailDto.builder()
+        EmailSession byEmail = emailRepository.findByEmail(toEmail)
+                .orElseGet(() -> emailRepository.save(EmailDto.builder()
                         .email(toEmail)
                         .verifyCode(authCode)
                         .createdTime(LocalDateTime.now())
@@ -63,8 +63,8 @@ public class EmailCreateService {
 
         emailService.sendEmail(toEmail, title, authCode, 1);
 
-        EmailSession byEmail = emailRepositioy.findByEmail(toEmail)
-                .orElseGet(()->emailRepositioy.save(EmailDto.builder()
+        EmailSession byEmail = emailRepository.findByEmail(toEmail)
+                .orElseGet(()-> emailRepository.save(EmailDto.builder()
                 .email(toEmail)
                 .verifyCode(authCode)
                 .createdTime(LocalDateTime.now())
@@ -101,7 +101,7 @@ public class EmailCreateService {
         if (flag == 0) {
             this.checkDuplicatedEmail(email);
         }
-        EmailSession authInfo = emailRepositioy.findByEmail(email)
+        EmailSession authInfo = emailRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
         String AuthCode = authInfo.getVerifyCode();
@@ -119,7 +119,7 @@ public class EmailCreateService {
         }
 
         if(authResult == true){
-            emailRepositioy.delete(authInfo);
+            emailRepository.delete(authInfo);
         }
 
         EmailDto emailDto = EmailDto.builder()
