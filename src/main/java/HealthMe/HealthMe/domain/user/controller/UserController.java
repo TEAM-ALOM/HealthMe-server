@@ -22,10 +22,10 @@ public class UserController {
         return new ResponseEntity(userService.signUp(user), HttpStatus.OK);
     }
 
-    @PostMapping("/save-body-information")
-    public ResponseEntity setInformation(@RequestBody UserDto userSignUpInformationDto) throws CustomException{
-        return new ResponseEntity<>(userService.insertBodyInformation(userSignUpInformationDto), HttpStatus.OK);
-    }
+//    @PostMapping("/save-body-information")
+//    public ResponseEntity setInformation(@RequestBody UserDto userSignUpInformationDto) throws CustomException{
+//        return new ResponseEntity<>(userService.insertBodyInformation(userSignUpInformationDto), HttpStatus.OK);
+//    }
 
 
     @PostMapping("/change-password")
