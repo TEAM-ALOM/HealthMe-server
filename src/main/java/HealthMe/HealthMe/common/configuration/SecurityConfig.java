@@ -34,10 +34,10 @@ public class SecurityConfig{
                 .requestMatchers("/api/user/signup").permitAll() // 로그인 api
                 .requestMatchers("/api/user/login").permitAll() // 회원가입 api
                 .requestMatchers("/api/refresh").permitAll() // 토큰 리프레쉬 api
-                .requestMatchers("/api/email/verification-request").permitAll()
-                .requestMatchers("/api/email/verification").permitAll()
-                .requestMatchers("/v3/api-docs/**").permitAll()
-                .requestMatchers("/swagger-ui/**").permitAll()
+                .requestMatchers("/api/email/verification-request").permitAll() // 이메일 요청
+                .requestMatchers("/api/email/verification").permitAll() // 이메일 확인
+                .requestMatchers("/v3/api-docs/**").permitAll() // 스웨거
+                .requestMatchers("/swagger-ui/**").permitAll() // 스웨거
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtFilter(authTokenProvider), UsernamePasswordAuthenticationFilter.class);
