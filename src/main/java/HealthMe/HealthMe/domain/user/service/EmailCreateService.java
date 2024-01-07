@@ -57,15 +57,15 @@ public class EmailCreateService {
             UserDto user = UserDto.builder()
                     .email(toEmail)
                     .build();
-
+            String code = "123456";
             EmailSession byEmail = emailRepositioy.findByEmail(toEmail)
                     .orElseGet(() -> emailRepositioy.save(EmailDto.builder()
                             .email(toEmail)
-                            .verifyCode(authCode)
+                            .verifyCode(code)
                             .createdTime(LocalDateTime.now())
                             .build().toEntity()));
 
-            byEmail.reSetVerifyCode(authCode, LocalDateTime.now());
+            byEmail.reSetVerifyCode(code, LocalDateTime.now());
             return user;
         }
     }
