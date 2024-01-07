@@ -1,7 +1,6 @@
 package HealthMe.HealthMe.domain.exercise.domain;
 
 import HealthMe.HealthMe.domain.user.domain.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 

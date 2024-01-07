@@ -5,7 +5,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import HealthMe.HealthMe.domain.user.configuration.EmailConfig;
+import HealthMe.HealthMe.common.configuration.EmailConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

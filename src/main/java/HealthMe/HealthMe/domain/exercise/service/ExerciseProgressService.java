@@ -30,7 +30,7 @@ public class ExerciseProgressService {
     private final ExerciseRepository exerciseRepository;
     private final UserRepository userRepository;
     @Transactional
-    public void insert(ExerciseProgressDto exerciseProgressDto) throws CustomException {
+    public ExerciseProgressDto insert(ExerciseProgressDto exerciseProgressDto) throws CustomException {
 
         String userEmail = exerciseProgressDto.getUserEmail();
         if(userEmail == null){
@@ -62,6 +62,8 @@ public class ExerciseProgressService {
 
         ExerciseProgressList exerciseProgressList = exerciseProgressDto.toEntity(insertedUser, insertedExercise);
         exerciseProgressRepository.save(exerciseProgressList);
+
+        return exerciseProgressDto;
     }
 
 

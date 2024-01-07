@@ -7,7 +7,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 public interface ExerciseProgressRepository extends JpaRepository<ExerciseProgressList, Long> {
     @Query("SELECT l FROM EXERCISE_PROGRESS_LIST l LEFT JOIN l.user u WHERE u.email = :userEmail")

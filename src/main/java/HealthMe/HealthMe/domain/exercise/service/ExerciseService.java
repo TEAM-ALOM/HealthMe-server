@@ -41,7 +41,7 @@ public class ExerciseService {
     }
 
     @Transactional
-    public void save(ExerciseDto exerciseDto) throws CustomException {
+    public ExerciseDto save(ExerciseDto exerciseDto) throws CustomException {
         if(exerciseDto == null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
@@ -57,6 +57,8 @@ public class ExerciseService {
 
         ExerciseList exerciseList = exerciseDto.toEntity();
         exerciseRepository.save(exerciseList);
+
+        return exerciseDto;
     }
 
     public List<ExerciseDto> findAll(){

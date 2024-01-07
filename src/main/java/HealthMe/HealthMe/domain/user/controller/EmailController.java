@@ -28,8 +28,7 @@ public class EmailController {
 
     @PostMapping("/password-change-verification-request")
     public ResponseEntity sendPasswordChangeMessage(@RequestBody EmailDto emailDto) throws CustomException, javax.mail.MessagingException {
-        emailCreateService.sendPasswordResetEmail(emailDto.getEmail());
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(emailCreateService.sendPasswordResetEmail(emailDto.getEmail()),HttpStatus.OK);
     }
 
     @PostMapping("/password-change-verification")

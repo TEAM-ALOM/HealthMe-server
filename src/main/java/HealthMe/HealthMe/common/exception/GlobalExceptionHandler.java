@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.sql.SQLException;
 
 
-// 11/25 추가 : 글로벌 익셉션 핸들러
 @RestControllerAdvice
 @Slf4j
 @RequiredArgsConstructor

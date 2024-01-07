@@ -1,6 +1,5 @@
 package HealthMe.HealthMe.domain.exercise.domain;
 
-import HealthMe.HealthMe.domain.preset.domain.Preset;
 import jakarta.persistence.*;
 import lombok.*;
 

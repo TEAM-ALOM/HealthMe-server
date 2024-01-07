@@ -27,10 +27,6 @@ public class UserController {
         return new ResponseEntity<>(userService.insertBodyInformation(userSignUpInformationDto), HttpStatus.OK);
     }
 
-    @PostMapping("/checkPassword")
-    public ResponseEntity checkPassword(@RequestBody UserPasswordChangeDto userPasswordChangeDto) throws CustomException{
-        return new ResponseEntity(userService.checkPassword(userPasswordChangeDto), HttpStatus.OK);
-    }
 
     @PostMapping("/change-password")
     public ResponseEntity changePassword(@RequestBody UserPasswordChangeDto userPasswordChangeDto) throws CustomException{

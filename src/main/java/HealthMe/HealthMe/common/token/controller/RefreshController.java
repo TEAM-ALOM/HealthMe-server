@@ -2,7 +2,6 @@ package HealthMe.HealthMe.common.token.controller;
 
 
 import HealthMe.HealthMe.common.exception.CustomException;
-import HealthMe.HealthMe.common.token.dto.AuthToken;
 import HealthMe.HealthMe.common.token.dto.RefreshDto;
 import HealthMe.HealthMe.common.token.service.RefreshService;
 import lombok.RequiredArgsConstructor;

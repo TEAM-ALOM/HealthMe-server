@@ -1,7 +1,6 @@
 package HealthMe.HealthMe.domain.user.dto;
 
 import HealthMe.HealthMe.domain.user.domain.User;
-import jakarta.servlet.http.HttpSession;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
