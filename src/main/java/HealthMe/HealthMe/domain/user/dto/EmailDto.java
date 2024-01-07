@@ -13,19 +13,15 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class EmailDto {
-    private Long id;
     private String verifyCode;
     private LocalDateTime createdTime;      // 11/25 추가 : 생성시간
     private String email;
-    private UserDto userDto;
     private boolean authResult;
     @Builder
-    public EmailDto(Long id, String verifyCode, UserDto userDto, LocalDateTime createdTime, String email, boolean authResult) {
-        this.id = id;
+    public EmailDto(String verifyCode, LocalDateTime createdTime, String email, boolean authResult) {
         this.verifyCode = verifyCode;
         this.email = email;
         this.createdTime = createdTime;
-        this.userDto=userDto;
         this.authResult =authResult;
     }
 
