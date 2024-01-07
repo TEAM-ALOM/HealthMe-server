@@ -37,37 +37,21 @@ public class EmailCreateService {
         this.checkDuplicatedEmail(toEmail);
         String title = "Health Me 이메일 인증";
         String authCode = this.createCode();
-        if (!toEmail.equals("test")) {
-            emailService.sendEmail(toEmail, title, authCode, 0);
-            UserDto user = UserDto.builder()
-                    .email(toEmail)
-                    .build();
 
-            EmailSession byEmail = emailRepositioy.findByEmail(toEmail)
-                    .orElseGet(() -> emailRepositioy.save(EmailDto.builder()
-                            .email(toEmail)
-                            .verifyCode(authCode)
-                            .createdTime(LocalDateTime.now())
-                            .build().toEntity()));
+        emailService.sendEmail(toEmail, title, authCode, 0);
+        UserDto user = UserDto.builder()
+                .email(toEmail)
+                .build();
 
-            byEmail.reSetVerifyCode(authCode, LocalDateTime.now());
-            return user;
-        }
-        else{
-            UserDto user = UserDto.builder()
-                    .email(toEmail)
-                    .build();
-            String code = "123456";
-            EmailSession byEmail = emailRepositioy.findByEmail(toEmail)
-                    .orElseGet(() -> emailRepositioy.save(EmailDto.builder()
-                            .email(toEmail)
-                            .verifyCode(code)
-                            .createdTime(LocalDateTime.now())
-                            .build().toEntity()));
+        EmailSession byEmail = emailRepositioy.findByEmail(toEmail)
+                .orElseGet(() -> emailRepositioy.save(EmailDto.builder()
+                        .email(toEmail)
+                        .verifyCode(authCode)
+                        .createdTime(LocalDateTime.now())
+                        .build().toEntity()));
 
-            byEmail.reSetVerifyCode(code, LocalDateTime.now());
-            return user;
-        }
+        byEmail.reSetVerifyCode(authCode, LocalDateTime.now());
+        return user;
     }
     public UserDto sendPasswordResetEmail(String toEmail) throws CustomException, MessagingException {
         if(userRepository.findByEmail(toEmail).isEmpty()){
