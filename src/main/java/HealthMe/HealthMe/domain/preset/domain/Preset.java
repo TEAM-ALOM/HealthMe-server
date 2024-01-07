@@ -1,11 +1,9 @@
 package HealthMe.HealthMe.domain.preset.domain;
 
-
-import HealthMe.HealthMe.domain.exercise.domain.ExerciseList;
 import HealthMe.HealthMe.domain.user.domain.User;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.http.HttpStatusCode;
+
 
 @Getter
 @Builder

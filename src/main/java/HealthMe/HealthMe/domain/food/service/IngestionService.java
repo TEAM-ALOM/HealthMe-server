@@ -28,7 +28,7 @@ public class IngestionService {
     private final IngestionListRepository ingestionListRepository;
     private final UserRepository userRepository;
     @Transactional
-    public void saveIngestion(IngestionListDto ingestionListDto) throws CustomException {
+    public IngestionListDto saveIngestion(IngestionListDto ingestionListDto) throws CustomException {
         if(ingestionListDto == null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
@@ -55,6 +55,8 @@ public class IngestionService {
         }
 
         ingestionListRepository.save(ingestionListDto.toEntity(user, foodList));
+
+        return ingestionListDto;
     }
 
     public List<IngestionListDto> findByEmail(UserDto userDto) throws CustomException {

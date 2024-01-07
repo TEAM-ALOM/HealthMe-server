@@ -1,15 +1,10 @@
 package HealthMe.HealthMe.domain.user.dto;
 
 import HealthMe.HealthMe.domain.user.domain.EmailSession;
-import HealthMe.HealthMe.domain.user.domain.User;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 

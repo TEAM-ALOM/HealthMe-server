@@ -2,19 +2,13 @@ package HealthMe.HealthMe.domain.exercise.controller;
 
 
 import HealthMe.HealthMe.common.exception.CustomException;
-import HealthMe.HealthMe.domain.exercise.domain.ExerciseList;
-import HealthMe.HealthMe.domain.exercise.domain.ExerciseProgressList;
 import HealthMe.HealthMe.domain.exercise.dto.ExerciseDto;
-import HealthMe.HealthMe.domain.exercise.service.ExerciseProgressService;
 import HealthMe.HealthMe.domain.exercise.service.ExerciseService;
-import HealthMe.HealthMe.domain.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

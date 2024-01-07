@@ -3,7 +3,6 @@ package HealthMe.HealthMe.domain.user.service;
 import HealthMe.HealthMe.common.exception.CustomException;
 import HealthMe.HealthMe.common.exception.ErrorCode;
 import HealthMe.HealthMe.domain.user.domain.EmailSession;
-import HealthMe.HealthMe.domain.user.domain.User;
 import HealthMe.HealthMe.domain.user.dto.EmailDto;
 import HealthMe.HealthMe.domain.user.dto.UserDto;
 import HealthMe.HealthMe.domain.user.repository.EmailRepository;
@@ -20,7 +19,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.Random;
 
 // 11/25 추가 : 이메일 전송 기능
@@ -55,7 +53,7 @@ public class EmailCreateService {
         byEmail.reSetVerifyCode(authCode, LocalDateTime.now());
         return user;
     }
-    public void sendPasswordResetEmail(String toEmail) throws CustomException, MessagingException {
+    public UserDto sendPasswordResetEmail(String toEmail) throws CustomException, MessagingException {
         if(userRepository.findByEmail(toEmail).isEmpty()){
             throw new CustomException(ErrorCode.ACCOUNT_NOT_FOUND);
         }
@@ -74,7 +72,9 @@ public class EmailCreateService {
 
 
         byEmail.reSetVerifyCode(authCode, LocalDateTime.now());
-
+        return UserDto.builder()
+                .email(toEmail)
+                .build();
     }
     private void checkDuplicatedEmail(String email) throws CustomException {
         if(userRepository.findByEmail(email).isPresent()){
@@ -82,11 +82,11 @@ public class EmailCreateService {
         }
     }
     private String createCode() {
-        int lenth = 6;
+        int length = 6;
         try {
             Random random = SecureRandom.getInstanceStrong();
             StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < lenth; i++) {
+            for (int i = 0; i < length; i++) {
                 builder.append(random.nextInt(10));
             }
             return builder.toString();
@@ -112,17 +112,16 @@ public class EmailCreateService {
 
         boolean authResult = (duration.toMillis() <= authCodeExpirationMillis) && AuthCode.equals(authCode);
         if(duration.toMillis() > authCodeExpirationMillis){
-            throw new CustomException(ErrorCode.TIME_OVER);
+            throw new CustomException(ErrorCode.EMAIL_VERIFY_TIME_OVER);
         }
         else if(!AuthCode.equals(authCode)){
             throw new CustomException(ErrorCode.VERIFY_NOT_ALLOWED);
         }
+
         if(authResult == true){
             emailRepositioy.delete(authInfo);
         }
-        else{
-            throw new CustomException(ErrorCode.VERIFY_NOT_ALLOWED);
-        }
+
         EmailDto emailDto = EmailDto.builder()
                 .email(email)
                 .authResult(authResult)

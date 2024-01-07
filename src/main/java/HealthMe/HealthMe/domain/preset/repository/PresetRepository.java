@@ -1,7 +1,6 @@
 package HealthMe.HealthMe.domain.preset.repository;
 
 import HealthMe.HealthMe.domain.preset.domain.Preset;
-import HealthMe.HealthMe.domain.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

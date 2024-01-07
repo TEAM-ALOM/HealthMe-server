@@ -51,7 +51,7 @@ public class UserService {
     }
     @Transactional
     public UserDto insertBodyInformation(UserDto userInformationDto) throws CustomException{
-        if(userInformationDto==null){
+        if(userInformationDto == null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
         String email = userInformationDto.getEmail();
@@ -114,25 +114,6 @@ public class UserService {
                 .build();
     }
 
-    public boolean checkPassword(UserPasswordChangeDto userPasswordChangeDto) throws CustomException{
-        if(userPasswordChangeDto == null){
-            throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
-        }
-
-        String email = userPasswordChangeDto.getEmail();
-        if(email == null){
-            throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
-        }
-
-        User findUser = userRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
-
-        if(!findUser.checkPassword(userPasswordChangeDto.getPassword(), bCryptPasswordEncoder)){
-            return false;
-        }
-
-        return true;
-    }
 
     private void updateRefreshToken(String email, String refreshToken) throws CustomException {
         User user = userRepository.findByEmail(email)
@@ -149,7 +130,7 @@ public class UserService {
         return authToken;
     }
 
-    public boolean logout(LoginDto loginDto) throws CustomException {
+    public LoginDto logout(LoginDto loginDto) throws CustomException {
         String email = loginDto.getEmail();
         if(email == null){
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
@@ -159,7 +140,7 @@ public class UserService {
 
         user.updateRefreshToken(null);
         userRepository.save(user);
-        return true;
+        return loginDto;
     }
 
 }

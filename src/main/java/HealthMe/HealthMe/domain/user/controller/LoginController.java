@@ -5,7 +5,6 @@ import HealthMe.HealthMe.common.exception.CustomException;
 import HealthMe.HealthMe.common.token.dto.AuthToken;
 import HealthMe.HealthMe.domain.user.dto.LoginDto;
 import HealthMe.HealthMe.domain.user.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
