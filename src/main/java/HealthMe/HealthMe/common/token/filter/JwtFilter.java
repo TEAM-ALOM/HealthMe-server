@@ -44,10 +44,12 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request){
+
         String[] excludePath = {"/api/user/login", "/api/user/signup",
                 "/api/refresh", "/api/email/verification-request",
                 "api/email/verification", "/v3/api-docs/**", "/swagger-ui/**"};
         // jwt 인증 미 실시 토큰
+
         String path = request.getRequestURI();
         return Arrays.stream(excludePath).anyMatch(path::startsWith);
     }
