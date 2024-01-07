@@ -39,7 +39,7 @@ public class SecurityConfig{
                 .requestMatchers("/api/email/verification").permitAll() // 이메일 확인
                 .requestMatchers("/v3/api-docs/**").permitAll() // 스웨거
                 .requestMatchers("/swagger-ui/**").permitAll() // 스웨거
-
+                .requestMatchers("/api/user/save-body-information").permitAll()
 
                 .anyRequest().authenticated()
                 .and()
