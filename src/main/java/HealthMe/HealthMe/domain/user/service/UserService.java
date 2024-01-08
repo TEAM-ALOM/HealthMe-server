@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 @Slf4j
 @Service
@@ -28,6 +30,9 @@ public class UserService {
 
     @Transactional
     public UserDto signUp(UserSignUpDto userSignUpDto) throws CustomException{
+        if(userSignUpDto == null){
+            throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
+        }
         if(userSignUpDto.getEmail() == null){
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
@@ -98,7 +103,7 @@ public class UserService {
 
 
     @Transactional
-    public UserDto changePassword(UserPasswordChangeDto userPasswordChangeDto) throws CustomException{
+    public UserDto changeForgetPassword(UserPasswordChangeDto userPasswordChangeDto) throws CustomException{
         if(userPasswordChangeDto == null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
@@ -148,4 +153,31 @@ public class UserService {
         return loginDto;
     }
 
+    @Transactional
+    public UserDto changePassword(UserPasswordChangeDto userPasswordChangeDto) throws CustomException {
+        if(userPasswordChangeDto == null){
+            throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
+        }
+
+        String email = userPasswordChangeDto.getEmail();
+        if(email==null){
+            throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
+        }
+        String password = userPasswordChangeDto.getPassword();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        if(user.checkPassword(password, bCryptPasswordEncoder)){
+            user.updatePassword(password);
+            user.hashPassword(bCryptPasswordEncoder);
+        }
+        else{
+            throw new CustomException(ErrorCode.PASSWORD_NOT_MATCH);
+        }
+
+        return UserDto.builder()
+                .name(user.getName())
+                .email(user.getEmail())
+                .build();
+    }
 }

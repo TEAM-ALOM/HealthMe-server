@@ -28,13 +28,18 @@ public class UserController {
 //    }
 
 
-    @PostMapping("/change-password")
-    public ResponseEntity changePassword(@RequestBody UserPasswordChangeDto userPasswordChangeDto) throws CustomException{
-        return new ResponseEntity(userService.changePassword(userPasswordChangeDto), HttpStatus.OK);
+    @PostMapping("/change-forget-password")
+    public ResponseEntity changeForgetPassword(@RequestBody UserPasswordChangeDto userPasswordChangeDto) throws CustomException{
+        return new ResponseEntity(userService.changeForgetPassword(userPasswordChangeDto), HttpStatus.OK);
     }
 
     @PostMapping("/body-information")
     public ResponseEntity getInformation(@RequestBody UserDto userDto) throws CustomException {
         return new ResponseEntity<>(userService.getBodyInformation(userDto), HttpStatus.OK);
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity changePassword(@RequestBody UserPasswordChangeDto userPasswordChangeDto) throws CustomException {
+        return new ResponseEntity(userService.changePassword(userPasswordChangeDto), HttpStatus.OK);
     }
 }
