@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -117,7 +118,11 @@ public class UserService {
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
         findUser.updatePassword(userPasswordChangeDto.getChangedPassword());
         findUser.hashPassword(bCryptPasswordEncoder);
-
+        Authentication authenticate = authenticationManagerBuilder.getObject()
+                .authenticate(
+                        new UsernamePasswordAuthenticationToken(userPasswordChangeDto.getEmail(), userPasswordChangeDto.getChangedPassword())
+                );
+        SecurityContextHolder.getContext().setAuthentication(authenticate);
         return UserDto.builder()
                 .name(findUser.getName())
                 .email(findUser.getPassword())
@@ -136,6 +141,7 @@ public class UserService {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         AuthToken authToken = authTokenProvider.generateToken(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         this.updateRefreshToken(loginDto.getEmail(), authToken.getRefreshToken());
         return authToken;
     }
@@ -166,10 +172,14 @@ public class UserService {
         String password = userPasswordChangeDto.getPassword();
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
-
         if(user.checkPassword(password, bCryptPasswordEncoder)){
             user.updatePassword(password);
             user.hashPassword(bCryptPasswordEncoder);
+            Authentication authenticate = authenticationManagerBuilder.getObject()
+                    .authenticate(
+                            new UsernamePasswordAuthenticationToken(userPasswordChangeDto.getEmail(), userPasswordChangeDto.getChangedPassword())
+                    );
+            SecurityContextHolder.getContext().setAuthentication(authenticate);
         }
         else{
             throw new CustomException(ErrorCode.PASSWORD_NOT_MATCH);
