@@ -9,10 +9,12 @@ import HealthMe.HealthMe.domain.user.dto.*;
 import HealthMe.HealthMe.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +27,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    @Autowired
     private final PasswordEncoder bCryptPasswordEncoder;
     private final AuthTokenProvider authTokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -108,21 +111,20 @@ public class UserService {
         if(userPasswordChangeDto == null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
-
         String email = userPasswordChangeDto.getEmail();
+        String changedPassword = userPasswordChangeDto.getChangedPassword();
         if(email==null){
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
-
+        if(changedPassword == null){
+            throw new CustomException(ErrorCode.PASSWORD_NOT_FOUND);
+        }
         User findUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
-        findUser.updatePassword(userPasswordChangeDto.getChangedPassword());
+
+        findUser.updatePassword(changedPassword);
         findUser.hashPassword(bCryptPasswordEncoder);
-        Authentication authenticate = authenticationManagerBuilder.getObject()
-                .authenticate(
-                        new UsernamePasswordAuthenticationToken(userPasswordChangeDto.getEmail(), userPasswordChangeDto.getChangedPassword())
-                );
-        SecurityContextHolder.getContext().setAuthentication(authenticate);
+
         return UserDto.builder()
                 .name(findUser.getName())
                 .email(findUser.getPassword())
@@ -142,6 +144,7 @@ public class UserService {
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         AuthToken authToken = authTokenProvider.generateToken(authentication);
         SecurityContextHolder.getContext().setAuthentication(authentication);
+
         this.updateRefreshToken(loginDto.getEmail(), authToken.getRefreshToken());
         return authToken;
     }
@@ -164,22 +167,24 @@ public class UserService {
         if(userPasswordChangeDto == null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
-
         String email = userPasswordChangeDto.getEmail();
+        String password = userPasswordChangeDto.getPassword();
+        String changedPassword = userPasswordChangeDto.getChangedPassword();
         if(email==null){
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
-        String password = userPasswordChangeDto.getPassword();
+
+        if(password == null || changedPassword == null){
+            throw new CustomException(ErrorCode.PASSWORD_NOT_FOUND);
+        }
+
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
         if(user.checkPassword(password, bCryptPasswordEncoder)){
-            user.updatePassword(password);
+            user.updatePassword(changedPassword);
             user.hashPassword(bCryptPasswordEncoder);
-            Authentication authenticate = authenticationManagerBuilder.getObject()
-                    .authenticate(
-                            new UsernamePasswordAuthenticationToken(userPasswordChangeDto.getEmail(), userPasswordChangeDto.getChangedPassword())
-                    );
-            SecurityContextHolder.getContext().setAuthentication(authenticate);
+
         }
         else{
             throw new CustomException(ErrorCode.PASSWORD_NOT_MATCH);

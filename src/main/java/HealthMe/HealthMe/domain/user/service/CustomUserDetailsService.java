@@ -5,12 +5,14 @@ import HealthMe.HealthMe.common.exception.ErrorCode;
 import HealthMe.HealthMe.domain.user.domain.User;
 import HealthMe.HealthMe.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
@@ -28,6 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private UserDetails createUserDetails(User user){
+        log.info("user password = {}", user.getPassword());
         return User.builder()
                 .email(user.getEmail())
                 .password(user.getPassword())
