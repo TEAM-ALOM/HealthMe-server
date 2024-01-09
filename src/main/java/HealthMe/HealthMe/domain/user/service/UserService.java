@@ -92,13 +92,14 @@ public class UserService {
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
         if(userDto.getEmail() == null){
-            throw new CustomException(ErrorCode.ACCOUNT_NOT_FOUND);
+            throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
 
         User user = userRepository.findByEmail(userDto.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
         return UserDto.builder()
+                .name(user.getName())
                 .height(user.getHeight())
                 .weight(user.getWeight())
                 .birthday(user.getBirthday())
