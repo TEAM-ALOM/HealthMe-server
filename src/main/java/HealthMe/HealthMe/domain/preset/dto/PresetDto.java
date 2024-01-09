@@ -2,6 +2,7 @@ package HealthMe.HealthMe.domain.preset.dto;
 
 import HealthMe.HealthMe.domain.preset.domain.Preset;
 import HealthMe.HealthMe.domain.user.domain.User;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class PresetDto {
+    @Hidden
     private Long id;    // pk를 위한 id
 
     private Long presetNumber;          // 프리셋 번호

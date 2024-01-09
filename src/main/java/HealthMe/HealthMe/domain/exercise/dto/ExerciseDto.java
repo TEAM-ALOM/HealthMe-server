@@ -2,6 +2,7 @@ package HealthMe.HealthMe.domain.exercise.dto;
 
 
 import HealthMe.HealthMe.domain.exercise.domain.ExerciseList;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class ExerciseDto {
+    @Hidden
     private Long id;
     private String name;
     private Double calorie;

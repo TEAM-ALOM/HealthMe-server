@@ -1,6 +1,7 @@
 package HealthMe.HealthMe.domain.user.dto;
 
 import HealthMe.HealthMe.domain.user.domain.EmailSession;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class EmailDto {
     private String verifyCode;
+    @Hidden
     private LocalDateTime createdTime;      // 11/25 추가 : 생성시간
     private String email;
     private boolean authResult;
