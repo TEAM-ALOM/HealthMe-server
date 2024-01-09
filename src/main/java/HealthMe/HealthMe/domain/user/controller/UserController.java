@@ -26,10 +26,11 @@ public class UserController {
         return new ResponseEntity(userService.signUp(user), HttpStatus.OK);
     }
 
-//    @PostMapping("/save-body-information")
-//    public ResponseEntity setInformation(@RequestBody UserDto userSignUpInformationDto) throws CustomException{
-//        return new ResponseEntity<>(userService.insertBodyInformation(userSignUpInformationDto), HttpStatus.OK);
-//    }
+    @PostMapping("/save-body-information")
+    @Operation(summary = "신체 정보 수정", description = "해당 url로 요청시 신체 정보 수정 가능")
+    public ResponseEntity setInformation(@RequestBody UserDto userSignUpInformationDto) throws CustomException{
+        return new ResponseEntity<>(userService.setBodyInformation(userSignUpInformationDto), HttpStatus.OK);
+    }
 
 
     @PostMapping("/change-forget-password")

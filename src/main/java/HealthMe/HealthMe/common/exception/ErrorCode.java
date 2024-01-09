@@ -27,7 +27,7 @@ public enum ErrorCode {
     EMAIL_EXSIST(2004, "Email Already Exist", HttpStatus.ALREADY_REPORTED),
     PASSWORD_NOT_MATCH(2005, "Password Not Match", HttpStatus.UNAUTHORIZED),
     PASSWORD_NOT_FOUND(2006, "Password Input Not Found", HttpStatus.NOT_FOUND),
-    EMAIL_VERIFY_TIME_OVER(2007, "Auth Time Over", HttpStatus.REQUEST_TIMEOUT),
+    EMAIL_VERIFY_TIME_OVER(2007, "Auth Time Over", HttpStatus.GATEWAY_TIMEOUT),
     /**
      * 3xxx -> 운동 관련 에러
      */
@@ -51,7 +51,7 @@ public enum ErrorCode {
      * 5xxx -> jwt 관련 에러
      */
     JWT_EMPTY(5001, "Access Token Is Empty", HttpStatus.UNAUTHORIZED),
-    JWT_EXPIRED(5002, "Access Token has expired", HttpStatus.UNAUTHORIZED),
+    JWT_EXPIRED(5002, "Access Token has expired", HttpStatus.REQUEST_TIMEOUT),
     INVALID_JWT_TOKEN(5003, "Access Token Is Invalid", HttpStatus.UNAUTHORIZED),
     INVALID_REFRESH_TOKEN(5004, "Refresh Token Is Invalid", HttpStatus.UNAUTHORIZED),
     INCORRECT_REFRESH_TOKEN(5005, "Refresh Token Mismatched With User's Refresh Token", HttpStatus.UNAUTHORIZED);
