@@ -64,7 +64,7 @@ public class UserService {
         return savedDto;
     }
     @Transactional
-    public UserDto insertBodyInformation(UserDto userInformationDto) throws CustomException{
+    public UserDto setBodyInformation(UserDto userInformationDto) throws CustomException{
         if(userInformationDto == null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
@@ -75,6 +75,7 @@ public class UserService {
 
         User user = userRepository.findByEmail(userInformationDto.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
 
         user.setUserBodyInformation(userInformationDto.getName(),
                 userInformationDto.getBirthday(),
