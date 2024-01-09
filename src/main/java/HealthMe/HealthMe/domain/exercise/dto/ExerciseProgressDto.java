@@ -3,6 +3,7 @@ package HealthMe.HealthMe.domain.exercise.dto;
 import HealthMe.HealthMe.domain.exercise.domain.ExerciseProgressList;
 
 import HealthMe.HealthMe.domain.user.dto.UserDto;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 public class ExerciseProgressDto {
+    @Hidden
     private Long id;
     private Date date;
     private Double weight;  // 무게
