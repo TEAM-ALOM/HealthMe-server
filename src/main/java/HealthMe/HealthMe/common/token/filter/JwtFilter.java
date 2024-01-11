@@ -1,6 +1,7 @@
 package HealthMe.HealthMe.common.token.filter;
 
 import HealthMe.HealthMe.common.exception.CustomException;
+import HealthMe.HealthMe.common.exception.ErrorCode;
 import HealthMe.HealthMe.common.token.AuthTokenProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -8,6 +9,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,23 +25,33 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final AuthTokenProvider tokenProvider;
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String token = resolveToken(request);
-        try {
 
+
+        try {
             if(token != null && tokenProvider.validateToken(token)){
                 Authentication authentication = tokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (CustomException e) {
-            throw new RuntimeException(e);
+            handleException(response, e);
+            return;
         }
 
+
         filterChain.doFilter(request, response);
+    }
+
+    private void handleException(HttpServletResponse response, CustomException e) throws IOException {
+        log.info("Error code = {}", e.getErrorCode().getHttpStatus().value());
+        response.setStatus(e.getErrorCode().getHttpStatus().value());
+        response.getWriter().write(e.getMessage());
     }
 
     @Override

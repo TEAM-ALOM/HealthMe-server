@@ -30,7 +30,8 @@ public class AuthTokenProvider {
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", "USER")
-                .setExpiration(new Date(System.currentTimeMillis() + (long) 1000*60*3))
+                .setExpiration(new Date(System.currentTimeMillis() + (long) 1000*60*30))
+                // 차후 수정
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
@@ -53,6 +54,7 @@ public class AuthTokenProvider {
         UserDetails principal = new User(claims.getSubject() , "", Collections.emptyList());
         return new UsernamePasswordAuthenticationToken(principal, "", Collections.emptyList());
     }
+
 
     public boolean validateToken(String token) throws CustomException {
         try{
