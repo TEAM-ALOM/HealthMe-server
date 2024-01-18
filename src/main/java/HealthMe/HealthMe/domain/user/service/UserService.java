@@ -98,12 +98,15 @@ public class UserService {
         User user = userRepository.findByEmail(userDto.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
+        double bmi = user.getWeight()/((user.getHeight()/100)*(user.getHeight()/100))*10;
+
         return UserDto.builder()
                 .name(user.getName())
                 .height(user.getHeight())
                 .weight(user.getWeight())
                 .birthday(user.getBirthday())
                 .gender(user.getGender())
+                .bmi(bmi)
                 .build();
     }
 

@@ -19,15 +19,16 @@ public class UserDto {
     private Date birthday;
     private String name;
     private String email;
-
+    private double bmi;
     @Builder
-    public UserDto(String email, double height, double weight, String gender, Date birthday, String name) {
+    public UserDto(String email, double height, double weight, String gender, Date birthday, String name, double bmi) {
         this.height = height;
         this.weight = weight;
         this.gender = gender;
         this.birthday = birthday;
         this.name = name;
         this.email = email;
+        this.bmi = bmi;
     }
 
     public User toEntity(){
