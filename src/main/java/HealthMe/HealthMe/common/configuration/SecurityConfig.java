@@ -39,7 +39,9 @@ public class SecurityConfig {
                         "/v3/api-docs/**",
                         "/swagger-ui/**",
                         "/api/email/**",
-                        "/api/user/change-forget-password").permitAll() // 로그인 api
+                        "/api/user/change-forget-password",
+                        "/actuator/**",
+                        "/metrics").permitAll() // 로그인 api
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtFilter(authTokenProvider), UsernamePasswordAuthenticationFilter.class);

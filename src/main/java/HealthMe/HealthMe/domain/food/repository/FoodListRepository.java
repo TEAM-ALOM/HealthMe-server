@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface FoodListRepository extends JpaRepository<FoodList, Long> {
     Optional<FoodList> findByName(@Param("name") String name);
+
 }

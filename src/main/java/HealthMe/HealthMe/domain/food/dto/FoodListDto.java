@@ -10,7 +10,6 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class FoodListDto {
-    private Long id;    // pk를 위한 id
     private String name;    // 음식 명
     private Double carbohydrate;    // 탄수화물
     private Double protein; // 단백질
@@ -18,14 +17,13 @@ public class FoodListDto {
     private Double calorie; // 칼로리
     private Double mass;
     @Builder
-    public FoodListDto(Long id,
-                       String name,
+    public FoodListDto(String name,
                        Double carbohydrate,
                        Double protein,
                        Double fat,
                        Double calorie,
                        Double mass) {
-        this.id = id;
+
         this.name = name;
         this.carbohydrate = carbohydrate;
         this.protein = protein;
@@ -34,9 +32,9 @@ public class FoodListDto {
         this.mass = mass;
     }
 
+
     public FoodList toEntity(){
         return FoodList.builder()
-                .id(id)
                 .name(name)
                 .carbohydrate(carbohydrate)
                 .protein(protein)

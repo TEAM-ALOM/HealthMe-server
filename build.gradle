@@ -29,9 +29,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
 	implementation 'org.springframework.security:spring-security-oauth2-client:6.0.2'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'io.micrometer:micrometer-registry-prometheus'
 	testImplementation 'org.projectlombok:lombok:1.18.26'
-	testCompileOnly 'org.projectlombok:lombok:1.18.24' // 테스트 환경에서 주입
-	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24' // 테스트환경의 어노테이션 주입
+	testCompileOnly 'org.projectlombok:lombok:1.18.24'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
