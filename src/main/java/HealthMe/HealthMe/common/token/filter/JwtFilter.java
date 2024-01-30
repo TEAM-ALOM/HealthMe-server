@@ -60,7 +60,9 @@ public class JwtFilter extends OncePerRequestFilter {
         String[] excludePath = {"/api/user/login", "/api/user/signup",
                 "/api/refresh", "api/email/**", "/v3/api-docs/**",
                 "/swagger-ui/**",
-                "/api/user/change-forget-password"};
+                "/api/user/change-forget-password",
+                "/actuator/**",
+                "/metrics"};
         // jwt 인증 미 실시 토큰
 
         String path = request.getRequestURI();

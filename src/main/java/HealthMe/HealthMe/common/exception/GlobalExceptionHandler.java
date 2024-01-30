@@ -79,7 +79,7 @@ public class GlobalExceptionHandler {
             final NullPointerException e,
             final HttpServletRequest request
     ){
-        log.info("NullPointerException : {} {}", e.getMessage(), request.getRequestURI());
+        log.error("NullPointerException : {} {}", e.getMessage(), request.getRequestURI());
         return ResponseEntity
                 .status(ErrorCode.OBJECT_NOT_FOUND.getHttpStatus())
                 .body(new ErrorResponseDto(ErrorCode.OBJECT_NOT_FOUND));
