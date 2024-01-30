@@ -22,15 +22,17 @@ import java.util.Date;
 public class AuthTokenProvider {
     private final Key key;
 
+
     public AuthTokenProvider(@Value("${spring.jwt.secret}") String secretKey){
         this.key = Keys.hmacShaKeyFor(secretKey.getBytes());
     }
+
     public AuthToken generateToken(Authentication authentication) throws CustomException {
 
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", "USER")
-                .setExpiration(new Date(System.currentTimeMillis() + (long) 1000*10))
+                .setExpiration(new Date(System.currentTimeMillis() + (long) 1000*360))
                 // 차후 수정
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();

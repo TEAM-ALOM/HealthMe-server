@@ -40,6 +40,7 @@ public class IngestionService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
+
         String foodName = ingestionListDto.getFoodName();
         if(foodName == null){
             throw new CustomException(ErrorCode.FOOD_NAME_NOT_FOUND);
