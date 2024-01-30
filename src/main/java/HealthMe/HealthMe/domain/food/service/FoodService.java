@@ -1,12 +1,16 @@
 package HealthMe.HealthMe.domain.food.service;
 
+import HealthMe.HealthMe.common.dto.PagingDto;
 import HealthMe.HealthMe.common.exception.CustomException;
 import HealthMe.HealthMe.common.exception.ErrorCode;
 import HealthMe.HealthMe.domain.food.domain.FoodList;
 import HealthMe.HealthMe.domain.food.dto.FoodListDto;
+import HealthMe.HealthMe.domain.food.dto.PagingFoodListDto;
 import HealthMe.HealthMe.domain.food.repository.FoodListRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,6 +65,23 @@ public class FoodService {
                 .fat(foodList.getFat())
                 .carbohydrate(foodList.getCarbohydrate())
                 .build();
+    }
+
+    public List<PagingFoodListDto> findAllUsingPage(PagingDto pagingDto){
+        Page<FoodList> allByPageable = foodListRepository.findAll(PageRequest.of(pagingDto.getIdx(), 50));
+        List<PagingFoodListDto> result = new ArrayList<>();
+        for (FoodList foodList : allByPageable) {
+            result.add(PagingFoodListDto.builder()
+                    .fat(foodList.getFat())
+                    .name(foodList.getName())
+                    .calorie(foodList.getCalorie())
+                    .mass(foodList.getMass())
+                    .protein(foodList.getProtein())
+                    .carbohydrate(foodList.getCarbohydrate())
+                    .idx(pagingDto.getIdx())
+                    .build());
+        }
+        return result;
     }
 
 }
