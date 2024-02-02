@@ -51,6 +51,7 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponseDto> handleMethodNotSupportException(
             final HttpRequestMethodNotSupportedException e
     ) {
+        log.error("method not supported: {}", e.getMessage());
         ErrorResponseDto errorResponseDto = ErrorResponseDto.builder()
                 .code(ErrorCode.METHOD_NOT_ALLOWED.getCode())
                 .status(ErrorCode.METHOD_NOT_ALLOWED.getHttpStatus().value())
@@ -67,7 +68,6 @@ public class GlobalExceptionHandler {
             final Exception e,
             final HttpServletRequest request
     ) {
-
         log.error("Exception: {} {}", e.getMessage(), request.getRequestURL());
         return ResponseEntity
                 .status(ErrorCode.INTERNAL_SERVER_ERROR.getHttpStatus().value())
