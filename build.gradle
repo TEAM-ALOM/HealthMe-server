@@ -77,7 +77,7 @@ sourceSets {
 		}
 	}
 }
->>>>>>> 00b94214a4fbb2856346bfe6aa02fa2499513ca4
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
