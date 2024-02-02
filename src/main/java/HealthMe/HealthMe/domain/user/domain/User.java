@@ -44,8 +44,6 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<ExerciseProgressList> exerciseProgressLists = new ArrayList<>();
 
-
-
     public User hashPassword(PasswordEncoder passwordEncoder){
         this.password = passwordEncoder.encode(this.password);
         return this;
