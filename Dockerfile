@@ -13,4 +13,4 @@ COPY ${JAR_FILE} app.jar
 #COPY build/libs/*.jar app.jar
 
 # 실행 명령어
-ENTRYPOINT ["java", "-jar", "-Dlogging.config=logback-discord.xml", "app.jar"]
+ENTRYPOINT ["java", "-jar", "-Dlogging.config=../src/main/resources/logback-discord.xml", "app.jar"]
