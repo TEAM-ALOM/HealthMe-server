@@ -30,7 +30,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private UserDetails createUserDetails(User user){
-        log.info("user password = {}", user.getPassword());
         return User.builder()
                 .email(user.getEmail())
                 .password(user.getPassword())
