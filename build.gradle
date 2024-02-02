@@ -17,6 +17,8 @@ sourceSets {
 		}
 	}
 }
+<<<<<<< HEAD
+=======
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
@@ -75,6 +77,7 @@ sourceSets {
 		}
 	}
 }
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
