@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <springProperty name="DISCORD_WEBHOOK_URL" source="logging.discord.webhook-url"/>
     <appender name="DISCORD" class="com.github.napstr.logback.DiscordAppender">
         <webhookUri>${DISCORD_WEBHOOK_URL}</webhookUri>
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>%d{HH:mm:ss} [%thread] [%-5level] %logger{36} - %msg%n```%ex{full}```</pattern>
+            <pattern>%d{HH:mm:ss} [%thread] [%-5level] %logger{36} - %msg%n%ex{full}</pattern>
         </layout>
         <username>server-logback</username>
         <avatarUrl>https://cdn-icons-png.flaticon.com/512/1383/1383395.png</avatarUrl>
