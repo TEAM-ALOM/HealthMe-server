@@ -27,8 +27,8 @@ jobs:
     - name: Set YML
       run: |
         # mkdir -p src/main/resources
-        echo "${{ secrets.APPLICATION_YML }}" >> src/main/resources/application.yml
-        echo "${{ secrets.LOGBACK_DISCORD }}" >> src/main/resources/logback-discord.xml
+        echo "${{ secrets.APPLICATION_YML }}" > src/main/resources/application.yml
+        echo "${{ secrets.LOGBACK_DISCORD }}" > src/main/resources/logback-discord.xml
         
     # 2. Spring Boot 애플리케이션 빌드
     - name: Build with Gradle
