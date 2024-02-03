@@ -4,9 +4,9 @@
     <appender name="DISCORD" class="com.github.napstr.logback.DiscordAppender">
         <webhookUri>${DISCORD_WEBHOOK_URL}</webhookUri>
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <pattern>%d{HH:mm:ss} [%thread] [%-5level] %logger{36} - %msg%n%ex{full}</pattern>
+            <pattern>%d{HH:mm:ss} [%thread] [%-5level] - %msg%n%ex{full}</pattern>
         </layout>
-        <username>server-logback</username>
+        <username>HealthMe-logback</username>
         <avatarUrl>https://cdn-icons-png.flaticon.com/512/1383/1383395.png</avatarUrl>
         <tts>false</tts>
     </appender>
@@ -22,7 +22,6 @@
         <appender-ref ref="DISCORD" />
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>ERROR</level>
-
         </filter>
     </appender>
 
