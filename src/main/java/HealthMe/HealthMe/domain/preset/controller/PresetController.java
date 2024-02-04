@@ -25,9 +25,9 @@ public class PresetController {
     //@RequestBody 메소드에 한번만 사용 -> presetDto만 받아오기 (userDto 정보 같이 들어있다 가정, 나중에 상의)
     @PostMapping("/save")
     @Operation(summary = "프리셋 저장", description = "해당 url로 요청시 프리셋을 저장")
-    public ResponseEntity<PresetDto> savePreset(@RequestBody PresetDto presetDto) throws CustomException {  // Dto로 리턴 <PresetDto>
-        PresetDto savedPresetDto = presetService.savePreset(presetDto);
-        return new ResponseEntity<>(savedPresetDto, HttpStatus.CREATED);
+    public ResponseEntity<List<PresetDto>> savePreset(@RequestBody List<PresetDto> presetDtoList) throws CustomException {  // Dto로 리턴 <PresetDto>
+        List<PresetDto> presetDtos = presetService.savePreset(presetDtoList);
+        return new ResponseEntity<>(presetDtos, HttpStatus.CREATED);
     }
 
     // @PathVariable -> user/뒤의 userId를 파라미터로 전달 -> dto 받기 @RequestBody로 수정
