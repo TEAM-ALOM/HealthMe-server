@@ -22,8 +22,16 @@ public class PresetService {
     private final PresetRepository presetRepository;
     private final UserRepository userRepository;
 
+    /**
+     * TODO : request body 리스트로 변경
+     */
     @Transactional
-    public PresetDto savePreset(PresetDto presetDto) throws CustomException {
+    public List<PresetDto> savePreset(List<PresetDto> presetDtoList) throws CustomException {
+        User user = userRepository.findByEmail(presetDtoList.get(0).getUserEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+
+        List<PresetDto> result = new ArrayList<>();
+        for (PresetDto presetDto : presetDtoList) {
         if(presetDto == null) {
             throw new CustomException(ErrorCode.PRESET_NOT_FOUND);
         }
@@ -39,31 +47,29 @@ public class PresetService {
         if(presetDto.getSetCount() == null){
             throw new CustomException(ErrorCode.SET_COUNT_NOT_FOUND);
         }
-
         String email = presetDto.getUserEmail();
         if(email == null){
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
 
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
-
-
         Preset newPreset = presetDto.toEntity(user);
         presetRepository.save(newPreset);
 
-        PresetDto newPresetDto = PresetDto.builder()
-                .id(newPreset.getId())
-                .presetNumber(newPreset.getPresetNumber())
-                .weight(newPreset.getWeight())
-                .setCount(newPreset.getSetCount())
-                .repetitionCount(newPreset.getRepetitionCount())
-                .exerciseName(newPreset.getExerciseName())
-                .category(newPreset.getCategory())
+        result.add(PresetDto.builder()
                 .userEmail(email)
-                .build();
+                .category(presetDto.getCategory())
+                .presetNumber(presetDto.getPresetNumber())
+                .exerciseName(presetDto.getExerciseName())
+                .weight(presetDto.getWeight())
+                .setCount(presetDto.getSetCount())
+                .repetitionCount(presetDto.getRepetitionCount())
+                .build());
+        }
 
-        return newPresetDto;
+
+
+
+        return result;
     }
 
     //db에 있는 프리셋 불러오기 ( userId를 통해 그 유저의 모든 프리셋), null 체크 추가?
