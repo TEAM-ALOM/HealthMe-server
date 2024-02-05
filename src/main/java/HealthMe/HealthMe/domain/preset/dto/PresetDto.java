@@ -8,26 +8,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+/**
+ * TODO : 세트 수랑 무게 리스트로 리턴
+ */
 @Setter
 @Getter
 @NoArgsConstructor
 public class PresetDto {
-    @Hidden
-    private Long id;    // pk를 위한 id
-
     private Long presetNumber;          // 프리셋 번호
+    private Long exerciseNumber;        // 운동 번호
     private Double weight;              // 무게
     private Integer setCount;           // 세트 수
     private Integer repetitionCount;    // 반복 횟수
-   // private Integer restTime;           // 쉬는 시간 (나중에 시간 자료형으로 변경 계획 있음)
     private String exerciseName;
     private String category;
     private String userEmail;
 
     @Builder
-    public PresetDto(Long id, Long presetNumber, Double weight, Integer setCount, Integer repetitionCount,
+    public PresetDto(Long presetNumber, Double weight, Integer setCount, Integer repetitionCount,
                      String exerciseName, String category, String userEmail){
-        this.id = id;
         this.presetNumber = presetNumber;
         this.weight = weight;
         this.setCount = setCount;
@@ -39,7 +39,6 @@ public class PresetDto {
 
     public Preset toEntity(User user){    // dto -> entity 변환
         return Preset.builder()
-                .id(id)
                 .presetNumber(presetNumber)
                 .weight(weight)
                 .setCount(setCount)
