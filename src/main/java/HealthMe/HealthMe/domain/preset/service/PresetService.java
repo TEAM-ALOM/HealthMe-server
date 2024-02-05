@@ -96,7 +96,6 @@ public class PresetService {
         // List<Preset> to List<PresetDto>
         for(Preset preset : presets){
             PresetDto presetDto = PresetDto.builder()
-                    .id(preset.getId())
                     .presetNumber(preset.getPresetNumber())
                     .weight(preset.getWeight())
                     .setCount(preset.getSetCount())
