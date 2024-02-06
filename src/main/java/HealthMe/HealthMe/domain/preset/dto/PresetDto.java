@@ -18,27 +18,30 @@ import lombok.Setter;
 public class PresetDto {
     private Long presetNumber;          // 프리셋 번호
     private Long exerciseNumber;        // 운동 번호
+    private String presetTitle;         // 프리셋 제목
     private Double weight;              // 무게
     private Integer setCount;           // 세트 수
     private Integer repetitionCount;    // 반복 횟수
     private String exerciseName;
     private String category;
-    private String userEmail;
 
     @Builder
     public PresetDto(Long presetNumber, Double weight, Integer setCount, Integer repetitionCount,
-                     String exerciseName, String category, String userEmail){
+                     String exerciseName, String category, String presetTitle, Long exerciseNumber){
         this.presetNumber = presetNumber;
         this.weight = weight;
         this.setCount = setCount;
         this.repetitionCount = repetitionCount;
         this.exerciseName = exerciseName;
         this.category = category;
-        this.userEmail =userEmail;
+        this.presetTitle = presetTitle;
+        this.exerciseNumber = exerciseNumber;
     }
 
     public Preset toEntity(User user){    // dto -> entity 변환
         return Preset.builder()
+                .presetTitle(presetTitle)
+                .exerciseNumber(exerciseNumber)
                 .presetNumber(presetNumber)
                 .weight(weight)
                 .setCount(setCount)

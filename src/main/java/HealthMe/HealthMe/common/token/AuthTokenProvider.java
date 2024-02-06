@@ -32,7 +32,7 @@ public class AuthTokenProvider {
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", "USER")
-                .setExpiration(new Date(System.currentTimeMillis() + (long) 1000*360))
+                .setExpiration(new Date(System.currentTimeMillis() + (long) 1000*360*10))
                 // 차후 수정
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
