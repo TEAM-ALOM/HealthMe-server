@@ -17,7 +17,9 @@ public class Preset{
     private Long id;
 
     private Long presetNumber;
+    private String presetTitle;
     private Long exerciseNumber;
+    private Integer exerciseOrder;
     private Double weight;
     private Integer setCount;
     private Integer repetitionCount;

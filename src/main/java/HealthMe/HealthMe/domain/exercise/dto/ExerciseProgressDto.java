@@ -19,8 +19,7 @@ public class ExerciseProgressDto {
     private Long id;
     private Date date;
     private Double weight;  // 무게
-    private
-    Integer setCount;   // 세트 수
+    private Integer setCount;   // 세트 수
     private Integer repetitionCount;    // 반복 횟수
 
     private String userEmail;
