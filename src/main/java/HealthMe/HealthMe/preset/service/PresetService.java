@@ -33,15 +33,29 @@ public class PresetService {
         if(presetSaveDto.getPresetDto() == null){
             throw new CustomException(ErrorCode.PRESET_NOT_FOUND);
         }
-        List<PresetDto> presetDto = presetSaveDto.getPresetDto();
+        List<PresetDto> presetDtos = presetSaveDto.getPresetDto();
         List<PresetDto> result = new ArrayList<>();
-        for (PresetDto dto : presetDto) {
+        for (PresetDto dto : presetDtos) {
             result.add(dto);
             presetRepository.save(dto.toEntity(user));
         }
         return result;
     }
 
+//    public List<PresetFindResultDto> findPresetByUserEmailVersion2(PresetFindDto presetFindDto) throws CustomException{
+//        if(presetFindDto == null){
+//            throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
+//        }
+//        String email = presetFindDto.getEmail();
+//        if(email == null){
+//            throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
+//        }
+//
+//        userRepository.findByEmail(email)
+//                .orElseThrow(()-> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+//
+//
+//    }
 
     @Transactional
     public List<PresetFindResultDto> findPresetByUserEmail(PresetFindDto presetFindDto) throws CustomException {
@@ -62,21 +76,22 @@ public class PresetService {
         List<Preset> presets = presetRepository.findByUserEmail(email);
         List<SplitExerciseDetailDto> splitExerciseDetails = new ArrayList<>();
         List<SplitExerciseDto> splitExercises = new ArrayList<>();
-
+        presetCnt = presets.get(0).getPresetNumber().intValue();
+        exerciseCnt = presets.get(0).getExerciseNumber().intValue();
         for(int i =0; i< presets.size(); i++){
             if(exerciseCnt.intValue() != presets.get(i).getExerciseNumber()){
                 SplitExerciseDto splitExerciseDto = SplitExerciseDto.builder()
                         .exerciseNumber(exerciseCnt)
                         .splitExerciseDetailDto(splitExerciseDetails)
                         .exerciseName(presets.get(i - 1).getExerciseName())
-                        .category(presets.get(i-1).getCategory())
+                        .category(presets.get(i - 1).getCategory())
                         .build();
 
                 splitExercises.add(splitExerciseDto);
                 exerciseCnt += 1;
                 splitExerciseDetails = new ArrayList<>();
             }
-
+                //preset number 초기값을 get으로 받아오기
             if(presetCnt.intValue() != presets.get(i).getPresetNumber()){
                 PresetFindResultDto presetFindResultDto = PresetFindResultDto.builder()
                         .email(email)
@@ -89,14 +104,15 @@ public class PresetService {
                 exerciseCnt = 0;
                 splitExercises = new ArrayList<>();
             }
+
             SplitExerciseDetailDto splitExerciseDetailDto = SplitExerciseDetailDto.builder()
                     .order(presets.get(i).getExerciseOrder())
                     .weight(presets.get(i).getWeight())
                     .setCount(presets.get(i).getSetCount())
                     .repetitionCount(presets.get(i).getRepetitionCount())
                     .build();
-            splitExerciseDetails.add(splitExerciseDetailDto);
 
+            splitExerciseDetails.add(splitExerciseDetailDto);
         }
         if(presets.size() > 0) {
             SplitExerciseDto splitExerciseDto = SplitExerciseDto.builder()
