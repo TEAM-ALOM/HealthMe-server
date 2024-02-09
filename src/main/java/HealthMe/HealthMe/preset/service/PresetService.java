@@ -9,6 +9,7 @@ import HealthMe.HealthMe.user.domain.User;
 import HealthMe.HealthMe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,8 +77,14 @@ public class PresetService {
         List<Preset> presets = presetRepository.findByUserEmail(email);
         List<SplitExerciseDetailDto> splitExerciseDetails = new ArrayList<>();
         List<SplitExerciseDto> splitExercises = new ArrayList<>();
-        presetCnt = presets.get(0).getPresetNumber().intValue();
-        exerciseCnt = presets.get(0).getExerciseNumber().intValue();
+        if(presets.size()>0) {
+            presetCnt = presets.get(0).getPresetNumber().intValue();
+            exerciseCnt = presets.get(0).getExerciseNumber().intValue();
+        }
+        else{
+            return new ArrayList<>();
+        }
+
         for(int i =0; i< presets.size(); i++){
             if(exerciseCnt.intValue() != presets.get(i).getExerciseNumber()){
                 SplitExerciseDto splitExerciseDto = SplitExerciseDto.builder()
