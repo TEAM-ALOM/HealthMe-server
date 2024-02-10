@@ -1,11 +1,8 @@
 package HealthMe.HealthMe.preset.controller;
 
 import HealthMe.HealthMe.common.exception.CustomException;
-import HealthMe.HealthMe.preset.dto.PresetFindDto;
-import HealthMe.HealthMe.preset.dto.PresetSaveDto;
+import HealthMe.HealthMe.preset.dto.*;
 import HealthMe.HealthMe.preset.service.PresetService;
-import HealthMe.HealthMe.preset.dto.PresetDto;
-import HealthMe.HealthMe.preset.dto.PresetFindResultDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +33,14 @@ public class PresetController {
     @PostMapping("/by-email")
     @Operation(summary = "프리셋을 email로 로드", description = "해당 url로 요청시 프리셋을 user의 email을 통해 로드")
     public ResponseEntity<List<PresetFindResultDto>> findPresetByUserId(@RequestBody PresetFindDto presetFindDto) throws CustomException {
-        return new ResponseEntity<>(presetService.findPresetByUserEmail(presetFindDto), HttpStatus.OK);
+        return new ResponseEntity<>(presetService.findPresetByUserEmailV2(presetFindDto), HttpStatus.OK);
     }
+
+//    @PostMapping("/by-email/v2")
+//    @Operation(summary = "프리셋을 email로 로드", description = "해당 url로 요청시 프리셋을 user의 email을 통해 로드")
+//    public ResponseEntity<List<PresetFindResultDto>> findPresetByUserIdV2(@RequestBody PresetFindDto presetFindDto) throws CustomException {
+//        return new ResponseEntity<>(presetService.findPresetByUserEmailV2(presetFindDto), HttpStatus.OK);
+//    }
+
 
 }
