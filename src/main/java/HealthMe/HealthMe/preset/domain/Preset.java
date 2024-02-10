@@ -29,4 +29,8 @@ public class Preset{
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     private User user;
+
+    public void setPresetNumber(Long presetNumber){
+        this.presetNumber = presetNumber;
+    }
 }

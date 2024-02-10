@@ -42,5 +42,11 @@ public class PresetController {
 //        return new ResponseEntity<>(presetService.findPresetByUserEmailV2(presetFindDto), HttpStatus.OK);
 //    }
 
+    @PostMapping("/delete")
+    @Operation(summary = "프리셋을 프리셋 번호로 삭제", description = "해당 url로 요청시 프리셋을 삭제")
+    public ResponseEntity delete(@RequestBody PresetDeleteDto presetDeleteDto) throws CustomException {
+        presetService.deletePreset(presetDeleteDto);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
 }
