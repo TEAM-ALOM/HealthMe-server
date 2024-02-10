@@ -158,90 +158,34 @@ public class PresetService {
     }
 
     @Transactional
-    public List<PresetFindResultDto> findPresetByUserEmail(PresetFindDto presetFindDto) throws CustomException {
-        Integer exerciseCnt = 0;
-        Integer presetCnt = 0;
-        if(presetFindDto == null){
+    public void deletePreset(PresetDeleteDto presetDeleteDto) throws CustomException {
+        if(presetDeleteDto == null){
             throw new CustomException(ErrorCode.OBJECT_NOT_FOUND);
         }
-        String email = presetFindDto.getEmail();
+        String email = presetDeleteDto.getEmail();
+        Long presetNumber = presetDeleteDto.getPresetNumber();
         if(email == null){
             throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
+        if(presetNumber == null){
+            throw new CustomException(ErrorCode.PRESET_NOT_FOUND);
+        }
 
         userRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
+                .orElseThrow(()->new CustomException(ErrorCode.ACCOUNT_NOT_FOUND));
 
-        List<PresetFindResultDto> result = new ArrayList<>();
-
-        List<Preset> presets = presetRepository.findByUserEmail(email);
-
-        List<SplitExerciseDetailDto> splitExerciseDetails = new ArrayList<>();
-        List<SplitExerciseDto> splitExercises = new ArrayList<>();
-
-        if(presets.size() > 0) {
-            presetCnt = presets.get(0).getPresetNumber().intValue();
-            exerciseCnt = presets.get(0).getExerciseNumber().intValue();
-        }
-        else{
-            return new ArrayList<>();
-        }
-        for(int i =0; i< presets.size(); i++){
-            if(exerciseCnt.intValue() != presets.get(i).getExerciseNumber()){
-                SplitExerciseDto splitExerciseDto = SplitExerciseDto.builder()
-                        .exerciseNumber(exerciseCnt)
-                        .splitExerciseDetailDto(splitExerciseDetails)
-                        .exerciseName(presets.get(i - 1).getExerciseName())
-                        .category(presets.get(i - 1).getCategory())
-                        .build();
-
-                splitExercises.add(splitExerciseDto);
-                exerciseCnt += 1;
-                splitExerciseDetails = new ArrayList<>();
-            }
-
-            if(presetCnt.intValue() != presets.get(i).getPresetNumber()){
-                PresetFindResultDto presetFindResultDto = PresetFindResultDto.builder()
-                        .email(email)
-                        .presetNumber(presetCnt.longValue())
-                        .presetName(presets.get(i - 1).getPresetTitle())
-                        .splitPresetDto(splitExercises)
-                        .build();
-                result.add(presetFindResultDto);
-                presetCnt += 1;
-                exerciseCnt = 0;
-                splitExercises = new ArrayList<>();
-            }
-
-            SplitExerciseDetailDto splitExerciseDetailDto = SplitExerciseDetailDto.builder()
-                    .order(presets.get(i).getExerciseOrder())
-                    .weight(presets.get(i).getWeight())
-                    .setCount(presets.get(i).getSetCount())
-                    .repetitionCount(presets.get(i).getRepetitionCount())
-                    .build();
-
-            splitExerciseDetails.add(splitExerciseDetailDto);
-        }
-        if(presets.size() > 0) {
-            SplitExerciseDto splitExerciseDto = SplitExerciseDto.builder()
-                    .exerciseNumber(exerciseCnt)
-                    .splitExerciseDetailDto(splitExerciseDetails)
-                    .exerciseName(presets.get(presets.size() - 1).getExerciseName())
-                    .category(presets.get(presets.size() - 1).getCategory())
-                    .build();
-
-            splitExercises.add(splitExerciseDto);
-
-            PresetFindResultDto presetFindResultDto = PresetFindResultDto.builder()
-                    .email(email)
-                    .presetNumber(presetCnt.longValue())
-                    .presetName(presets.get(presets.size() - 1).getPresetTitle())
-                    .splitPresetDto(splitExercises)
-                    .build();
-            result.add(presetFindResultDto);
-        }
-
-        return result;
+        presetRepository.deleteByPresetNumber(presetNumber);
+        this.updatePresetNumber(email, presetNumber);
     }
 
+
+    private void updatePresetNumber(String email, Long presetNumber){
+        List<Preset> byUserEmail = presetRepository.findByUserEmail(email);
+        for (Preset preset : byUserEmail) {
+            if(preset.getPresetNumber() > presetNumber){
+                preset.setPresetNumber(preset.getPresetNumber()-1);
+                presetRepository.save(preset);
+            }
+        }
+    }
 }

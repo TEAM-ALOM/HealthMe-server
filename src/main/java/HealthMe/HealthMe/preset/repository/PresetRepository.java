@@ -11,4 +11,6 @@ public interface PresetRepository extends JpaRepository<Preset, Long> {
     @Query("SELECT p FROM PRESET p LEFT JOIN p.user u WHERE u.email = :email ORDER BY p.presetNumber, p.exerciseNumber, p.exerciseOrder")
     List<Preset> findByUserEmail(@Param("email") String email);
 
+    void deleteByPresetNumber(@Param("presetNumber") Long presetNumber);
+
 }
