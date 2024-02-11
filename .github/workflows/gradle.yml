@@ -14,6 +14,19 @@ jobs:
   # Spring Boot 애플리케이션을 빌드하여 도커허브에 푸시하는 과정
   build-docker-image:
     runs-on: ubuntu-latest
+    env: 
+      DB_HOST: ${{secrets.DB_HOST}}
+      DB_PORT: ${{secrets.DB_PORT}}
+      DB_NAME: ${{secrets.DB_NAME}}
+      DB_USER_NAME: ${{secrets.DB_USER_NAME}}
+      DB_PASSWORD: ${{secrets.DB_PASSWORD}}
+      MAIL_HOST: ${{secrets.MAIL_HOST}}
+      MAIN_PORT: ${{secrets.MAIL_PORT}}
+      MAIL_USER_NAME: ${{secrets.MAIL_USER_NAME}}
+      MAIL_PASSWORD: ${{secrets.MAIL_PASSWORD}}
+      JWT_SECRET: ${{secrets.JWT_SECRET}}
+      WEB_HOOK_URL: ${{secrets.WEB_HOOK_URL}}
+      
     steps:
     - uses: actions/checkout@v3
     # 1. Java 17 세팅
@@ -24,9 +37,9 @@ jobs:
         distribution: 'adopt'
 
     # 1-1. application.yml 세팅
-    - name: Set YML
-      run: |
-        echo "${{ secrets.APPLICATION_YML }}" > src/main/resources/application.yml
+    # - name: Set YML
+    #   run: |
+    #     echo "${{ secrets.APPLICATION_YML }}" > src/main/resources/application.yml
         
     # 2. Spring Boot 애플리케이션 빌드
     - name: Build with Gradle
@@ -36,7 +49,19 @@ jobs:
 
     # 3. Docker 이미지 빌드
     - name: docker image build
-      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/health-me .
+      run: |
+        docker build --build-arg DB_HOST="${{env.DB_HOST}}" \
+        --build-arg DB_PORT="${{env.DB_PORT}}" \
+        --build-arg DB_NAME="${{env.DB_NAME}}" \
+        --build-arg DB_USER_NAME="${{env.DB_USER_NAME}}" \
+        --build-arg DB_PASSWORD="${{env.DB_PASSWORD}}" \
+        --build-arg MAIL_HOST="${{env.MAIL_HOST}}" \
+        --build-arg MAIN_PORT="${{env.MAIL_PORT}}" \
+        --build-arg MAIL_USER_NAME="${{env.MAIL_USER_NAME}}" \
+        --build-arg MAIL_PASSWORD="${{env.MAIL_PASSWORD}}" \
+        --build-arg JWT_SECRET="${{env.JWT_SECRET}}" \
+        --build-arg WEB_HOOK_URL="${{env.WEB_HOOK_URL}}" \
+        -t ${{ secrets.DOCKERHUB_USERNAME }}/health-me .
 
     # 4. DockerHub 로그인
     - name: docker login
