@@ -21,7 +21,7 @@ jobs:
       DB_USER_NAME: ${{secrets.DB_USER_NAME}}
       DB_PASSWORD: ${{secrets.DB_PASSWORD}}
       MAIL_HOST: ${{secrets.MAIL_HOST}}
-      MAIN_PORT: ${{secrets.MAIL_PORT}}
+      MAIL_PORT: ${{secrets.MAIL_PORT}}
       MAIL_USER_NAME: ${{secrets.MAIL_USER_NAME}}
       MAIL_PASSWORD: ${{secrets.MAIL_PASSWORD}}
       JWT_SECRET: ${{secrets.JWT_SECRET}}
