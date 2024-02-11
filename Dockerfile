@@ -29,7 +29,7 @@ ENV DB_HOST=${DB_HOST} \
     JWT_SECRET=${JWT_SECRET} \
     WEB_HOOK_URL=${WEB_HOOK_URL}
 
-ARG JAR_FILE=build/libs/*.jar \
+ARG JAR_FILE=build/libs/*.jar
 # jar 파일 복제
 COPY ${JAR_FILE} app.jar
 
@@ -37,4 +37,4 @@ COPY ${JAR_FILE} app.jar
 #COPY build/libs/*.jar app.jar
 
 # 실행 명령어
-ENTRYPOINT ["java", "-jar", "-Dlogback.debug=true",  "app.jar"]
+ENTRYPOINT ["java", "-jar", "-Dlogback.debug=true",  "/app.jar"]
