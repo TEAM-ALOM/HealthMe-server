@@ -4,8 +4,32 @@
 FROM openjdk:17
 
 # 인자 설정 - JAR_File
-ARG JAR_FILE=build/libs/*.jar
 
+ARG DB_HOST \
+    DB_PORT \
+    DB_NAME \
+    DB_USER_NAME \
+    DB_PASSWORD \
+    MAIL_HOST \
+    MAIN_PORT \
+    MAIL_USER_NAME \
+    MAIL_PASSWORD \
+    JWT_SECRET \
+    WEB_HOOK_URL
+
+ENV DB_HOST: ${DB_HOST} \
+    DB_PORT: ${DB_PORT} \
+    DB_NAME: ${DB_NAME} \
+    DB_USER_NAME: ${DB_USER_NAME} \
+    DB_PASSWORD: ${DB_PASSWORD} \
+    MAIL_HOST: ${MAIL_HOST} \
+    MAIN_PORT: ${MAIL_PORT} \
+    MAIL_USER_NAME: ${MAIL_USER_NAME} \
+    MAIL_PASSWORD: ${MAIL_PASSWORD} \
+    JWT_SECRET: ${JWT_SECRET} \
+    WEB_HOOK_URL: ${WEB_HOOK_URL}
+
+ARG JAR_FILE=build/libs/*.jar \
 # jar 파일 복제
 COPY ${JAR_FILE} app.jar
 

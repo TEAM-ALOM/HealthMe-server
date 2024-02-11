@@ -9,7 +9,6 @@ import HealthMe.HealthMe.user.domain.User;
 import HealthMe.HealthMe.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
