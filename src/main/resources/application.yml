@@ -1,0 +1,85 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  profiles.active: local
+  # 데이터 소스 설정
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 작성 필요
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: ${DB_USER_NAME}
+    password: ${DB_PASSWORD}
+  # JPA 설정
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    database: mysql
+    hibernate:
+#      ddl-auto: update
+    naming:
+      physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        hbm2ddl.import_files_sql_extractor: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+        default_batch_fetch_size: 100
+        jdbc.batch_size: 1000
+        order_inserts: true
+        order_updates: true
+        format_sql: true
+  # 11/25 추가 : 이메일 관련 yml 작성
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USER_NAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+          # auth-code-expiration-millis : 유효시간 5 * 60 * 1000 = 5분
+    auth-code-expiration-millis: 300000
+
+  jwt:
+    header: Authorization
+    secret: ${JWT_SECRET}
+    # 30 * 60 * 1000 = 30분
+    access-token-expire-time: 30 * 60 * 1000
+    # 30 * 24 * 60 * 60 * 1000 = 30일
+    refresh-token-expire-time: 2592000000
+
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          kakao:
+#            client-id: 58529d9348c4735f0dad4279846b1319
+#            client-secret: pgo5W81NLt37KrqIymMC4ObgGg699W5F
+#
+#            client-authentication-method: client_secret_post
+#            authorization-grant-type: authorization_code
+#            scope: # https://developers.kakao.com/docs/latest/ko/kakaologin/common#user-info
+#              - profile_nickname
+#            redirect-uri: "{baseUrl}/api/oauth2/code/kakao"
+#            client-name: Kakao
+#        provider:
+#          kakao:
+#            authorization-uri: https://kauth.kakao.com/oauth/authorize
+#            token-uri: https://kauth.kakao.com/oauth/token
+#            user-info-uri: https://kapi.kakao.com/v2/user/me
+#            user-info-authentication-method: header
+#            user-name-attribute: id # Kakao 응답 값 id, connected_at, properties, kakao_account 중 id 지정
+
+logging:
+  discord:
+    webhook-url: ${WEB_HOOK_URL}
+  config: classpath:logback-discord.xml
