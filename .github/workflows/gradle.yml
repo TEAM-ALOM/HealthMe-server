@@ -56,7 +56,7 @@ jobs:
         --build-arg DB_USER_NAME="${{env.DB_USER_NAME}}" \
         --build-arg DB_PASSWORD="${{env.DB_PASSWORD}}" \
         --build-arg MAIL_HOST="${{env.MAIL_HOST}}" \
-        --build-arg MAIN_PORT="${{env.MAIL_PORT}}" \
+        --build-arg MAIL_PORT="${{env.MAIL_PORT}}" \
         --build-arg MAIL_USER_NAME="${{env.MAIL_USER_NAME}}" \
         --build-arg MAIL_PASSWORD="${{env.MAIL_PASSWORD}}" \
         --build-arg JWT_SECRET="${{env.JWT_SECRET}}" \
